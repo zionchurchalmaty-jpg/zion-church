@@ -57,7 +57,7 @@
  * ```
  */
 
-export const GA_TRACKING_ID = "G-7H4TF02L21"
+export const GA_TRACKING_ID = "G-91JSJLWXZL";
 
 declare global {
   interface Window {
@@ -65,8 +65,8 @@ declare global {
       command: "config" | "event" | "js" | "consent",
       targetId: string | Date | "default" | "update",
       params?: Record<string, unknown>
-    ) => void
-    dataLayer: unknown[]
+    ) => void;
+    dataLayer: unknown[];
   }
 }
 
@@ -85,11 +85,11 @@ declare global {
  * ```
  */
 export const pageview = (url: string) => {
-  if (typeof window === "undefined" || !window.gtag) return
+  if (typeof window === "undefined" || !window.gtag) return;
   window.gtag("config", GA_TRACKING_ID, {
     page_path: url,
-  })
-}
+  });
+};
 
 /**
  * Track a custom event in Google Analytics.
@@ -115,6 +115,6 @@ export const pageview = (url: string) => {
  * @see https://developers.google.com/analytics/devguides/collection/ga4/events
  */
 export const event = (action: string, params: Record<string, unknown>) => {
-  if (typeof window === "undefined" || !window.gtag) return
-  window.gtag("event", action, params)
-}
+  if (typeof window === "undefined" || !window.gtag) return;
+  window.gtag("event", action, params);
+};
