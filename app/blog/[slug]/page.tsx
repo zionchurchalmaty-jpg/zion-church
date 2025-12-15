@@ -1,5 +1,3 @@
-import { Footer } from "@/components/footer";
-import { Navbar } from "@/components/navbar";
 import { getAllPosts, getPostBySlug } from "@/lib/blog";
 import type { Metadata } from "next";
 import { compileMDX } from "next-mdx-remote/rsc";
@@ -30,12 +28,12 @@ export async function generateMetadata({
 
   if (!post) {
     return {
-      title: "Post Not Found - ProAgent Me",
+      title: "Post Not Found - Good News Bible Church",
     };
   }
 
   return {
-    title: `${post.title} - ProAgent Me Blog`,
+    title: `${post.title} - Good News Bible Church Blog`,
     description: post.description,
     openGraph: {
       title: post.title,
@@ -83,8 +81,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   });
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
+    <div className="min-h-screen flex flex-col bg-cream">
       <main className="flex-1">
         <article className="container mx-auto px-4 py-16">
           <div className="max-w-3xl mx-auto">
@@ -121,7 +118,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 )}
               </div>
 
-              <h1 className="text-4xl font-bold tracking-tight mb-4">
+              <h1 className="font-serif text-4xl font-bold tracking-tight mb-4 text-navy">
                 {post.title}
               </h1>
 
@@ -177,7 +174,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
         </article>
       </main>
-      <Footer />
     </div>
   );
 }

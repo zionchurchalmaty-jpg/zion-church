@@ -1,13 +1,11 @@
-import { Footer } from "@/components/footer";
-import { Navbar } from "@/components/navbar";
 import { getAllPosts, getAllTags } from "@/lib/blog";
 import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Blog - ProAgent Me",
+  title: "Blog - Good News Bible Church",
   description:
-    "Insights on AI agents, expert marketplaces, and the future of knowledge work. Learn how professionals are turning their expertise into AI-powered income.",
+    "News, updates, and spiritual encouragement from Good News Bible Church in Ashburn, VA.",
 };
 
 function formatDate(dateString: string): string {
@@ -24,16 +22,39 @@ export default function BlogPage() {
   const tags = getAllTags();
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
+    <div className="min-h-screen flex flex-col bg-cream">
       <main className="flex-1">
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-4xl mx-auto">
+            <Link
+              href="/"
+              className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-8"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="mr-2"
+              >
+                <path d="m12 19-7-7 7-7" />
+                <path d="M19 12H5" />
+              </svg>
+              Back to Home
+            </Link>
+
             <header className="mb-12">
-              <h1 className="text-4xl font-bold tracking-tight mb-4">Blog</h1>
+              <h1 className="font-serif text-4xl font-bold tracking-tight mb-4 text-navy">
+                Blog
+              </h1>
               <p className="text-xl text-muted-foreground">
-                Insights on AI agents, expert marketplaces, and the future of
-                knowledge work.
+                News, updates, and spiritual encouragement from Good News Bible
+                Church.
               </p>
             </header>
 
@@ -62,7 +83,7 @@ export default function BlogPage() {
                 {posts.map((post) => (
                   <article
                     key={post.slug}
-                    className="group border rounded-lg p-6 hover:border-primary/50 transition-colors"
+                    className="group border rounded-lg p-6 hover:border-primary/50 transition-colors bg-white"
                   >
                     <Link href={`/blog/${post.slug}`}>
                       <div className="flex flex-col space-y-3">
@@ -77,7 +98,7 @@ export default function BlogPage() {
                             </>
                           )}
                         </div>
-                        <h2 className="text-2xl font-semibold group-hover:text-primary transition-colors">
+                        <h2 className="text-2xl font-semibold group-hover:text-primary transition-colors text-navy">
                           {post.title}
                         </h2>
                         <p className="text-muted-foreground line-clamp-2">
@@ -114,7 +135,6 @@ export default function BlogPage() {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

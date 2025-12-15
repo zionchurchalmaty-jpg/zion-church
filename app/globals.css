@@ -5,31 +5,48 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(0.98 0 0);
+  /* Orange Primary */
+  --primary-orange: 234 88 11; /* #EA580B */
+  --primary-orange-hover: 194 65 12; /* #C2410C */
+
+  /* Navy Secondary */
+  --secondary-navy: 30 58 95; /* #1E3A5F */
+  --secondary-navy-light: 45 74 107; /* #2D4A6B */
+
+  /* Text Colors */
+  --text-dark: 31 41 55; /* #1F2937 */
+  --text-medium: 75 85 99; /* #4B5563 */
+  --text-light: 107 114 128; /* #6B7280 */
+
+  /* Background Colors */
+  --bg-warm: 255 251 247; /* #FFFBF7 */
+  --bg-cream: 254 247 240; /* #FEF7F0 */
+
+  --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: var(--primary-orange);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
+  --secondary: var(--secondary-navy);
+  --secondary-foreground: 255 255 255;
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --accent: var(--primary-orange);
+  --accent-foreground: 255 255 255;
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --destructive-foreground: 255 255 255;
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.625rem;
+  --ring: var(--primary-orange);
+  --chart-1: var(--primary-orange);
+  --chart-2: var(--secondary-navy);
+  --chart-3: var(--text-medium);
+  --chart-4: var(--bg-cream);
+  --chart-5: var(--text-light);
+  --radius: 1rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -38,62 +55,48 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-
-  /* ProAgent Me brand colors - Light mode */
-  --brand-primary: #1a365d;
-  --brand-accent: #0891b2;
-  --brand-cta: #f97316;
-  --brand-text: #1f2937;
-  --brand-surface: #f8fafc;
-  --brand-surface-alt: #ffffff;
 }
 
 .dark {
-  --background: oklch(0.12 0.01 260);
-  --foreground: oklch(0.95 0 0);
-  --card: oklch(0.18 0.01 260);
-  --card-foreground: oklch(0.95 0 0);
-  --popover: oklch(0.18 0.01 260);
-  --popover-foreground: oklch(0.95 0 0);
-  --primary: oklch(0.95 0 0);
-  --primary-foreground: oklch(0.15 0 0);
-  --secondary: oklch(0.25 0.01 260);
-  --secondary-foreground: oklch(0.95 0 0);
-  --muted: oklch(0.25 0.01 260);
-  --muted-foreground: oklch(0.7 0 0);
-  --accent: oklch(0.25 0.01 260);
-  --accent-foreground: oklch(0.95 0 0);
-  --destructive: oklch(0.5 0.2 25);
-  --destructive-foreground: oklch(0.95 0 0);
-  --border: oklch(0.28 0.01 260);
-  --input: oklch(0.28 0.01 260);
-  --ring: oklch(0.5 0 0);
-  --chart-1: oklch(0.6 0.2 260);
-  --chart-2: oklch(0.65 0.15 180);
-  --chart-3: oklch(0.75 0.18 70);
-  --chart-4: oklch(0.6 0.25 300);
-  --chart-5: oklch(0.65 0.24 15);
-  --sidebar: oklch(0.15 0.01 260);
-  --sidebar-foreground: oklch(0.95 0 0);
-  --sidebar-primary: oklch(0.6 0.2 260);
-  --sidebar-primary-foreground: oklch(0.95 0 0);
-  --sidebar-accent: oklch(0.25 0.01 260);
-  --sidebar-accent-foreground: oklch(0.95 0 0);
-  --sidebar-border: oklch(0.28 0.01 260);
-  --sidebar-ring: oklch(0.5 0 0);
-
-  /* ProAgent Me brand colors - Dark mode */
-  --brand-primary: #93c5fd;
-  --brand-accent: #22d3ee;
-  --brand-cta: #fb923c;
-  --brand-text: #e2e8f0;
-  --brand-surface: oklch(0.15 0.01 260);
-  --brand-surface-alt: oklch(0.18 0.01 260);
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
 }
 
 @theme inline {
-  --font-sans: "Geist", "Geist Fallback";
-  --font-mono: "Geist Mono", "Geist Mono Fallback";
+  /* Updated font families for church branding */
+  --font-sans: var(--font-sans), "Inter", "Geist", "Geist Fallback", system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-serif), "Cormorant Garamond", "Playfair Display", Georgia, serif;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -130,14 +133,6 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-
-  /* ProAgent Me brand color utilities */
-  --color-brand-primary: var(--brand-primary);
-  --color-brand-accent: var(--brand-accent);
-  --color-brand-cta: var(--brand-cta);
-  --color-brand-text: var(--brand-text);
-  --color-brand-surface: var(--brand-surface);
-  --color-brand-surface-alt: var(--brand-surface-alt);
 }
 
 @layer base {
@@ -146,5 +141,41 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Smooth scroll behavior for anchor navigation */
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Custom utility classes for church design */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .bg-warm {
+    background-color: rgb(var(--bg-warm));
+  }
+
+  .bg-cream {
+    background-color: rgb(var(--bg-cream));
+  }
+
+  .text-primary-orange {
+    color: rgb(var(--primary-orange));
+  }
+
+  .text-navy {
+    color: rgb(var(--secondary-navy));
+  }
+
+  .bg-navy {
+    background-color: rgb(var(--secondary-navy));
+  }
+
+  .bg-navy-light {
+    background-color: rgb(var(--secondary-navy-light));
   }
 }

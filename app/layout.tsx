@@ -3,39 +3,42 @@ import {
   CookieConsentProvider,
   CookieSettingsModal,
 } from "@/components/cookie-consent";
-import { RecaptchaProvider } from "@/components/recaptcha-provider";
-import { ThemeProvider } from "@/components/theme-provider";
 import { GA_TRACKING_ID } from "@/lib/gtag";
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import Script from "next/script";
 import type React from "react";
 import "./globals.css";
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const cormorantGaramond = Cormorant_Garamond({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin", "cyrillic"],
+  variable: "--font-serif",
+});
+
+const inter = Inter({
+  weight: ["300", "400", "500", "600", "700"],
+  subsets: ["latin", "cyrillic"],
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
-  title: "ProAgent Me - Turn Your Expertise Into AI Income",
+  title: "Good News Bible Church | Bilingual Church in Ashburn, VA",
   description:
-    "The marketplace where experts create AI agents and earn while they sleep. Stop worrying about AI stealing your job. Use it to earn more.",
+    "A bilingual Russian-English Bible church in Ashburn, Virginia serving the Slavic community. Join us Sundays at 1:30 PM for worship, fellowship, and spiritual growth.",
+  keywords: [
+    "church",
+    "Ashburn VA",
+    "Russian church",
+    "bilingual church",
+    "Slavic community",
+    "Bible church",
+    "Northern Virginia",
+  ],
   icons: {
-    icon: [
-      {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
-      },
-    ],
-    apple: "/apple-icon.png",
+    icon: "/icon_only.png",
+    apple: "/icon_only.png",
   },
 };
 
@@ -45,7 +48,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${inter.variable} ${cormorantGaramond.variable} scroll-smooth`}
+      suppressHydrationWarning
+    >
       <body className={`font-sans antialiased`}>
         {/* Initialize gtag consent BEFORE loading GA4 script */}
         <Script id="gtag-consent-init" strategy="beforeInteractive">
@@ -74,18 +81,9 @@ export default function RootLayout({
           `}
         </Script>
         <CookieConsentProvider>
-          <RecaptchaProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              {children}
-              <CookieBanner />
-              <CookieSettingsModal />
-            </ThemeProvider>
-          </RecaptchaProvider>
+          {children}
+          <CookieBanner />
+          <CookieSettingsModal />
         </CookieConsentProvider>
         <Analytics />
       </body>
