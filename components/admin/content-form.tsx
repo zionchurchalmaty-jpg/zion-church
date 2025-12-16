@@ -212,9 +212,9 @@ export function ContentForm({
 
           <Button
             size="sm"
+            variant="orange"
             onClick={() => handleSubmit("published")}
             disabled={saving}
-            className="bg-primary-orange hover:bg-primary-orange/90"
           >
             {saving ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />

@@ -72,13 +72,16 @@ function generateSlug(title: string): string {
 /**
  * Remove undefined values from an object (Firestore doesn't accept undefined)
  */
-function removeUndefined<T extends Record<string, unknown>>(obj: T): T {
-  const result = { ...obj };
-  for (const key of Object.keys(result)) {
-    if (result[key] === undefined) {
-      delete result[key];
-    } else if (result[key] && typeof result[key] === "object" && !Array.isArray(result[key])) {
-      result[key] = removeUndefined(result[key] as Record<string, unknown>) as T[keyof T];
+function removeUndefined(obj: Record<string, unknown>): Record<string, unknown> {
+  const result: Record<string, unknown> = {};
+  for (const key of Object.keys(obj)) {
+    const value = obj[key];
+    if (value === undefined) {
+      continue;
+    } else if (value && typeof value === "object" && !Array.isArray(value)) {
+      result[key] = removeUndefined(value as Record<string, unknown>);
+    } else {
+      result[key] = value;
     }
   }
   return result;

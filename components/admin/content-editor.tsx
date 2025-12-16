@@ -88,7 +88,7 @@ export function ContentEditor({
     editorProps: {
       attributes: {
         class:
-          "prose prose-neutral dark:prose-invert max-w-none min-h-[400px] focus:outline-none px-4 py-3",
+          "prose prose-neutral max-w-none min-h-[400px] focus:outline-none px-4 py-3",
       },
     },
     onUpdate: ({ editor }) => {

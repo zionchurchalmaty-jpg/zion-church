@@ -35,7 +35,7 @@ export function HeroSection() {
 
         {/* Headline */}
         <h1 className="font-serif font-bold text-5xl sm:text-6xl md:text-7xl text-white mb-6 animate-fade-in-up text-balance">
-          Welcome <span className="text-primary-orange">Home</span>
+          Welcome <span className="text-primary">Home</span>
         </h1>
 
         {/* Motto */}

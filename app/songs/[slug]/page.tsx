@@ -167,7 +167,7 @@ export default async function SongPage({ params }: SongPageProps) {
             </header>
 
             <div
-              className="prose prose-neutral dark:prose-invert max-w-none whitespace-pre-wrap"
+              className="prose prose-neutral max-w-none whitespace-pre-wrap"
               dangerouslySetInnerHTML={{ __html: sanitizedContent }}
             />
 

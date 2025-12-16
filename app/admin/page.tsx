@@ -80,7 +80,7 @@ export default function AdminDashboard() {
           Quick Actions
         </h2>
         <div className="flex flex-wrap gap-3">
-          <Button asChild className="bg-primary-orange hover:bg-primary-orange/90">
+          <Button asChild variant="orange">
             <Link href="/admin/blog/new">
               <Plus className="mr-2 h-4 w-4" />
               New Blog Post

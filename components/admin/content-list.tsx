@@ -72,12 +72,12 @@ export function ContentList({ items, contentType }: ContentListProps) {
         <h1 className="font-serif text-2xl font-bold text-navy">
           {contentType === "blog" ? "Blog Posts" : "Songs"}
         </h1>
-        <Link href={`${basePath}/new`}>
-          <Button className="bg-primary-orange hover:bg-primary-orange/90">
+        <Button asChild variant="orange">
+          <Link href={`${basePath}/new`}>
             <Plus className="mr-2 h-4 w-4" />
             New {contentTypeLabel}
-          </Button>
-        </Link>
+          </Link>
+        </Button>
       </div>
 
       {/* Filters */}
