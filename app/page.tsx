@@ -1,4 +1,5 @@
 import { AboutSection } from "@/components/about-section";
+import { CalendarSection } from "@/components/calendar-section";
 import { ContactSection } from "@/components/contact-section";
 import { FAQSection } from "@/components/faq-section";
 import { Footer } from "@/components/footer";
@@ -17,8 +18,9 @@ export default function ChurchLandingPage() {
       <HeroSection />
       <AboutSection />
       <WhatToExpectSection />
-      <MinistriesSection />
       <GallerySection />
+      <MinistriesSection />
+      <CalendarSection />
       <LocationSection />
       <FAQSection />
       <StayConnectedSection />
