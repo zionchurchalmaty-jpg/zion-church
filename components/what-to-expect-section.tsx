@@ -30,7 +30,7 @@ const features = [
 
 export function WhatToExpectSection() {
   return (
-    <section id="visit" className="py-20 bg-cream">
+    <section id="what-to-expect" className="py-20 bg-cream scroll-mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-4">

@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { ChevronRight, Clock, MapPin, Play } from "lucide-react";
 
@@ -63,17 +65,32 @@ export function HeroSection() {
 
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up animation-delay-400">
-          <Button size="lg" className="px-8">
-            Plan Your Visit
+          <Button
+            size="lg"
+            className="px-8"
+            onClick={() => {
+              document
+                .getElementById("what-to-expect")
+                ?.scrollIntoView({ behavior: "smooth" });
+            }}
+          >
+            What to Expect
             <ChevronRight className="size-4" />
           </Button>
           <Button
             size="lg"
             variant="outline"
             className="border-white/30 text-white hover:bg-white/10 px-8 bg-transparent"
+            asChild
           >
-            <Play className="size-4" />
-            Watch Online
+            <a
+              href="https://www.youtube.com/@GoodNewsBibleChurchYT/streams"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Play className="size-4" />
+              Watch Online
+            </a>
           </Button>
         </div>
       </div>
