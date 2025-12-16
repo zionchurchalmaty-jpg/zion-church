@@ -91,7 +91,9 @@ export function Navbar() {
               </button>
             </div>
 
-            <Button size="sm">Give</Button>
+            <Button size="sm" asChild>
+              <a href="https://goodnewsbible.churchcenter.com/giving" target="_blank" rel="noopener noreferrer">Give</a>
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -145,8 +147,8 @@ export function Navbar() {
                   RU
                 </button>
               </div>
-              <Button size="sm" className="flex-1">
-                Give
+              <Button size="sm" className="flex-1" asChild>
+                <a href="https://goodnewsbible.churchcenter.com/giving" target="_blank" rel="noopener noreferrer">Give</a>
               </Button>
             </div>
           </div>

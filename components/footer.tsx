@@ -13,7 +13,7 @@ export function Footer() {
                 Good News Bible Church
               </div>
             </div>
-            <p className="font-serif text-white/80">
+            <p className="font-serif text-white/80 italic">
               Bring God's Joy to All People
             </p>
             <div className="flex items-center gap-4">

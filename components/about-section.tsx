@@ -45,7 +45,7 @@ export function AboutSection() {
             </div>
 
             <div className="bg-cream border-l-4 border-primary p-6 rounded-lg">
-              <p className="font-serif text-xl text-navy font-medium">
+              <p className="font-serif text-xl text-navy font-medium italic">
                 "Bring God's Joy to All People"
               </p>
             </div>

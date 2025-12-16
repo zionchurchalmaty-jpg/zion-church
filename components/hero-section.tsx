@@ -39,7 +39,7 @@ export function HeroSection() {
         </h1>
 
         {/* Motto */}
-        <p className="font-serif text-2xl sm:text-3xl text-white/90 mb-4 animate-fade-in-up animation-delay-100 text-balance">
+        <p className="font-serif text-2xl sm:text-3xl text-white/90 mb-4 animate-fade-in-up animation-delay-100 text-balance italic">
           Bring God's Joy to All People
         </p>
 
