@@ -11,10 +11,10 @@ export function HeroSection() {
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-20"
+          className="absolute inset-0 w-full h-full object-cover opacity-40"
         >
           <source
-            src="/placeholder.mp4?height=1080&width=1920&query=church+worship+community+diverse+people+singing"
+            src="/hero-video.mp4?height=1080&width=1920&query=church+worship+community+diverse+people+singing"
             type="video/mp4"
           />
         </video>
@@ -43,8 +43,8 @@ export function HeroSection() {
 
         {/* Subtitle */}
         <p className="text-lg sm:text-xl text-white/80 mb-8 max-w-3xl mx-auto animate-fade-in-up animation-delay-200 leading-relaxed">
-          A bilingual Russian-English Bible church in Ashburn, Virginia
-          serving the Slavic community and beyond.
+          A bilingual Russian-English Bible church in Ashburn, Virginia serving
+          the Slavic community and beyond.
         </p>
 
         {/* Quick Info */}
