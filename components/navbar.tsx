@@ -29,9 +29,7 @@ export function Navbar() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-white/95 backdrop-blur-md shadow-md"
-          : "bg-white/80 backdrop-blur-sm"
+        scrolled ? "bg-white/95 backdrop-blur-md shadow-md" : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -41,7 +39,7 @@ export function Navbar() {
             <img
               src="/GNBC_logo.png"
               alt="Good News Bible Church"
-              className="h-10 md:h-12 w-auto"
+              className="h-14 md:h-14 w-auto"
             />
           </div>
 
@@ -51,20 +49,30 @@ export function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-gray-700 hover:text-primary transition-colors"
+                className={`text-sm font-medium transition-colors ${
+                  scrolled
+                    ? "text-gray-700 hover:text-primary"
+                    : "text-white hover:text-white/80"
+                }`}
               >
                 {link.label}
               </a>
             ))}
 
             {/* Language Toggle */}
-            <div className="flex items-center gap-1 bg-gray-100 rounded-full p-1">
+            <div
+              className={`flex items-center gap-1 rounded-full p-1 transition-colors ${
+                scrolled ? "bg-gray-100" : "bg-white/20"
+              }`}
+            >
               <button
                 onClick={() => setLanguage("en")}
                 className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
                   language === "en"
                     ? "bg-primary text-white"
-                    : "text-gray-600"
+                    : scrolled
+                    ? "text-gray-600"
+                    : "text-white"
                 }`}
               >
                 EN
@@ -74,7 +82,9 @@ export function Navbar() {
                 className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
                   language === "ru"
                     ? "bg-primary text-white"
-                    : "text-gray-600"
+                    : scrolled
+                    ? "text-gray-600"
+                    : "text-white"
                 }`}
               >
                 RU
