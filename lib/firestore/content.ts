@@ -70,6 +70,21 @@ function generateSlug(title: string): string {
 }
 
 /**
+ * Remove undefined values from an object (Firestore doesn't accept undefined)
+ */
+function removeUndefined<T extends Record<string, unknown>>(obj: T): T {
+  const result = { ...obj };
+  for (const key of Object.keys(result)) {
+    if (result[key] === undefined) {
+      delete result[key];
+    } else if (result[key] && typeof result[key] === "object" && !Array.isArray(result[key])) {
+      result[key] = removeUndefined(result[key] as Record<string, unknown>) as T[keyof T];
+    }
+  }
+  return result;
+}
+
+/**
  * Get all published content of a specific type (for public pages)
  */
 export async function getPublishedContent(
@@ -206,7 +221,7 @@ export async function createContent(
   const searchableText = generateSearchableText(input.title, input.content);
   const now = serverTimestamp();
 
-  const docData = {
+  const docData = removeUndefined({
     ...input,
     slug,
     author: authorName,
@@ -215,7 +230,7 @@ export async function createContent(
     createdAt: now,
     updatedAt: now,
     publishedAt: input.status === "published" ? now : null,
-  };
+  });
 
   const docRef = await addDoc(collection(db, CONTENT_COLLECTION), docData);
   return docRef.id;
@@ -241,17 +256,16 @@ export async function updateContent(
   const slug = generateSlug(input.title);
   const searchableText = generateSearchableText(input.title, input.content);
 
-  const updateData: Record<string, unknown> = {
+  const updateData = removeUndefined({
     ...input,
     slug,
     searchableText,
     updatedAt: serverTimestamp(),
-  };
-
-  // Set publishedAt if publishing for first time
-  if (input.status === "published" && !existingData.publishedAt) {
-    updateData.publishedAt = serverTimestamp();
-  }
+    // Set publishedAt if publishing for first time
+    publishedAt: input.status === "published" && !existingData.publishedAt
+      ? serverTimestamp()
+      : existingData.publishedAt,
+  });
 
   await updateDoc(docRef, updateData);
 }

@@ -6,9 +6,22 @@ import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
 import Typography from "@tiptap/extension-typography";
-import { useCallback } from "react";
+import { useCallback, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  uploadImage,
+  validateImageFile,
+  type UploadProgress,
+} from "@/lib/firebase/storage";
 import {
   Bold,
   Italic,
@@ -25,6 +38,8 @@ import {
   Undo,
   Redo,
   Minus,
+  Upload,
+  Loader2,
 } from "lucide-react";
 
 interface ContentEditorProps {
@@ -38,6 +53,13 @@ export function ContentEditor({
   onChange,
   placeholder = "Start writing...",
 }: ContentEditorProps) {
+  const [imageDialogOpen, setImageDialogOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -89,14 +111,54 @@ export function ContentEditor({
     editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
   }, [editor]);
 
-  const addImage = useCallback(() => {
-    if (!editor) return;
-    const url = prompt("Enter image URL");
-
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
-    }
+  const insertImage = useCallback((url: string) => {
+    if (!editor || !url) return;
+    editor.chain().focus().setImage({ src: url }).run();
+    setImageDialogOpen(false);
+    setImageUrl("");
+    setUploadError(null);
   }, [editor]);
+
+  const handleFileUpload = useCallback(async (file: File) => {
+    setUploadError(null);
+
+    const validationError = validateImageFile(file);
+    if (validationError) {
+      setUploadError(validationError);
+      return;
+    }
+
+    setIsUploading(true);
+    setUploadProgress(0);
+
+    try {
+      const { promise } = uploadImage(file, "content", (progress: UploadProgress) => {
+        setUploadProgress(progress.progress);
+      });
+
+      const result = await promise;
+      insertImage(result.url);
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setIsUploading(false);
+      setUploadProgress(0);
+    }
+  }, [insertImage]);
+
+  const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      handleFileUpload(file);
+    }
+    e.target.value = "";
+  }, [handleFileUpload]);
+
+  const openImageDialog = useCallback(() => {
+    setImageDialogOpen(true);
+    setImageUrl("");
+    setUploadError(null);
+  }, []);
 
   if (!editor) {
     return (
@@ -206,7 +268,7 @@ export function ContentEditor({
         >
           <LinkIcon className="h-4 w-4" />
         </ToolbarButton>
-        <ToolbarButton onClick={addImage} title="Add Image">
+        <ToolbarButton onClick={openImageDialog} title="Add Image">
           <ImageIcon className="h-4 w-4" />
         </ToolbarButton>
 
@@ -235,6 +297,92 @@ export function ContentEditor({
       <div className="border-t px-4 py-2 text-xs text-muted-foreground">
         {editor.storage.characterCount?.characters?.() ?? 0} characters
       </div>
+
+      {/* Image Upload Dialog */}
+      <Dialog open={imageDialogOpen} onOpenChange={setImageDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Add Image</DialogTitle>
+          </DialogHeader>
+
+          <Tabs defaultValue="upload" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="upload">Upload</TabsTrigger>
+              <TabsTrigger value="url">URL</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="upload" className="space-y-4">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/gif,image/webp"
+                className="hidden"
+                onChange={handleFileSelect}
+              />
+
+              <div
+                className={cn(
+                  "flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed p-8 cursor-pointer transition-colors",
+                  isUploading
+                    ? "pointer-events-none opacity-50"
+                    : "hover:border-muted-foreground/50"
+                )}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                {isUploading ? (
+                  <>
+                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                    <p className="text-sm">Uploading... {Math.round(uploadProgress)}%</p>
+                    <div className="w-full max-w-xs h-2 bg-muted rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-primary transition-all duration-300"
+                        style={{ width: `${uploadProgress}%` }}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <Upload className="h-8 w-8 text-muted-foreground" />
+                    <p className="text-sm text-center">
+                      Click to select an image
+                      <br />
+                      <span className="text-xs text-muted-foreground">
+                        JPEG, PNG, GIF, WebP up to 10MB
+                      </span>
+                    </p>
+                  </>
+                )}
+              </div>
+
+              {uploadError && (
+                <p className="text-sm text-destructive">{uploadError}</p>
+              )}
+            </TabsContent>
+
+            <TabsContent value="url" className="space-y-4">
+              <div className="flex gap-2">
+                <Input
+                  placeholder="https://example.com/image.jpg"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      insertImage(imageUrl);
+                    }
+                  }}
+                />
+                <Button
+                  onClick={() => insertImage(imageUrl)}
+                  disabled={!imageUrl.trim()}
+                >
+                  Add
+                </Button>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

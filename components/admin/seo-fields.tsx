@@ -4,20 +4,29 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { ImageUpload } from "./image-upload";
 import type { SEOData } from "@/lib/firestore/types";
+import { ImageIcon } from "lucide-react";
 
 interface SEOFieldsProps {
   value: SEOData;
   onChange: (seo: SEOData) => void;
   defaultTitle?: string;
+  coverImage?: string;
 }
 
-export function SEOFields({ value, onChange, defaultTitle }: SEOFieldsProps) {
+export function SEOFields({ value, onChange, defaultTitle, coverImage }: SEOFieldsProps) {
   const updateField = <K extends keyof SEOData>(
     field: K,
     fieldValue: SEOData[K]
   ) => {
     onChange({ ...value, [field]: fieldValue });
+  };
+
+  const useCoverImage = () => {
+    if (coverImage) {
+      updateField("ogImage", coverImage);
+    }
   };
 
   return (
@@ -52,16 +61,26 @@ export function SEOFields({ value, onChange, defaultTitle }: SEOFieldsProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="ogImage">Open Graph Image URL</Label>
-        <Input
-          id="ogImage"
+        <div className="flex items-center justify-between">
+          <Label>Open Graph Image</Label>
+          {coverImage && !value.ogImage && (
+            <button
+              type="button"
+              onClick={useCoverImage}
+              className="flex items-center gap-1 text-xs text-primary-orange hover:underline"
+            >
+              <ImageIcon className="h-3 w-3" />
+              Use cover image
+            </button>
+          )}
+        </div>
+        <ImageUpload
           value={value.ogImage || ""}
-          onChange={(e) => updateField("ogImage", e.target.value)}
-          placeholder="https://example.com/image.jpg"
+          onChange={(url) => updateField("ogImage", url)}
+          folder="og"
+          aspectRatio="1200/630"
+          description="Image shown when shared on social media (1200x630px)"
         />
-        <p className="text-xs text-muted-foreground">
-          Image shown when shared on social media (recommended: 1200x630px)
-        </p>
       </div>
 
       <div className="space-y-2">

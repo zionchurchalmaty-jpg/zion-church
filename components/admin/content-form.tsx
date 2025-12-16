@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import { ContentEditor } from "./content-editor";
 import { SEOFields } from "./seo-fields";
+import { ImageUpload } from "./image-upload";
 import { useAuth } from "./auth-provider";
 import {
   createContent,
@@ -287,25 +288,14 @@ export function ContentForm({
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="coverImage">Cover Image URL</Label>
-              <Input
-                id="coverImage"
-                value={coverImage}
-                onChange={(e) => setCoverImage(e.target.value)}
-                placeholder="https://example.com/image.jpg"
-              />
-              {coverImage && (
-                <img
-                  src={coverImage}
-                  alt="Cover preview"
-                  className="mt-2 aspect-video w-full rounded-lg object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = "none";
-                  }}
-                />
-              )}
-            </div>
+            <ImageUpload
+              value={coverImage}
+              onChange={setCoverImage}
+              folder="covers"
+              label="Cover Image"
+              description="Recommended: 1200x630px or 16:9 ratio"
+              aspectRatio="16/9"
+            />
 
             <div className="space-y-2">
               <Label htmlFor="tags">Tags</Label>
@@ -343,7 +333,7 @@ export function ContentForm({
             </div>
           </div>
 
-          <SEOFields value={seo} onChange={setSeo} defaultTitle={title} />
+          <SEOFields value={seo} onChange={setSeo} defaultTitle={title} coverImage={coverImage} />
         </div>
       </div>
     </div>
