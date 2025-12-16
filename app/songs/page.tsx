@@ -5,9 +5,9 @@ import type { Content } from "@/lib/firestore/types";
 import type { Timestamp } from "firebase/firestore";
 
 export const metadata: Metadata = {
-  title: "Blog - Good News Bible Church",
+  title: "Songs - Good News Bible Church",
   description:
-    "News, updates, and spiritual encouragement from Good News Bible Church in Ashburn, VA.",
+    "Worship songs and hymns from Good News Bible Church in Ashburn, VA.",
 };
 
 // Revalidate every 5 minutes
@@ -27,17 +27,17 @@ function formatDate(timestamp: Timestamp | undefined): string {
   }
 }
 
-function getUniqueTags(posts: Content[]): string[] {
+function getUniqueTags(songs: Content[]): string[] {
   const tagsSet = new Set<string>();
-  posts.forEach((post) => {
-    post.tags.forEach((tag) => tagsSet.add(tag));
+  songs.forEach((song) => {
+    song.tags.forEach((tag) => tagsSet.add(tag));
   });
   return Array.from(tagsSet);
 }
 
-export default async function BlogPage() {
-  const posts = await getPublishedContent("blog");
-  const tags = getUniqueTags(posts);
+export default async function SongsPage() {
+  const songs = await getPublishedContent("song");
+  const tags = getUniqueTags(songs);
 
   return (
     <div className="min-h-screen flex flex-col bg-cream">
@@ -68,11 +68,10 @@ export default async function BlogPage() {
 
             <header className="mb-12">
               <h1 className="font-serif text-4xl font-bold tracking-tight mb-4 text-navy">
-                Blog
+                Songs
               </h1>
               <p className="text-xl text-muted-foreground">
-                News, updates, and spiritual encouragement from Good News Bible
-                Church.
+                Worship songs and hymns from Good News Bible Church.
               </p>
             </header>
 
@@ -89,46 +88,43 @@ export default async function BlogPage() {
               </div>
             )}
 
-            {posts.length === 0 ? (
+            {songs.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">
-                  No blog posts yet. Check back soon!
+                  No songs yet. Check back soon!
                 </p>
               </div>
             ) : (
-              <div className="space-y-8">
-                {posts.map((post) => (
+              <div className="grid gap-6 md:grid-cols-2">
+                {songs.map((song) => (
                   <article
-                    key={post.id}
+                    key={song.id}
                     className="group border rounded-lg p-6 hover:border-primary/50 transition-colors bg-white"
                   >
-                    <Link href={`/blog/${post.slug}`}>
+                    <Link href={`/songs/${song.slug}`}>
                       <div className="flex flex-col space-y-3">
-                        {post.coverImage && (
+                        {song.coverImage && (
                           <img
-                            src={post.coverImage}
-                            alt={post.title}
-                            className="w-full h-48 object-cover rounded-lg mb-2"
+                            src={song.coverImage}
+                            alt={song.title}
+                            className="w-full h-40 object-cover rounded-lg"
                           />
                         )}
-                        <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                          <time dateTime={post.publishedAt?.toDate().toISOString()}>
-                            {formatDate(post.publishedAt)}
-                          </time>
-                        </div>
-                        <h2 className="text-2xl font-semibold group-hover:text-primary transition-colors text-navy">
-                          {post.title}
+                        <h2 className="text-xl font-semibold group-hover:text-primary transition-colors text-navy">
+                          {song.title}
                         </h2>
-                        <p className="text-muted-foreground line-clamp-2">
-                          {post.excerpt || post.seo.metaDescription}
-                        </p>
+                        {song.excerpt && (
+                          <p className="text-sm text-muted-foreground line-clamp-2">
+                            {song.excerpt}
+                          </p>
+                        )}
                         <div className="flex items-center justify-between pt-2">
-                          <div className="flex items-center gap-2 text-sm">
-                            <span className="font-medium">{post.author}</span>
-                          </div>
-                          {post.tags && post.tags.length > 0 && (
-                            <div className="flex gap-2">
-                              {post.tags.slice(0, 3).map((tag) => (
+                          <span className="text-sm text-muted-foreground">
+                            {song.author}
+                          </span>
+                          {song.tags && song.tags.length > 0 && (
+                            <div className="flex gap-1">
+                              {song.tags.slice(0, 2).map((tag) => (
                                 <span
                                   key={tag}
                                   className="px-2 py-0.5 text-xs rounded-full bg-muted text-muted-foreground"

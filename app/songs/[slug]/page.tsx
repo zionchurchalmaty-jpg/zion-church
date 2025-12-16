@@ -6,7 +6,7 @@ import DOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
 import type { Timestamp } from "firebase/firestore";
 
-interface BlogPostPageProps {
+interface SongPageProps {
   params: Promise<{
     slug: string;
   }>;
@@ -16,38 +16,38 @@ interface BlogPostPageProps {
 export const revalidate = 300;
 
 export async function generateStaticParams() {
-  const posts = await getPublishedContent("blog");
-  return posts.map((post) => ({
-    slug: post.slug,
+  const songs = await getPublishedContent("song");
+  return songs.map((song) => ({
+    slug: song.slug,
   }));
 }
 
 export async function generateMetadata({
   params,
-}: BlogPostPageProps): Promise<Metadata> {
+}: SongPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getPublishedContentBySlug("blog", slug);
+  const song = await getPublishedContentBySlug("song", slug);
 
-  if (!post) {
+  if (!song) {
     return {
-      title: "Post Not Found - Good News Bible Church",
+      title: "Song Not Found - Good News Bible Church",
     };
   }
 
-  const title = post.seo.metaTitle || post.title;
-  const description = post.seo.metaDescription || post.excerpt || "";
-  const ogImage = post.seo.ogImage || post.coverImage;
+  const title = song.seo.metaTitle || song.title;
+  const description = song.seo.metaDescription || song.excerpt || "";
+  const ogImage = song.seo.ogImage || song.coverImage;
 
   return {
-    title: `${title} - Good News Bible Church Blog`,
+    title: `${title} - Good News Bible Church Songs`,
     description,
     openGraph: {
       title,
       description,
       type: "article",
-      publishedTime: post.publishedAt?.toDate().toISOString(),
-      authors: [post.author],
-      tags: post.tags,
+      publishedTime: song.publishedAt?.toDate().toISOString(),
+      authors: [song.author],
+      tags: song.tags,
       images: ogImage ? [ogImage] : undefined,
     },
     twitter: {
@@ -56,8 +56,8 @@ export async function generateMetadata({
       description,
       images: ogImage ? [ogImage] : undefined,
     },
-    ...(post.seo.canonicalUrl && { alternates: { canonical: post.seo.canonicalUrl } }),
-    ...(post.seo.noIndex && { robots: { index: false } }),
+    ...(song.seo.canonicalUrl && { alternates: { canonical: song.seo.canonicalUrl } }),
+    ...(song.seo.noIndex && { robots: { index: false } }),
   };
 }
 
@@ -85,15 +85,15 @@ function sanitizeHtml(html: string): string {
   });
 }
 
-export default async function BlogPostPage({ params }: BlogPostPageProps) {
+export default async function SongPage({ params }: SongPageProps) {
   const { slug } = await params;
-  const post = await getPublishedContentBySlug("blog", slug);
+  const song = await getPublishedContentBySlug("song", slug);
 
-  if (!post) {
+  if (!song) {
     notFound();
   }
 
-  const sanitizedContent = sanitizeHtml(post.content);
+  const sanitizedContent = sanitizeHtml(song.content);
 
   return (
     <div className="min-h-screen flex flex-col bg-cream">
@@ -102,7 +102,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <div className="max-w-3xl mx-auto">
             <header className="mb-10">
               <Link
-                href="/blog"
+                href="/songs"
                 className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-6"
               >
                 <svg
@@ -120,46 +120,40 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   <path d="m12 19-7-7 7-7" />
                   <path d="M19 12H5" />
                 </svg>
-                Back to Blog
+                Back to Songs
               </Link>
 
-              {post.coverImage && (
+              {song.coverImage && (
                 <img
-                  src={post.coverImage}
-                  alt={post.title}
+                  src={song.coverImage}
+                  alt={song.title}
                   className="w-full h-64 md:h-96 object-cover rounded-lg mb-6"
                 />
               )}
 
-              <div className="flex items-center gap-3 text-sm text-muted-foreground mb-4">
-                <time dateTime={post.publishedAt?.toDate().toISOString()}>
-                  {formatDate(post.publishedAt)}
-                </time>
-              </div>
-
               <h1 className="font-serif text-4xl font-bold tracking-tight mb-4 text-navy">
-                {post.title}
+                {song.title}
               </h1>
 
-              {post.excerpt && (
+              {song.excerpt && (
                 <p className="text-xl text-muted-foreground mb-6">
-                  {post.excerpt}
+                  {song.excerpt}
                 </p>
               )}
 
               <div className="flex items-center justify-between border-y py-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold">
-                    {post.author.charAt(0)}
+                    {song.author.charAt(0)}
                   </div>
                   <div>
-                    <div className="font-medium">{post.author}</div>
+                    <div className="font-medium">{song.author}</div>
                   </div>
                 </div>
 
-                {post.tags && post.tags.length > 0 && (
+                {song.tags && song.tags.length > 0 && (
                   <div className="flex gap-2">
-                    {post.tags.map((tag) => (
+                    {song.tags.map((tag) => (
                       <span
                         key={tag}
                         className="px-3 py-1 text-sm rounded-full bg-secondary text-secondary-foreground"
@@ -173,17 +167,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </header>
 
             <div
-              className="prose prose-neutral dark:prose-invert max-w-none"
+              className="prose prose-neutral dark:prose-invert max-w-none whitespace-pre-wrap"
               dangerouslySetInnerHTML={{ __html: sanitizedContent }}
             />
 
             <footer className="mt-12 pt-8 border-t">
               <div className="flex items-center justify-between">
                 <Link
-                  href="/blog"
+                  href="/songs"
                   className="text-sm text-muted-foreground hover:text-primary"
                 >
-                  ← Back to all posts
+                  ← Back to all songs
                 </Link>
               </div>
             </footer>
