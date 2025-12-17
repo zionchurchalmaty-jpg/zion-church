@@ -110,6 +110,7 @@ export function ContentList({ items, contentType }: ContentListProps) {
             <TableRow>
               <TableHead className="w-[40%]">Title</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>Language</TableHead>
               <TableHead>Author</TableHead>
               <TableHead>Updated</TableHead>
               <TableHead className="text-right">Actions</TableHead>
@@ -118,7 +119,7 @@ export function ContentList({ items, contentType }: ContentListProps) {
           <TableBody>
             {filteredItems.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="h-24 text-center">
+                <TableCell colSpan={6} className="h-24 text-center">
                   <p className="text-muted-foreground">
                     {search || statusFilter !== "all"
                       ? "No matching content found"
@@ -168,6 +169,14 @@ export function ContentList({ items, contentType }: ContentListProps) {
                       }
                     >
                       {item.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      variant="outline"
+                      className="font-normal"
+                    >
+                      {item.language === "en" ? "EN" : item.language === "ru" ? "RU" : "—"}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-muted-foreground">

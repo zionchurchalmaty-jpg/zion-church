@@ -28,6 +28,7 @@ import type {
   ContentType,
   SEOData,
   ContentStatus,
+  ContentLanguage,
 } from "@/lib/firestore/types";
 import { Loader2, Save, Trash2, Eye } from "lucide-react";
 import {
@@ -64,9 +65,11 @@ export function ContentForm({
   const [tagsInput, setTagsInput] = useState(
     initialData?.tags?.join(", ") || ""
   );
-  const [category, setCategory] = useState(initialData?.category || "");
   const [status, setStatus] = useState<ContentStatus>(
     initialData?.status || "draft"
+  );
+  const [language, setLanguage] = useState<string>(
+    initialData?.language || ""
   );
   const [seo, setSeo] = useState<SEOData>(
     initialData?.seo || {
@@ -109,6 +112,11 @@ export function ContentForm({
       return;
     }
 
+    if (!language) {
+      setError("Language is required");
+      return;
+    }
+
     setError(null);
     setSaving(true);
 
@@ -120,8 +128,8 @@ export function ContentForm({
         excerpt: excerpt.trim() || undefined,
         coverImage: coverImage.trim() || undefined,
         tags,
-        category: category.trim() || undefined,
         status: finalStatus,
+        language: language as ContentLanguage,
         seo,
       };
 
@@ -288,6 +296,19 @@ export function ContentForm({
               </Select>
             </div>
 
+            <div className="space-y-2">
+              <Label htmlFor="language">Language *</Label>
+              <Select value={language} onValueChange={setLanguage}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select language..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="en">English</SelectItem>
+                  <SelectItem value="ru">Russian (Русский)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             <ImageUpload
               value={coverImage}
               onChange={setCoverImage}
@@ -322,15 +343,6 @@ export function ContentForm({
               )}
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="category">Category</Label>
-              <Input
-                id="category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                placeholder="Enter category..."
-              />
-            </div>
           </div>
 
           <SEOFields value={seo} onChange={setSeo} defaultTitle={title} coverImage={coverImage} />

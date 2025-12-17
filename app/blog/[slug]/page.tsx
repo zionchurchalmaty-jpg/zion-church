@@ -4,7 +4,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import DOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
-import type { Timestamp } from "firebase/firestore";
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -14,6 +13,40 @@ interface BlogPostPageProps {
 
 // Revalidate every 5 minutes
 export const revalidate = 300;
+
+// Helper to convert Firestore timestamp (may be object with _seconds or Timestamp instance)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function toDate(timestamp: any): Date | null {
+  if (!timestamp) return null;
+  // If it's a Firestore Timestamp instance with toDate method
+  if (typeof timestamp.toDate === "function") {
+    return timestamp.toDate();
+  }
+  // If it's a plain object with _seconds (serialized Timestamp)
+  if (timestamp._seconds !== undefined) {
+    return new Date(timestamp._seconds * 1000);
+  }
+  // If it's already a Date
+  if (timestamp instanceof Date) {
+    return timestamp;
+  }
+  return null;
+}
+
+function formatDate(timestamp: unknown): string {
+  const date = toDate(timestamp);
+  if (!date) return "";
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+function getISOString(timestamp: unknown): string | undefined {
+  const date = toDate(timestamp);
+  return date?.toISOString();
+}
 
 export async function generateStaticParams() {
   const posts = await getPublishedContent("blog");
@@ -45,7 +78,7 @@ export async function generateMetadata({
       title,
       description,
       type: "article",
-      publishedTime: post.publishedAt?.toDate().toISOString(),
+      publishedTime: getISOString(post.publishedAt),
       authors: [post.author],
       tags: post.tags,
       images: ogImage ? [ogImage] : undefined,
@@ -59,20 +92,6 @@ export async function generateMetadata({
     ...(post.seo.canonicalUrl && { alternates: { canonical: post.seo.canonicalUrl } }),
     ...(post.seo.noIndex && { robots: { index: false } }),
   };
-}
-
-function formatDate(timestamp: Timestamp | undefined): string {
-  if (!timestamp) return "";
-  try {
-    const date = timestamp.toDate();
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  } catch {
-    return "";
-  }
 }
 
 // Server-side HTML sanitization
@@ -96,9 +115,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const sanitizedContent = sanitizeHtml(post.content);
 
   return (
-    <div className="min-h-screen flex flex-col bg-cream">
-      <main className="flex-1">
-        <article className="container mx-auto px-4 py-16">
+    <div className="bg-cream">
+      <article className="container mx-auto px-4 py-16">
           <div className="max-w-3xl mx-auto">
             <header className="mb-10">
               <Link
@@ -132,7 +150,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               )}
 
               <div className="flex items-center gap-3 text-sm text-muted-foreground mb-4">
-                <time dateTime={post.publishedAt?.toDate().toISOString()}>
+                <time dateTime={getISOString(post.publishedAt)}>
                   {formatDate(post.publishedAt)}
                 </time>
               </div>
@@ -189,7 +207,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </footer>
           </div>
         </article>
-      </main>
     </div>
   );
 }

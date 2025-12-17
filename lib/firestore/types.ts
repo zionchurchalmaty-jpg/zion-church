@@ -4,6 +4,8 @@ export type ContentType = "blog" | "song";
 
 export type ContentStatus = "draft" | "published";
 
+export type ContentLanguage = "ru" | "en";
+
 export interface SEOData {
   metaTitle?: string;
   metaDescription?: string;
@@ -30,7 +32,9 @@ export interface Content {
 
   // Taxonomy
   tags: string[];
-  category?: string;
+
+  // Language
+  language: ContentLanguage;
 
   // Authorship
   author: string;
@@ -54,13 +58,14 @@ export interface ContentInput {
   seo: SEOData;
   coverImage?: string;
   tags: string[];
-  category?: string;
   status: ContentStatus;
+  language: ContentLanguage;
 }
 
 export interface ContentFilters {
   contentType?: ContentType;
   status?: ContentStatus;
+  language?: ContentLanguage;
   tag?: string;
   search?: string;
   limit?: number;

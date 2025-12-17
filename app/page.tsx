@@ -3,7 +3,6 @@ import { CalendarSection } from "@/components/calendar-section";
 import { ContactSection } from "@/components/contact-section";
 import { FAQSection } from "@/components/faq-section";
 import { Footer } from "@/components/footer";
-import { GallerySection } from "@/components/gallery-section";
 import { HeroSection } from "@/components/hero-section";
 import { LocationSection } from "@/components/location-section";
 import { MinistriesSection } from "@/components/ministries-section";
@@ -18,7 +17,7 @@ export default function ChurchLandingPage() {
       <HeroSection />
       <AboutSection />
       <WhatToExpectSection />
-      <GallerySection />
+      {/* <GallerySection /> */}
       <MinistriesSection />
       <CalendarSection />
       <LocationSection />

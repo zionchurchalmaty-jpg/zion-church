@@ -2,29 +2,40 @@
 
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "Visit", href: "#what-to-expect" },
-  { label: "Ministries", href: "#ministries" },
-  { label: "Gallery", href: "#gallery" },
+  { label: "About", href: "/#about" },
+  { label: "Visit", href: "/#what-to-expect" },
+  { label: "Ministries", href: "/#ministries" },
+  { label: "Gallery", href: "/#gallery" },
   { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "#contact" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export function Navbar() {
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
   const [language, setLanguage] = useState<"en" | "ru">("en");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(!isHomePage);
 
   useEffect(() => {
+    // On non-home pages, always show scrolled styles
+    if (!isHomePage) {
+      setScrolled(true);
+      return;
+    }
+
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isHomePage]);
 
   return (
     <nav
@@ -35,18 +46,18 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <div className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3">
             <img
               src="/GNBC_logo.png"
               alt="Good News Bible Church"
               className="h-14 md:h-14 w-auto"
             />
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
                 className={`text-sm font-medium transition-colors ${
@@ -56,7 +67,7 @@ export function Navbar() {
                 }`}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
 
             {/* Language Toggle */}
@@ -115,14 +126,14 @@ export function Navbar() {
         <div className="lg:hidden bg-white border-t">
           <div className="px-4 py-4 space-y-3">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className="block py-2 text-sm font-medium text-gray-700 hover:text-primary"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
             <div className="flex items-center gap-2 pt-2">
               <div className="flex items-center gap-1 bg-gray-100 rounded-full p-1">
