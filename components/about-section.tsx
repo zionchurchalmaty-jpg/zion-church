@@ -6,7 +6,7 @@ export function AboutSection() {
           {/* Image */}
           <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-xl">
             <img
-              src="/church-family-community-fellowship.png"
+              src="/church-family-community.png"
               alt="Church community gathering"
               className="w-full h-full object-cover"
             />
