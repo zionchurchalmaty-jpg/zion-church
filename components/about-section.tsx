@@ -6,7 +6,7 @@ export function AboutSection() {
           {/* Image */}
           <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-xl">
             <img
-              src="/church-family-community-fellowship.jpg"
+              src="/church-family-community-fellowship.png"
               alt="Church community gathering"
               className="w-full h-full object-cover"
             />
@@ -31,16 +31,15 @@ export function AboutSection() {
             <div className="space-y-4 text-lg leading-relaxed text-gray-700">
               <p>
                 We are a family of believers from Russia, Ukraine, the former
-                Soviet Union, and America — united by faith in Jesus Christ.
-                Our bilingual services in Russian and English welcome
-                immigrants, their families, and all who seek authentic
-                community, spiritual growth, and opportunities to serve
-                together.
+                Soviet Union, and America — united by faith in Jesus Christ. Our
+                bilingual services in Russian and English welcome immigrants,
+                their families, and all who seek authentic community, spiritual
+                growth, and opportunities to serve together.
               </p>
               <p>
-                Whether you're a new immigrant or have called this area home
-                for years, you'll find a warm, welcoming community ready to
-                embrace you and walk alongside you in your faith journey.
+                Whether you're a new immigrant or have called this area home for
+                years, you'll find a warm, welcoming community ready to embrace
+                you and walk alongside you in your faith journey.
               </p>
             </div>
 

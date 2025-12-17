@@ -6,25 +6,25 @@ const features = [
     icon: Music,
     title: "Worship",
     description: "30 minutes of heartfelt praise in Russian and English",
-    image: "/church-worship-choir-singing.jpg",
+    image: "/church-worship-choir-singing.png",
   },
   {
     icon: BookOpen,
     title: "Sermon",
     description: "45-minute bilingual message with translation available",
-    image: "/pastor-preaching-sermon-bible.jpg",
+    image: "/pastor-preaching-sermon-bible.png",
   },
   {
     icon: Baby,
     title: "Kids Program",
     description: "Sunday School for ages 3-13 during the service",
-    image: "/children-sunday-school-learning.jpg",
+    image: "/children-sunday-school-learning.png",
   },
   {
     icon: Coffee,
     title: "Coffee & Connect",
     description: "Fellowship time after service to meet others",
-    image: "/church-fellowship-coffee-people-talking.jpg",
+    image: "/church-fellowship-coffee-people-talking.png",
   },
 ];
 
@@ -54,7 +54,7 @@ export function WhatToExpectSection() {
           {features.map((feature, index) => (
             <Card
               key={index}
-              className="bg-white hover:shadow-lg transition-shadow duration-300 hover:-translate-y-1 overflow-hidden"
+              className="bg-white hover:shadow-lg pt-0 transition-shadow duration-300 hover:-translate-y-1 overflow-hidden"
             >
               <div className="relative h-48 overflow-hidden">
                 <img
@@ -104,9 +104,7 @@ export function WhatToExpectSection() {
                 </div>
                 <div className="flex items-start gap-3">
                   <Check className="size-5 text-primary shrink-0 mt-0.5" />
-                  <span className="text-gray-700">
-                    Free parking available
-                  </span>
+                  <span className="text-gray-700">Free parking available</span>
                 </div>
               </div>
             </div>
