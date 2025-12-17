@@ -16,6 +16,7 @@ const navLinks = [
 
 export function Navbar() {
   const pathname = usePathname();
+  console.log("pathname", pathname);
   const isHomePage = pathname === "/";
 
   const [language, setLanguage] = useState<"en" | "ru">("en");
