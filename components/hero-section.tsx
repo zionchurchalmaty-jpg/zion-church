@@ -16,7 +16,7 @@ export function HeroSection() {
           className="absolute inset-0 w-full h-full object-cover opacity-40"
         >
           <source
-            src="/hero-video.mp4?height=1080&width=1920&query=church+worship+community+diverse+people+singing"
+            src="/hero-video-2.mp4?height=1080&width=1920&query=happy+people+coming+to+church"
             type="video/mp4"
           />
         </video>

@@ -13,7 +13,8 @@
       "Bash(grep:*)",
       "Bash(ls:*)",
       "Bash(tree:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(ffprobe:*)"
     ]
   }
 }
