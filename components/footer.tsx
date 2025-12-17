@@ -149,6 +149,21 @@ export function Footer() {
         {/* Footer Bottom */}
         <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/60">
           <p>© 2025 Good News Bible Church. All rights reserved.</p>
+          <div className="flex items-center gap-4">
+            <a
+              href="/legal/privacy-policy"
+              className="hover:text-primary transition-colors"
+            >
+              Privacy Policy
+            </a>
+            <span>·</span>
+            <a
+              href="/legal/terms-of-service"
+              className="hover:text-primary transition-colors"
+            >
+              Terms of Service
+            </a>
+          </div>
           <p>Sundays at 1:30 PM · Ashburn, Virginia</p>
         </div>
       </div>
