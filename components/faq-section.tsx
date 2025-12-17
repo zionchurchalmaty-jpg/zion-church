@@ -4,9 +4,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 const faqs = [
   {
@@ -62,16 +61,6 @@ export function FAQSection() {
               We know visiting a new church can bring questions. Here are
               answers to some of the most common ones.
             </p>
-            <Card className="bg-cream border-none">
-              <CardContent className="py-6">
-                <p className="font-medium text-navy mb-2">
-                  Still have questions?
-                </p>
-                <Button variant="link" className="p-0 h-auto text-primary">
-                  Contact us <ChevronRight className="size-4" />
-                </Button>
-              </CardContent>
-            </Card>
           </div>
 
           {/* Right Column - Accordion */}
@@ -91,6 +80,17 @@ export function FAQSection() {
                   </AccordionContent>
                 </AccordionItem>
               ))}
+              {/* Contact Us - links to contact section */}
+              <Link
+                href="/#contact"
+                className="border rounded-lg px-6 bg-white flex items-center justify-between py-4 hover:bg-gray-50 transition-colors"
+              >
+                <span className="text-base font-semibold text-navy">
+                  Still have questions?{" "}
+                  <span className="text-primary">Contact Us</span>
+                </span>
+                <ChevronRight className="size-4 text-navy" />
+              </Link>
             </Accordion>
           </div>
         </div>
