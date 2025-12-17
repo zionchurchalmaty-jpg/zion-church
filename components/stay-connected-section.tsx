@@ -1,8 +1,68 @@
+"use client";
+
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { toast } from "sonner";
+import { Facebook, Instagram, Loader2, Mail, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Facebook, Instagram, Mail, Youtube } from "lucide-react";
+import {
+  newsletterFormClientSchema,
+  type NewsletterFormClientData,
+} from "@/lib/validations/form-schemas";
 
 export function StayConnectedSection() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<NewsletterFormClientData>({
+    resolver: zodResolver(newsletterFormClientSchema),
+    defaultValues: {
+      formType: "newsletter",
+      firstName: "",
+      email: "",
+    },
+  });
+
+  async function onSubmit(data: NewsletterFormClientData) {
+    setIsSubmitting(true);
+
+    try {
+      if (!executeRecaptcha) {
+        toast.error("reCAPTCHA not available. Please refresh and try again.");
+        return;
+      }
+
+      const token = await executeRecaptcha("newsletter_subscribe");
+
+      const response = await fetch("/api/form-submissions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, recaptchaToken: token }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success(result.message);
+        reset();
+      } else {
+        toast.error(result.error || "Something went wrong. Please try again.");
+      }
+    } catch {
+      toast.error("Failed to subscribe. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   return (
     <section className="py-20 bg-cream">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -166,42 +226,83 @@ export function StayConnectedSection() {
                 </p>
               </div>
 
-              <form className="space-y-4">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div>
                   <label
-                    htmlFor="firstName"
+                    htmlFor="newsletterFirstName"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
                     First Name *
                   </label>
                   <input
                     type="text"
-                    id="firstName"
-                    required
+                    id="newsletterFirstName"
+                    {...register("firstName")}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
                     placeholder="John"
                   />
+                  {errors.firstName && (
+                    <p className="text-sm text-red-600 mt-1">
+                      {errors.firstName.message}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label
-                    htmlFor="email"
+                    htmlFor="newsletterEmail"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
                     Email *
                   </label>
                   <input
                     type="email"
-                    id="email"
-                    required
+                    id="newsletterEmail"
+                    {...register("email")}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
                     placeholder="john@example.com"
                   />
+                  {errors.email && (
+                    <p className="text-sm text-red-600 mt-1">
+                      {errors.email.message}
+                    </p>
+                  )}
                 </div>
-                <Button type="submit" className="w-full h-12">
-                  Subscribe
+                <Button
+                  type="submit"
+                  className="w-full h-12"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Subscribing...
+                    </>
+                  ) : (
+                    "Subscribe"
+                  )}
                 </Button>
-                <p className="text-xs text-gray-600 text-center">
+                <p className="text-xs text-gray-500 text-center">
                   We respect your privacy. Unsubscribe anytime.
+                  <br />
+                  This site is protected by reCAPTCHA and the Google{" "}
+                  <a
+                    href="https://policies.google.com/privacy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:text-gray-700"
+                  >
+                    Privacy Policy
+                  </a>{" "}
+                  and{" "}
+                  <a
+                    href="https://policies.google.com/terms"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:text-gray-700"
+                  >
+                    Terms of Service
+                  </a>{" "}
+                  apply.
                 </p>
               </form>
             </CardContent>

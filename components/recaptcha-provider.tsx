@@ -24,7 +24,16 @@ export function RecaptchaProvider({ children }: RecaptchaProviderProps) {
         defer: true,
         appendTo: "head",
       }}
+      container={{
+        parameters: {
+          badge: "inline",
+          theme: "light",
+        },
+        element: "recaptcha-badge-container",
+      }}
     >
+      {/* Hidden container for reCAPTCHA badge */}
+      <div id="recaptcha-badge-container" className="hidden" />
       {children}
     </GoogleReCaptchaProvider>
   );

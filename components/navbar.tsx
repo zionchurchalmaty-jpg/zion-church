@@ -10,7 +10,6 @@ const navLinks = [
   { label: "About", href: "/#about" },
   { label: "Visit", href: "/#what-to-expect" },
   { label: "Ministries", href: "/#ministries" },
-  { label: "Gallery", href: "/#gallery" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/#contact" },
 ];
@@ -103,7 +102,13 @@ export function Navbar() {
             </div>
 
             <Button size="sm" asChild>
-              <a href="https://goodnewsbible.churchcenter.com/giving" target="_blank" rel="noopener noreferrer">Give</a>
+              <a
+                href="https://goodnewsbible.churchcenter.com/giving"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Give
+              </a>
             </Button>
           </div>
 
@@ -159,7 +164,13 @@ export function Navbar() {
                 </button>
               </div>
               <Button size="sm" className="flex-1" asChild>
-                <a href="https://goodnewsbible.churchcenter.com/giving" target="_blank" rel="noopener noreferrer">Give</a>
+                <a
+                  href="https://goodnewsbible.churchcenter.com/giving"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Give
+                </a>
               </Button>
             </div>
           </div>

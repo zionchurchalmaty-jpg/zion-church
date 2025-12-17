@@ -3,12 +3,13 @@ import {
   CookieConsentProvider,
   CookieSettingsModal,
 } from "@/components/cookie-consent";
+import { RecaptchaProvider } from "@/components/recaptcha-provider";
 import { GA_TRACKING_ID } from "@/lib/gtag";
-import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import Script from "next/script";
 import type React from "react";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const cormorantGaramond = Cormorant_Garamond({
@@ -81,11 +82,14 @@ export default function RootLayout({
           `}
         </Script>
         <CookieConsentProvider>
-          {children}
+          <RecaptchaProvider>
+            {children}
+            <Toaster richColors position="top-center" />
+          </RecaptchaProvider>
           <CookieBanner />
           <CookieSettingsModal />
         </CookieConsentProvider>
-        <Analytics />
+        {/* <Analytics /> */}
       </body>
     </html>
   );

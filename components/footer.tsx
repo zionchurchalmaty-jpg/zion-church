@@ -108,7 +108,12 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-primary transition-colors">
+                <a
+                  href="https://goodnewsbible.churchcenter.com/home"
+                  className="hover:text-primary transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Church App
                 </a>
               </li>
@@ -117,12 +122,10 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Contact</h3>
+            <h3 className="font-semibold text-lg mb-4">Address</h3>
             <ul className="space-y-3 text-white/80 text-sm">
               <li>20430 Ashburn Village Blvd</li>
               <li>Ashburn, VA 20147</li>
-              <li>703-594-1088</li>
-              <li>info@goodnewsbible.org</li>
             </ul>
           </div>
         </div>
