@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { toast } from "sonner";
 import { Facebook, Instagram, Loader2, Mail, Youtube } from "lucide-react";
+import { event } from "@/lib/gtag";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -52,6 +53,7 @@ export function StayConnectedSection() {
 
       if (result.success) {
         toast.success(result.message);
+        event("newsletter_subscribe", { location: "stay_connected_section" });
         reset();
       } else {
         toast.error(result.error || "Something went wrong. Please try again.");

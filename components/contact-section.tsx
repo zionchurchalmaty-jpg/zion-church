@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { event } from "@/lib/gtag";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -59,6 +60,11 @@ export function ContactSection() {
 
       if (result.success) {
         toast.success(result.message);
+        event("contact_form_submit", {
+          interests_visit: data.interests.planningToVisit,
+          interests_esl: data.interests.eslClasses,
+          interests_prayer: data.interests.prayerRequest,
+        });
         reset();
       } else {
         toast.error(result.error || "Something went wrong. Please try again.");
