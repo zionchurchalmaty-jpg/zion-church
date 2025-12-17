@@ -12,19 +12,19 @@ const features = [
     icon: BookOpen,
     title: "Sermon",
     description: "45-minute bilingual message with translation available",
-    image: "/pastor-preaching-sermon-bible.png",
+    image: "/pastor-preaching-sermon.png",
   },
   {
     icon: Baby,
     title: "Kids Program",
     description: "Sunday School for ages 3-13 during the service",
-    image: "/children-sunday-school-learning.png",
+    image: "/children-sunday-school.png",
   },
   {
     icon: Coffee,
     title: "Coffee & Connect",
     description: "Fellowship time after service to meet others",
-    image: "/church-fellowship-coffee-people-talking.png",
+    image: "/church-fellowship-coffee-people.png",
   },
 ];
 

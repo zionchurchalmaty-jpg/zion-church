@@ -50,23 +50,23 @@ export function Footer() {
             <ul className="space-y-2 text-white/80">
               <li>
                 <a
-                  href="#about"
+                  href="/#about"
                   className="hover:text-primary transition-colors"
                 >
-                  About Us
+                  About
                 </a>
               </li>
               <li>
                 <a
-                  href="#visit"
+                  href="/#what-to-expect"
                   className="hover:text-primary transition-colors"
                 >
-                  Plan a Visit
+                  Visit
                 </a>
               </li>
               <li>
                 <a
-                  href="#ministries"
+                  href="/#ministries"
                   className="hover:text-primary transition-colors"
                 >
                   Ministries
@@ -81,8 +81,11 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-primary transition-colors">
-                  Watch Online
+                <a
+                  href="/#contact"
+                  className="hover:text-primary transition-colors"
+                >
+                  Contact
                 </a>
               </li>
             </ul>
@@ -93,18 +96,31 @@ export function Footer() {
             <h3 className="font-semibold text-lg mb-4">Resources</h3>
             <ul className="space-y-2 text-white/80">
               <li>
-                <a href="#" className="hover:text-primary transition-colors">
-                  Home Groups
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-primary transition-colors">
+                <a
+                  href="/#calendar"
+                  className="hover:text-primary transition-colors"
+                >
                   Events Calendar
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-primary transition-colors">
+                <a
+                  href="https://goodnewsbible.churchcenter.com/giving"
+                  className="hover:text-primary transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Give Online
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.youtube.com/@GoodNewsBibleChurchYT"
+                  className="hover:text-primary transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Watch Online
                 </a>
               </li>
               <li>
