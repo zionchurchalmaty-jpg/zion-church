@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { formSubmissionSchema } from "@/lib/validations/form-schemas";
 import { verifyRecaptchaToken } from "@/lib/recaptcha";
 import { createFormSubmission } from "@/lib/firestore/form-submissions";
+import {
+  handleContactSubmissionEmails,
+  handleNewsletterSubmissionEmails,
+} from "@/lib/email/send";
 
 export async function POST(request: NextRequest) {
   try {
@@ -55,6 +59,23 @@ export async function POST(request: NextRequest) {
       ipAddress,
       userAgent,
     });
+
+    // Send emails (don't await - let it run in background, don't fail submission if email fails)
+    if (data.formType === "contact") {
+      handleContactSubmissionEmails({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        message: data.message,
+        interests: data.interests,
+        recaptchaScore: recaptchaResult.score,
+      }).catch((err) => console.error("Failed to send contact emails:", err));
+    } else if (data.formType === "newsletter") {
+      handleNewsletterSubmissionEmails({
+        firstName: data.firstName,
+        email: data.email,
+      }).catch((err) => console.error("Failed to send newsletter emails:", err));
+    }
 
     return NextResponse.json({
       success: true,

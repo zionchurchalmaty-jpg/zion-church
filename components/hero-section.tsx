@@ -34,9 +34,9 @@ export function HeroSection() {
         </div>
 
         {/* Headline */}
-        <h1 className="font-serif font-bold text-5xl sm:text-6xl md:text-7xl text-white mb-6 animate-fade-in-up text-balance">
+        {/* <h1 className="font-serif font-bold text-5xl sm:text-6xl md:text-7xl text-white mb-6 animate-fade-in-up text-balance">
           Welcome <span className="text-primary">Home</span>
-        </h1>
+        </h1> */}
 
         {/* Motto */}
         <p className="font-serif text-2xl sm:text-3xl text-white/90 mb-4 animate-fade-in-up animation-delay-100 text-balance italic">

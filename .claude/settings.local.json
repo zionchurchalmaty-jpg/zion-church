@@ -10,7 +10,10 @@
       "Bash(xargs:*)",
       "Bash(npx tsc:*)",
       "Bash(npx shadcn@latest add:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(ls:*)",
+      "Bash(tree:*)",
+      "Bash(npm install:*)"
     ]
   }
 }
