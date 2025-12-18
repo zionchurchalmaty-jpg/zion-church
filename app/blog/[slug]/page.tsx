@@ -1,9 +1,13 @@
-import { getPublishedContent, getPublishedContentBySlug } from "@/lib/firestore/content";
+import {
+  getContentById,
+  getPublishedContent,
+  getPublishedContentBySlug,
+} from "@/lib/firestore/content";
+import DOMPurify from "dompurify";
+import { JSDOM } from "jsdom";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import DOMPurify from "dompurify";
-import { JSDOM } from "jsdom";
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -51,7 +55,8 @@ function getISOString(timestamp: unknown): string | undefined {
 export async function generateStaticParams() {
   const posts = await getPublishedContent("blog");
   return posts.map((post) => ({
-    slug: post.slug,
+    // Use slug if available, otherwise use ID for legacy posts
+    slug: post.slug || post.id,
   }));
 }
 
@@ -59,7 +64,14 @@ export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getPublishedContentBySlug("blog", slug);
+  // Try by slug first, then by ID (for legacy posts with empty slugs)
+  let post = await getPublishedContentBySlug("blog", slug);
+  if (!post) {
+    const byId = await getContentById(slug);
+    if (byId && byId.contentType === "blog" && byId.status === "published") {
+      post = byId;
+    }
+  }
 
   if (!post) {
     return {
@@ -89,7 +101,9 @@ export async function generateMetadata({
       description,
       images: ogImage ? [ogImage] : undefined,
     },
-    ...(post.seo.canonicalUrl && { alternates: { canonical: post.seo.canonicalUrl } }),
+    ...(post.seo.canonicalUrl && {
+      alternates: { canonical: post.seo.canonicalUrl },
+    }),
     ...(post.seo.noIndex && { robots: { index: false } }),
   };
 }
@@ -106,7 +120,14 @@ function sanitizeHtml(html: string): string {
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
-  const post = await getPublishedContentBySlug("blog", slug);
+  // Try by slug first, then by ID (for legacy posts with empty slugs)
+  let post = await getPublishedContentBySlug("blog", slug);
+  if (!post) {
+    const byId = await getContentById(slug);
+    if (byId && byId.contentType === "blog" && byId.status === "published") {
+      post = byId;
+    }
+  }
 
   if (!post) {
     notFound();
@@ -115,98 +136,98 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const sanitizedContent = sanitizeHtml(post.content);
 
   return (
-    <div className="bg-cream">
+    <div className="bg-cream pt-16">
       <article className="container mx-auto px-4 py-16">
-          <div className="max-w-3xl mx-auto">
-            <header className="mb-10">
+        <div className="max-w-3xl mx-auto">
+          <header className="mb-10">
+            <Link
+              href="/blog"
+              className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-6"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="mr-2"
+              >
+                <path d="m12 19-7-7 7-7" />
+                <path d="M19 12H5" />
+              </svg>
+              Back to Blog
+            </Link>
+
+            {post.coverImage && (
+              <img
+                src={post.coverImage}
+                alt={post.title}
+                className="w-full h-64 md:h-96 object-cover rounded-lg mb-6"
+              />
+            )}
+
+            <div className="flex items-center gap-3 text-sm text-muted-foreground mb-4">
+              <time dateTime={getISOString(post.publishedAt)}>
+                {formatDate(post.publishedAt)}
+              </time>
+            </div>
+
+            <h1 className="font-serif text-4xl font-bold tracking-tight mb-4 text-navy">
+              {post.title}
+            </h1>
+
+            {post.excerpt && (
+              <p className="text-xl text-muted-foreground mb-6">
+                {post.excerpt}
+              </p>
+            )}
+
+            <div className="flex items-center justify-between border-y py-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold">
+                  {post.author.charAt(0)}
+                </div>
+                <div>
+                  <div className="font-medium">{post.author}</div>
+                </div>
+              </div>
+
+              {post.tags && post.tags.length > 0 && (
+                <div className="flex gap-2">
+                  {post.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-3 py-1 text-sm rounded-full bg-secondary text-secondary-foreground"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </header>
+
+          <div
+            className="prose prose-neutral max-w-none"
+            dangerouslySetInnerHTML={{ __html: sanitizedContent }}
+          />
+
+          <footer className="mt-12 pt-8 border-t">
+            <div className="flex items-center justify-between">
               <Link
                 href="/blog"
-                className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-6"
+                className="text-sm text-muted-foreground hover:text-primary"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="mr-2"
-                >
-                  <path d="m12 19-7-7 7-7" />
-                  <path d="M19 12H5" />
-                </svg>
-                Back to Blog
+                ← Back to all posts
               </Link>
-
-              {post.coverImage && (
-                <img
-                  src={post.coverImage}
-                  alt={post.title}
-                  className="w-full h-64 md:h-96 object-cover rounded-lg mb-6"
-                />
-              )}
-
-              <div className="flex items-center gap-3 text-sm text-muted-foreground mb-4">
-                <time dateTime={getISOString(post.publishedAt)}>
-                  {formatDate(post.publishedAt)}
-                </time>
-              </div>
-
-              <h1 className="font-serif text-4xl font-bold tracking-tight mb-4 text-navy">
-                {post.title}
-              </h1>
-
-              {post.excerpt && (
-                <p className="text-xl text-muted-foreground mb-6">
-                  {post.excerpt}
-                </p>
-              )}
-
-              <div className="flex items-center justify-between border-y py-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold">
-                    {post.author.charAt(0)}
-                  </div>
-                  <div>
-                    <div className="font-medium">{post.author}</div>
-                  </div>
-                </div>
-
-                {post.tags && post.tags.length > 0 && (
-                  <div className="flex gap-2">
-                    {post.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-3 py-1 text-sm rounded-full bg-secondary text-secondary-foreground"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </header>
-
-            <div
-              className="prose prose-neutral max-w-none"
-              dangerouslySetInnerHTML={{ __html: sanitizedContent }}
-            />
-
-            <footer className="mt-12 pt-8 border-t">
-              <div className="flex items-center justify-between">
-                <Link
-                  href="/blog"
-                  className="text-sm text-muted-foreground hover:text-primary"
-                >
-                  ← Back to all posts
-                </Link>
-              </div>
-            </footer>
-          </div>
-        </article>
+            </div>
+          </footer>
+        </div>
+      </article>
     </div>
   );
 }

@@ -13,6 +13,7 @@ import {
   Timestamp,
   serverTimestamp,
 } from "firebase/firestore";
+import slugify from "slugify";
 import { db, isFirebaseConfigured } from "@/lib/firebase/client";
 import type {
   Content,
@@ -59,14 +60,14 @@ function generateSearchableText(title: string, htmlContent: string): string {
 
 /**
  * Generate URL-friendly slug from title
+ * Uses slugify package which handles Cyrillic and other non-ASCII characters
  */
 function generateSlug(title: string): string {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "");
+  return slugify(title, {
+    lower: true,
+    strict: true,
+    locale: "ru",
+  });
 }
 
 /**
