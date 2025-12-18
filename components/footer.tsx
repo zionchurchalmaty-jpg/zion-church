@@ -1,3 +1,5 @@
+"use client";
+
 import { Facebook, Instagram, Youtube } from "lucide-react";
 
 export function Footer() {
@@ -163,6 +165,15 @@ export function Footer() {
             >
               Terms of Service
             </a>
+            <span>·</span>
+            <button
+              onClick={() =>
+                window.dispatchEvent(new CustomEvent("open-cookie-settings"))
+              }
+              className="hover:text-primary transition-colors"
+            >
+              Cookie Settings
+            </button>
           </div>
           <p>Sundays at 1:30 PM · Ashburn, Virginia</p>
         </div>

@@ -26,12 +26,12 @@ export function HeroSection() {
       {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
         {/* Eyebrow Badge */}
-        <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-8 animate-fade-in">
+        {/* <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-8 animate-fade-in">
           <div className="size-2 rounded-full bg-primary animate-pulse" />
           <span className="text-sm text-white font-medium">
             Join us this Sunday at 1:30 PM
           </span>
-        </div>
+        </div> */}
 
         {/* Headline */}
         {/* <h1 className="font-serif font-bold text-5xl sm:text-6xl md:text-7xl text-white mb-6 animate-fade-in-up text-balance">
@@ -39,14 +39,14 @@ export function HeroSection() {
         </h1> */}
 
         {/* Motto */}
-        <p className="font-serif text-2xl sm:text-3xl text-white/90 mb-4 animate-fade-in-up animation-delay-100 text-balance italic">
-          Bring God's Joy to All People
+        <p className="font-serif text-4xl sm:text-5xl text-white/90 mb-4 animate-fade-in-up animation-delay-100 text-balance">
+          Welcome to <span className="font-bold">Good News Bible Church</span>
         </p>
 
         {/* Subtitle */}
-        <p className="text-lg sm:text-xl text-white/80 mb-8 max-w-3xl mx-auto animate-fade-in-up animation-delay-200 leading-relaxed">
-          A bilingual Russian-English Bible church in Ashburn, Virginia serving
-          the Slavic community and beyond.
+        <p className="text-lg sm:text-xl text-white/80 mb-8 max-w-3xl mx-auto animate-fade-in-up animation-delay-200 leading-relaxed italic">
+          A bilingual Russian-English Bible church serving Greater DC Slavic
+          community.
         </p>
 
         {/* Quick Info */}

@@ -19,6 +19,7 @@ interface CategoryConfig {
   name: string;
   description: string;
   required: boolean;
+  defaultValue: boolean;
 }
 
 const COOKIE_CATEGORIES: CategoryConfig[] = [
@@ -28,20 +29,23 @@ const COOKIE_CATEGORIES: CategoryConfig[] = [
     description:
       "Required for the website to function properly. These cookies enable basic features like page navigation, secure areas access, and authentication. Cannot be disabled.",
     required: true,
+    defaultValue: true,
   },
   {
     id: "analytics",
     name: "Analytics Cookies",
     description:
       "Help us understand how visitors interact with our website by collecting anonymous information. This data helps us improve our services and user experience.",
-    required: true,
+    required: false,
+    defaultValue: true,
   },
   {
     id: "advertising",
     name: "Advertising Cookies",
     description:
       "Used for advertising measurement and personalization across platforms. These cookies help us show you relevant content and measure the effectiveness of our marketing campaigns.",
-    required: true,
+    required: false,
+    defaultValue: true,
   },
 ];
 
@@ -54,16 +58,16 @@ export function CookieSettingsModal() {
     useCookieConsent();
 
   const [localPreferences, setLocalPreferences] = useState({
-    analytics: consent?.analytics ?? false,
-    advertising: consent?.advertising ?? false,
+    analytics: consent?.analytics ?? true,
+    advertising: consent?.advertising ?? true,
   });
 
   // Sync with actual consent when modal opens or consent changes
   useEffect(() => {
     if (showSettings) {
       setLocalPreferences({
-        analytics: consent?.analytics ?? false,
-        advertising: consent?.advertising ?? false,
+        analytics: consent?.analytics ?? true,
+        advertising: consent?.advertising ?? true,
       });
     }
   }, [showSettings, consent]);
@@ -118,11 +122,7 @@ export function CookieSettingsModal() {
               </div>
               <Switch
                 checked={
-                  category.required
-                    ? true
-                    : localPreferences[
-                        category.id as keyof typeof localPreferences
-                      ]
+                  localPreferences[category.id as keyof typeof localPreferences]
                 }
                 disabled={category.required}
                 onCheckedChange={(checked) => {

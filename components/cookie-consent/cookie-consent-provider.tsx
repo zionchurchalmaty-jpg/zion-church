@@ -72,13 +72,13 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
         advertising: storedConsent.advertising,
       });
     } else {
-      // No consent stored - always show banner on first visit
+      // No consent stored - don't auto-show banner, user can access via footer
       setState((prev) => ({
         ...prev,
         isLoaded: true,
-        showBanner: true,
+        showBanner: false,
       }));
-      logger.debug("No stored consent found, showing banner");
+      logger.debug("No stored consent found");
     }
   }, []);
 
