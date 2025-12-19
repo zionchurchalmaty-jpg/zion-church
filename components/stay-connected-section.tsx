@@ -1,8 +1,11 @@
 import { Facebook, Instagram, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useTranslations } from "next-intl";
 
 export function StayConnectedSection() {
+  const t = useTranslations("stayConnected");
+
   return (
     <section className="py-20 bg-cream">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -11,16 +14,15 @@ export function StayConnectedSection() {
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="h-px w-12 bg-primary" />
             <span className="text-sm font-semibold text-primary uppercase tracking-wider">
-              Stay Connected
+              {t("eyebrow")}
             </span>
             <div className="h-px w-12 bg-primary" />
           </div>
           <h2 className="font-serif font-bold text-4xl md:text-5xl text-navy mb-4 text-balance">
-            Join Our Community
+            {t("title")}
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Follow us on social media for updates, encouragement, and event
-            announcements.
+            {t("subtitle")}
           </p>
         </div>
 
@@ -35,11 +37,10 @@ export function StayConnectedSection() {
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-xl mb-1 text-navy">
-                    @goodnewsbibleorg
+                    {t("instagram.handle")}
                   </h3>
                   <p className="text-gray-600 mb-4 leading-relaxed">
-                    Follow us for daily encouragement, event photos, and
-                    community highlights
+                    {t("instagram.description")}
                   </p>
                   <Button
                     asChild
@@ -50,7 +51,7 @@ export function StayConnectedSection() {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Follow on Instagram
+                      {t("instagram.button")}
                     </a>
                   </Button>
                 </div>
@@ -67,11 +68,10 @@ export function StayConnectedSection() {
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-xl mb-1 text-navy">
-                    @good_news.youth
+                    {t("youthInstagram.handle")}
                   </h3>
                   <p className="text-gray-600 mb-4 leading-relaxed">
-                    Follow our Youth Group for updates on youth events,
-                    activities, and community
+                    {t("youthInstagram.description")}
                   </p>
                   <Button
                     asChild
@@ -82,7 +82,7 @@ export function StayConnectedSection() {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Follow Youth Group
+                      {t("youthInstagram.button")}
                     </a>
                   </Button>
                 </div>
@@ -99,11 +99,10 @@ export function StayConnectedSection() {
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-xl mb-1 text-navy">
-                    Good News Bible Church
+                    {t("facebook.name")}
                   </h3>
                   <p className="text-gray-600 mb-4 leading-relaxed">
-                    Join our Facebook community for events, livestreams, and
-                    discussions
+                    {t("facebook.description")}
                   </p>
                   <Button asChild className="bg-blue-600 hover:bg-blue-700">
                     <a
@@ -111,7 +110,7 @@ export function StayConnectedSection() {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Like on Facebook
+                      {t("facebook.button")}
                     </a>
                   </Button>
                 </div>
@@ -128,11 +127,10 @@ export function StayConnectedSection() {
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-xl mb-1 text-navy">
-                    Good News Bible Church YT
+                    {t("youtube.name")}
                   </h3>
                   <p className="text-gray-600 mb-4 leading-relaxed">
-                    Watch sermons, worship sessions, and teachings on our
-                    YouTube channel
+                    {t("youtube.description")}
                   </p>
                   <Button asChild className="bg-red-600 hover:bg-red-700">
                     <a
@@ -140,7 +138,7 @@ export function StayConnectedSection() {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Subscribe on YouTube
+                      {t("youtube.button")}
                     </a>
                   </Button>
                 </div>

@@ -11,13 +11,14 @@ import {
 } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { event } from "@/lib/gtag";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { useCookieConsent } from "./cookie-consent-provider";
 
 interface CategoryConfig {
   id: "essential" | "analytics" | "advertising";
-  name: string;
-  description: string;
+  nameKey: string;
+  descriptionKey: string;
   required: boolean;
   defaultValue: boolean;
 }
@@ -25,25 +26,22 @@ interface CategoryConfig {
 const COOKIE_CATEGORIES: CategoryConfig[] = [
   {
     id: "essential",
-    name: "Essential Cookies",
-    description:
-      "Required for the website to function properly. These cookies enable basic features like page navigation, secure areas access, and authentication. Cannot be disabled.",
+    nameKey: "categories.essential.name",
+    descriptionKey: "categories.essential.description",
     required: true,
     defaultValue: true,
   },
   {
     id: "analytics",
-    name: "Analytics Cookies",
-    description:
-      "Help us understand how visitors interact with our website by collecting anonymous information. This data helps us improve our services and user experience.",
+    nameKey: "categories.analytics.name",
+    descriptionKey: "categories.analytics.description",
     required: false,
     defaultValue: true,
   },
   {
     id: "advertising",
-    name: "Advertising Cookies",
-    description:
-      "Used for advertising measurement and personalization across platforms. These cookies help us show you relevant content and measure the effectiveness of our marketing campaigns.",
+    nameKey: "categories.advertising.name",
+    descriptionKey: "categories.advertising.description",
     required: false,
     defaultValue: true,
   },
@@ -54,6 +52,7 @@ const COOKIE_CATEGORIES: CategoryConfig[] = [
  * Allows granular control over cookie preferences.
  */
 export function CookieSettingsModal() {
+  const t = useTranslations("cookie.modal");
   const { showSettings, closeSettings, consent, updateConsent, acceptAll } =
     useCookieConsent();
 
@@ -101,11 +100,8 @@ export function CookieSettingsModal() {
     >
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>Cookie Preferences</DialogTitle>
-          <DialogDescription>
-            Manage your cookie preferences. Essential cookies are always enabled
-            as they are required for the website to function properly.
-          </DialogDescription>
+          <DialogTitle>{t("title")}</DialogTitle>
+          <DialogDescription>{t("description")}</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
@@ -115,14 +111,16 @@ export function CookieSettingsModal() {
               className="flex items-start justify-between gap-4 p-4 rounded-lg border"
             >
               <div className="flex-1">
-                <div className="font-medium">{category.name}</div>
+                <div className="font-medium">{t(category.nameKey)}</div>
                 <div className="text-sm text-muted-foreground mt-1">
-                  {category.description}
+                  {t(category.descriptionKey)}
                 </div>
               </div>
               <Switch
                 checked={
-                  localPreferences[category.id as keyof typeof localPreferences]
+                  category.id === "essential"
+                    ? true
+                    : localPreferences[category.id as keyof typeof localPreferences]
                 }
                 disabled={category.required}
                 onCheckedChange={(checked) => {
@@ -133,7 +131,7 @@ export function CookieSettingsModal() {
                     }));
                   }
                 }}
-                aria-label={`Toggle ${category.name}`}
+                aria-label={`Toggle ${t(category.nameKey)}`}
               />
             </div>
           ))}
@@ -145,16 +143,16 @@ export function CookieSettingsModal() {
             onClick={handleRejectAll}
             className="sm:mr-auto"
           >
-            Reject All
+            {t("rejectAll")}
           </Button>
           <Button variant="outline" onClick={handleSave}>
-            Save Preferences
+            {t("savePreferences")}
           </Button>
           <Button
             className="bg-brand-primary hover:bg-brand-primary/90"
             onClick={handleAcceptAll}
           >
-            Accept All
+            {t("acceptAll")}
           </Button>
         </DialogFooter>
       </DialogContent>

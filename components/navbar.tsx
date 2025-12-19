@@ -1,27 +1,29 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { Menu, X } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
-const navLinks = [
-  { label: "About", href: "/#about" },
-  { label: "Visit", href: "/#what-to-expect" },
-  { label: "Groups", href: "/#groups" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/#contact" },
-];
-
 export function Navbar() {
+  const t = useTranslations("navbar");
+  const locale = useLocale();
   const pathname = usePathname();
-  console.log("pathname", pathname);
+  const router = useRouter();
+
   const isHomePage = pathname === "/";
 
-  const [language, setLanguage] = useState<"en" | "ru">("en");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(!isHomePage);
+
+  const navLinks = [
+    { label: t("about"), href: "/#about" },
+    { label: t("visit"), href: "/#what-to-expect" },
+    { label: t("groups"), href: "/#groups" },
+    { label: t("blog"), href: "/blog" },
+    { label: t("contact"), href: "/#contact" },
+  ];
 
   useEffect(() => {
     // On non-home pages, always show scrolled styles
@@ -36,6 +38,10 @@ export function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isHomePage]);
+
+  const handleLanguageChange = (newLocale: "en" | "ru") => {
+    router.replace(pathname, { locale: newLocale });
+  };
 
   return (
     <nav
@@ -77,9 +83,9 @@ export function Navbar() {
               }`}
             >
               <button
-                onClick={() => setLanguage("en")}
+                onClick={() => handleLanguageChange("en")}
                 className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
-                  language === "en"
+                  locale === "en"
                     ? "bg-primary text-white"
                     : scrolled
                     ? "text-gray-600"
@@ -89,9 +95,9 @@ export function Navbar() {
                 EN
               </button>
               <button
-                onClick={() => setLanguage("ru")}
+                onClick={() => handleLanguageChange("ru")}
                 className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
-                  language === "ru"
+                  locale === "ru"
                     ? "bg-primary text-white"
                     : scrolled
                     ? "text-gray-600"
@@ -108,7 +114,7 @@ export function Navbar() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Give
+                {t("give")}
               </a>
             </Button>
           </div>
@@ -144,9 +150,9 @@ export function Navbar() {
             <div className="flex items-center gap-2 pt-2">
               <div className="flex items-center gap-1 bg-gray-100 rounded-full p-1">
                 <button
-                  onClick={() => setLanguage("en")}
+                  onClick={() => handleLanguageChange("en")}
                   className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    language === "en"
+                    locale === "en"
                       ? "bg-primary text-white"
                       : "text-gray-600"
                   }`}
@@ -154,9 +160,9 @@ export function Navbar() {
                   EN
                 </button>
                 <button
-                  onClick={() => setLanguage("ru")}
+                  onClick={() => handleLanguageChange("ru")}
                   className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    language === "ru"
+                    locale === "ru"
                       ? "bg-primary text-white"
                       : "text-gray-600"
                   }`}
@@ -170,7 +176,7 @@ export function Navbar() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Give
+                  {t("give")}
                 </a>
               </Button>
             </div>

@@ -6,12 +6,14 @@ import {
 import DOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 interface BlogPostPageProps {
   params: Promise<{
     slug: string;
+    locale: string;
   }>;
 }
 
@@ -37,10 +39,10 @@ function toDate(timestamp: any): Date | null {
   return null;
 }
 
-function formatDate(timestamp: unknown): string {
+function formatDate(timestamp: unknown, locale: string): string {
   const date = toDate(timestamp);
   if (!date) return "";
-  return date.toLocaleDateString("en-US", {
+  return date.toLocaleDateString(locale === "ru" ? "ru-RU" : "en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -119,7 +121,11 @@ function sanitizeHtml(html: string): string {
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
+  setRequestLocale(locale);
+
+  const t = await getTranslations("blog");
+
   // Try by slug first, then by ID (for legacy posts with empty slugs)
   let post = await getPublishedContentBySlug("blog", slug);
   if (!post) {
@@ -159,7 +165,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 <path d="m12 19-7-7 7-7" />
                 <path d="M19 12H5" />
               </svg>
-              Back to Blog
+              {t("backToBlog")}
             </Link>
 
             {post.coverImage && (
@@ -172,7 +178,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
             <div className="flex items-center gap-3 text-sm text-muted-foreground mb-4">
               <time dateTime={getISOString(post.publishedAt)}>
-                {formatDate(post.publishedAt)}
+                {formatDate(post.publishedAt, locale)}
               </time>
             </div>
 
@@ -222,7 +228,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 href="/blog"
                 className="text-sm text-muted-foreground hover:text-primary"
               >
-                ← Back to all posts
+                ← {t("backToAllPosts")}
               </Link>
             </div>
           </footer>

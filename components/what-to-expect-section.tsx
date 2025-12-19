@@ -1,34 +1,37 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Baby, BookOpen, Check, Coffee, Music } from "lucide-react";
-
-const features = [
-  {
-    icon: Music,
-    title: "Worship",
-    description: "30 minutes of heartfelt praise in Russian and English",
-    image: "/church-worship-choir-singing.png",
-  },
-  {
-    icon: BookOpen,
-    title: "Sermon",
-    description: "45-minute bilingual message with translation available",
-    image: "/pastor-preaching-sermon.png",
-  },
-  {
-    icon: Baby,
-    title: "Kids Program",
-    description: "Sunday School for ages 3-13 during the service",
-    image: "/children-sunday-school.png",
-  },
-  {
-    icon: Coffee,
-    title: "Coffee & Connect",
-    description: "Fellowship time after service to meet others",
-    image: "/church-fellowship-coffee-people.png",
-  },
-];
+import { useTranslations } from "next-intl";
 
 export function WhatToExpectSection() {
+  const t = useTranslations("whatToExpect");
+
+  const features = [
+    {
+      icon: Music,
+      titleKey: "features.worship.title",
+      descriptionKey: "features.worship.description",
+      image: "/church-worship-choir-singing.png",
+    },
+    {
+      icon: BookOpen,
+      titleKey: "features.sermon.title",
+      descriptionKey: "features.sermon.description",
+      image: "/pastor-preaching-sermon.png",
+    },
+    {
+      icon: Baby,
+      titleKey: "features.kids.title",
+      descriptionKey: "features.kids.description",
+      image: "/children-sunday-school.png",
+    },
+    {
+      icon: Coffee,
+      titleKey: "features.coffee.title",
+      descriptionKey: "features.coffee.description",
+      image: "/church-fellowship-coffee-people.png",
+    },
+  ];
+
   return (
     <section id="what-to-expect" className="py-20 bg-cream scroll-mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -37,15 +40,15 @@ export function WhatToExpectSection() {
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="h-px w-12 bg-primary" />
             <span className="text-sm font-semibold text-navy uppercase tracking-wider">
-              Your First Visit
+              {t("eyebrow")}
             </span>
             <div className="h-px w-12 bg-primary" />
           </div>
           <h2 className="font-serif font-bold text-4xl md:text-5xl text-navy mb-4 text-balance">
-            What to Expect
+            {t("title")}
           </h2>
           <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-            Everything you need to know for a comfortable first experience
+            {t("subtitle")}
           </p>
         </div>
 
@@ -59,7 +62,7 @@ export function WhatToExpectSection() {
               <div className="relative h-48 overflow-hidden">
                 <img
                   src={feature.image || "/placeholder.svg"}
-                  alt={feature.title}
+                  alt={t(feature.titleKey)}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
@@ -67,10 +70,10 @@ export function WhatToExpectSection() {
               </div>
               <CardContent className="pt-6">
                 <h3 className="font-semibold text-xl mb-2 text-navy">
-                  {feature.title}
+                  {t(feature.titleKey)}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  {feature.description}
+                  {t(feature.descriptionKey)}
                 </p>
               </CardContent>
             </Card>
@@ -84,27 +87,21 @@ export function WhatToExpectSection() {
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
                   <Check className="size-5 text-primary shrink-0 mt-0.5" />
-                  <span className="text-gray-700">
-                    Services are approximately 90 minutes
-                  </span>
+                  <span className="text-gray-700">{t("checklist.duration")}</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <Check className="size-5 text-primary shrink-0 mt-0.5" />
-                  <span className="text-gray-700">
-                    Casual dress is welcome – come as you are
-                  </span>
+                  <span className="text-gray-700">{t("checklist.dress")}</span>
                 </div>
               </div>
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
                   <Check className="size-5 text-primary shrink-0 mt-0.5" />
-                  <span className="text-gray-700">
-                    Translation available for Russian and English
-                  </span>
+                  <span className="text-gray-700">{t("checklist.translation")}</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <Check className="size-5 text-primary shrink-0 mt-0.5" />
-                  <span className="text-gray-700">Free parking available</span>
+                  <span className="text-gray-700">{t("checklist.parking")}</span>
                 </div>
               </div>
             </div>

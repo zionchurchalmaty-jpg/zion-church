@@ -9,8 +9,15 @@ import { MinistriesSection } from "@/components/ministries-section";
 import { Navbar } from "@/components/navbar";
 import { StayConnectedSection } from "@/components/stay-connected-section";
 import { WhatToExpectSection } from "@/components/what-to-expect-section";
+import { setRequestLocale } from "next-intl/server";
 
-export default function ChurchLandingPage() {
+export default async function ChurchLandingPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   return (
     <div className="min-h-screen">
       <Navbar />

@@ -3,17 +3,10 @@
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Search, X } from "lucide-react";
 import type { BlogFilters } from "@/lib/hooks/use-blog-filters";
-import type { ContentLanguage } from "@/lib/firestore/types";
 import { useState, useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 
 interface BlogFiltersProps {
   filters: BlogFilters;
@@ -33,6 +26,8 @@ export function BlogFiltersComponent({
   onClearFilters,
   hasActiveFilters,
 }: BlogFiltersProps) {
+  const t = useTranslations("blog");
+
   // Local state for debounced search
   const [searchInput, setSearchInput] = useState(filters.search);
 
@@ -61,38 +56,22 @@ export function BlogFiltersComponent({
 
   return (
     <div className="space-y-4 mb-8">
-      {/* Search and Language row */}
+      {/* Search row */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="Search posts..."
+            placeholder={t("searchPlaceholder")}
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             className="pl-9"
           />
         </div>
 
-        <Select
-          value={filters.language || "all"}
-          onValueChange={(v) =>
-            onFilterChange("language", v === "all" ? null : (v as ContentLanguage))
-          }
-        >
-          <SelectTrigger className="w-full sm:w-[160px]">
-            <SelectValue placeholder="Language" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Languages</SelectItem>
-            <SelectItem value="en">English</SelectItem>
-            <SelectItem value="ru">Russian</SelectItem>
-          </SelectContent>
-        </Select>
-
         {hasActiveFilters && (
           <Button variant="ghost" onClick={onClearFilters} className="gap-2">
             <X className="h-4 w-4" />
-            Clear
+            {t("clear")}
           </Button>
         )}
       </div>

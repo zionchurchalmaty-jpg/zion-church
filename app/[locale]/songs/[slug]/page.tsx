@@ -1,14 +1,18 @@
-import { getPublishedContent, getPublishedContentBySlug } from "@/lib/firestore/content";
+import {
+  getPublishedContent,
+  getPublishedContentBySlug,
+} from "@/lib/firestore/content";
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
 import DOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
-import type { Timestamp } from "firebase/firestore";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 interface SongPageProps {
   params: Promise<{
     slug: string;
+    locale: string;
   }>;
 }
 
@@ -56,23 +60,11 @@ export async function generateMetadata({
       description,
       images: ogImage ? [ogImage] : undefined,
     },
-    ...(song.seo.canonicalUrl && { alternates: { canonical: song.seo.canonicalUrl } }),
+    ...(song.seo.canonicalUrl && {
+      alternates: { canonical: song.seo.canonicalUrl },
+    }),
     ...(song.seo.noIndex && { robots: { index: false } }),
   };
-}
-
-function formatDate(timestamp: Timestamp | undefined): string {
-  if (!timestamp) return "";
-  try {
-    const date = timestamp.toDate();
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  } catch {
-    return "";
-  }
 }
 
 // Server-side HTML sanitization
@@ -86,7 +78,11 @@ function sanitizeHtml(html: string): string {
 }
 
 export default async function SongPage({ params }: SongPageProps) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
+  setRequestLocale(locale);
+
+  const t = await getTranslations("songs");
+
   const song = await getPublishedContentBySlug("song", slug);
 
   if (!song) {
@@ -96,7 +92,7 @@ export default async function SongPage({ params }: SongPageProps) {
   const sanitizedContent = sanitizeHtml(song.content);
 
   return (
-    <div className="min-h-screen flex flex-col bg-cream">
+    <div className="min-h-screen flex flex-col bg-cream pt-16">
       <main className="flex-1">
         <article className="container mx-auto px-4 py-16">
           <div className="max-w-3xl mx-auto">
@@ -120,7 +116,7 @@ export default async function SongPage({ params }: SongPageProps) {
                   <path d="m12 19-7-7 7-7" />
                   <path d="M19 12H5" />
                 </svg>
-                Back to Songs
+                {t("backToSongs")}
               </Link>
 
               {song.coverImage && (
@@ -177,7 +173,7 @@ export default async function SongPage({ params }: SongPageProps) {
                   href="/songs"
                   className="text-sm text-muted-foreground hover:text-primary"
                 >
-                  ← Back to all songs
+                  ← {t("backToAllSongs")}
                 </Link>
               </div>
             </footer>

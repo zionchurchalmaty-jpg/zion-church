@@ -15,7 +15,8 @@
       "Bash(tree:*)",
       "Bash(npm install:*)",
       "Bash(ffprobe:*)",
-      "WebSearch"
+      "WebSearch",
+      "WebFetch(domain:next-intl.dev)"
     ]
   }
 }

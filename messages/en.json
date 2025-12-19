@@ -1,0 +1,295 @@
+{
+  "metadata": {
+    "title": "Good News Bible Church | Bilingual Church in Ashburn, VA",
+    "description": "A bilingual Russian-English Bible church in Ashburn, Virginia serving the Slavic community. Join us Sundays at 1:30 PM for worship, fellowship, and spiritual growth."
+  },
+  "navbar": {
+    "about": "About",
+    "visit": "Visit",
+    "groups": "Groups",
+    "blog": "Blog",
+    "contact": "Contact",
+    "give": "Give"
+  },
+  "hero": {
+    "welcomeTo": "Welcome to",
+    "churchName": "Good News Bible Church",
+    "subtitle": "A bilingual Russian-English Bible church serving Greater DC Slavic community.",
+    "address": "20430 Ashburn Village Blvd, Ashburn, VA",
+    "serviceTime": "Sundays at 1:30 PM",
+    "whatToExpect": "What to Expect",
+    "watchOnline": "Watch Online"
+  },
+  "about": {
+    "eyebrow": "About Us",
+    "title": "Serving the Slavic Community in Northern Virginia",
+    "paragraph1": "We are a family of believers from Russia, Ukraine, the former Soviet Union, and America — united by faith in Jesus Christ. Our bilingual services in Russian and English welcome immigrants, their families, and all who seek authentic community, spiritual growth, and opportunities to serve together.",
+    "paragraph2": "Whether you're a new immigrant or have called this area home for years, you'll find a warm, welcoming community ready to embrace you and walk alongside you in your faith journey.",
+    "motto": "Bring God's Joy to All People",
+    "imageAlt": "Church community gathering",
+    "imageCaption": "Our church family"
+  },
+  "whatToExpect": {
+    "eyebrow": "Your First Visit",
+    "title": "What to Expect",
+    "subtitle": "Everything you need to know for a comfortable first experience",
+    "features": {
+      "worship": {
+        "title": "Worship",
+        "description": "30 minutes of heartfelt praise in Russian and English"
+      },
+      "sermon": {
+        "title": "Sermon",
+        "description": "45-minute bilingual message with translation available"
+      },
+      "kids": {
+        "title": "Kids Program",
+        "description": "Sunday School for ages 3-13 during the service"
+      },
+      "coffee": {
+        "title": "Coffee & Connect",
+        "description": "Fellowship time after service to meet others"
+      }
+    },
+    "checklist": {
+      "duration": "Services are approximately 90 minutes",
+      "dress": "Casual dress is welcome – come as you are",
+      "translation": "Translation available for Russian and English",
+      "parking": "Free parking available"
+    }
+  },
+  "faq": {
+    "eyebrow": "Got Questions?",
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you want to know about our church",
+    "sideTitle": "Common Questions",
+    "sideDescription": "We know visiting a new church can bring questions. Here are answers to some of the most common ones.",
+    "questions": {
+      "language": {
+        "question": "Is the service in Russian or English?",
+        "answer": "Our services are bilingual! Sermons alternate between Russian and English, with translation always available. Worship songs include both languages so everyone can participate."
+      },
+      "children": {
+        "question": "Do you have programs for children?",
+        "answer": "Yes! We offer Sunday School for children ages 3-13 during the main service. We also have Friday youth group for teenagers."
+      },
+      "denomination": {
+        "question": "What denomination are you?",
+        "answer": "We are a nondenominational Bible church. Our focus is on Scripture, the Gospel of Jesus Christ, and authentic Christian community."
+      },
+      "connect": {
+        "question": "How can I connect with other families?",
+        "answer": "Join one of our Home Groups meeting throughout Northern Virginia, or simply stay for coffee after the service — we'd love to introduce you to others!"
+      }
+    },
+    "stillHaveQuestions": "Still have questions?",
+    "contactUs": "Contact Us"
+  },
+  "ministries": {
+    "eyebrow": "Get Involved",
+    "title": "Our Groups and Ministries",
+    "subtitle": "Connect, grow, and serve our community and family",
+    "groups": {
+      "homeGroups": {
+        "name": "Home Groups",
+        "description": "Bible study groups meeting across Northern Virginia for deeper fellowship and spiritual growth."
+      },
+      "youth": {
+        "name": "Youth & Teens",
+        "description": "Friday night gatherings for grades 6-12 with games, worship, and relevant teaching."
+      },
+      "women": {
+        "name": "Women's Meetups",
+        "description": "A vibrant community where women come together to grow in Christ through Bible studies, prayer, fellowship, and special events, building lasting friendships."
+      },
+      "men": {
+        "name": "Men's Meetups",
+        "description": "A network of men committed to spiritual growth, brotherhood, and biblical leadership, equipping men to live with faith, integrity, and purpose."
+      },
+      "esl": {
+        "name": "ESL Classes",
+        "description": "\"English with Joy\" — Learn English in a welcoming, supportive environment with caring teachers and a friendly community."
+      },
+      "soccer": {
+        "name": "Joyful Kicks",
+        "description": "A soccer ministry for children ages 7-13 led by Coach Gustavo Sanchez, teaching teamwork, discipline, and Christian character through the beautiful game."
+      }
+    },
+    "learnMore": "Learn More",
+    "viewAllGroups": "View All Groups"
+  },
+  "calendar": {
+    "eyebrow": "Upcoming Events",
+    "title": "Church Calendar",
+    "subtitle": "Join us for worship, fellowship, and community events",
+    "fallbackEvents": {
+      "sundayWorship": {
+        "name": "Sunday Worship Service",
+        "description": "Join us for worship, prayer, and teaching from God's Word."
+      },
+      "thursdayPrayer": {
+        "name": "Thursday Prayer Meeting",
+        "description": "Midweek study and fellowship for all ages."
+      },
+      "youthNight": {
+        "name": "Youth Night",
+        "description": "Games, worship, and Bible study for teens."
+      }
+    },
+    "viewFullCalendar": "View Full Calendar"
+  },
+  "location": {
+    "eyebrow": "Visit Us",
+    "title": "Find Us",
+    "subtitle": "We'd love to see you this Sunday",
+    "address": "Address",
+    "addressLine1": "20430 Ashburn Village Blvd",
+    "addressLine2": "Ashburn, VA 20147",
+    "serviceTimes": "Service Times",
+    "sundayWorship": "Sunday Worship: 1:30 PM",
+    "thursdayPrayer": "Thursday Prayer Meeting: 6:00 PM",
+    "contact": "Contact",
+    "phone": "Phone: 703-594-1088",
+    "email": "Email: info@goodnewsbible.org"
+  },
+  "contact": {
+    "eyebrow": "Get in Touch",
+    "title": "We'd Love to Meet You",
+    "subtitle": "Planning to visit or have a question? Drop us a message.",
+    "form": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "message": "Message",
+      "required": "*",
+      "interestedIn": "I'm interested in:",
+      "planningToVisit": "I'm planning to visit this Sunday",
+      "eslClasses": "I'd like to learn about ESL classes",
+      "prayerRequest": "I have a prayer request",
+      "newsletter": "Subscribe to our newsletter",
+      "submit": "Send Message",
+      "sending": "Sending..."
+    },
+    "recaptchaNotice": "This site is protected by reCAPTCHA and the Google",
+    "privacyPolicy": "Privacy Policy",
+    "and": "and",
+    "termsOfService": "Terms of Service",
+    "apply": "apply.",
+    "errors": {
+      "recaptchaNotAvailable": "reCAPTCHA not available. Please refresh and try again.",
+      "somethingWentWrong": "Something went wrong. Please try again.",
+      "failedToSubmit": "Failed to submit. Please try again."
+    }
+  },
+  "stayConnected": {
+    "eyebrow": "Stay Connected",
+    "title": "Join Our Community",
+    "subtitle": "Follow us on social media for updates, encouragement, and event announcements.",
+    "instagram": {
+      "handle": "@goodnewsbibleorg",
+      "description": "Follow us for daily encouragement, event photos, and community highlights",
+      "button": "Follow on Instagram"
+    },
+    "youthInstagram": {
+      "handle": "@good_news.youth",
+      "description": "Follow our Youth Group for updates on youth events, activities, and community",
+      "button": "Follow Youth Group"
+    },
+    "facebook": {
+      "name": "Good News Bible Church",
+      "description": "Join our Facebook community for events, livestreams, and discussions",
+      "button": "Like on Facebook"
+    },
+    "youtube": {
+      "name": "Good News Bible Church YT",
+      "description": "Watch sermons, worship sessions, and teachings on our YouTube channel",
+      "button": "Subscribe on YouTube"
+    }
+  },
+  "footer": {
+    "churchName": "Good News Bible Church",
+    "motto": "Bring God's Joy to All People",
+    "quickLinks": "Quick Links",
+    "about": "About",
+    "visit": "Visit",
+    "groups": "Groups",
+    "blog": "Blog",
+    "contact": "Contact",
+    "resources": "Resources",
+    "eventsCalendar": "Events Calendar",
+    "giveOnline": "Give Online",
+    "watchOnline": "Watch Online",
+    "churchApp": "Church App",
+    "address": "Address",
+    "addressLine1": "20430 Ashburn Village Blvd",
+    "addressLine2": "Ashburn, VA 20147",
+    "copyright": "© 2025 Good News Bible Church. All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "cookieSettings": "Cookie Settings",
+    "serviceInfo": "Sundays at 1:30 PM · Ashburn, Virginia"
+  },
+  "cookie": {
+    "banner": {
+      "title": "We value your privacy",
+      "description": "We use cookies to enhance your browsing experience, analyze site traffic, and personalize content. By clicking \"Accept All\", you consent to our use of cookies.",
+      "learnMore": "Learn more",
+      "customize": "Customize",
+      "acceptAll": "Accept All"
+    },
+    "modal": {
+      "title": "Cookie Preferences",
+      "description": "Manage your cookie preferences. Essential cookies are always enabled as they are required for the website to function properly.",
+      "categories": {
+        "essential": {
+          "name": "Essential Cookies",
+          "description": "Required for the website to function properly. These cookies enable basic features like page navigation, secure areas access, and authentication. Cannot be disabled."
+        },
+        "analytics": {
+          "name": "Analytics Cookies",
+          "description": "Help us understand how visitors interact with our website by collecting anonymous information. This data helps us improve our services and user experience."
+        },
+        "advertising": {
+          "name": "Advertising Cookies",
+          "description": "Used for advertising measurement and personalization across platforms. These cookies help us show you relevant content and measure the effectiveness of our marketing campaigns."
+        }
+      },
+      "rejectAll": "Reject All",
+      "savePreferences": "Save Preferences",
+      "acceptAll": "Accept All"
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "metaTitle": "Blog - Good News Bible Church",
+    "metaDescription": "News, updates, and spiritual encouragement from Good News Bible Church in Ashburn, VA.",
+    "description": "News, updates, and spiritual encouragement from Good News Bible Church.",
+    "backToHome": "Back to Home",
+    "backToBlog": "Back to Blog",
+    "backToAllPosts": "Back to all posts",
+    "searchPlaceholder": "Search posts...",
+    "allLanguages": "All Languages",
+    "english": "English",
+    "russian": "Russian",
+    "clear": "Clear",
+    "clearFilters": "Clear filters",
+    "noPostsFiltered": "No posts match your filters.",
+    "noPostsYet": "No blog posts yet. Check back soon!",
+    "loadMore": "Load More",
+    "remaining": "remaining"
+  },
+  "songs": {
+    "title": "Songs",
+    "metaTitle": "Songs - Good News Bible Church",
+    "metaDescription": "Worship songs and hymns from Good News Bible Church in Ashburn, VA.",
+    "description": "Worship songs and hymns from Good News Bible Church.",
+    "backToHome": "Back to Home",
+    "backToSongs": "Back to Songs",
+    "backToAllSongs": "Back to all songs",
+    "noSongsYet": "No songs yet. Check back soon!"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong. Please try again."
+  }
+}

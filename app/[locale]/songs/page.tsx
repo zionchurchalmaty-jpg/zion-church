@@ -1,31 +1,25 @@
 import { getPublishedContent } from "@/lib/firestore/content";
 import type { Metadata } from "next";
-import Link from "next/link";
-import type { Content } from "@/lib/firestore/types";
-import type { Timestamp } from "firebase/firestore";
+import { Link } from "@/i18n/navigation";
+import type { Content, ContentLanguage } from "@/lib/firestore/types";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "Songs - Good News Bible Church",
-  description:
-    "Worship songs and hymns from Good News Bible Church in Ashburn, VA.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "songs" });
+
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+  };
+}
 
 // Revalidate every 5 minutes
 export const revalidate = 300;
-
-function formatDate(timestamp: Timestamp | undefined): string {
-  if (!timestamp) return "";
-  try {
-    const date = timestamp.toDate();
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  } catch {
-    return "";
-  }
-}
 
 function getUniqueTags(songs: Content[]): string[] {
   const tagsSet = new Set<string>();
@@ -35,12 +29,25 @@ function getUniqueTags(songs: Content[]): string[] {
   return Array.from(tagsSet);
 }
 
-export default async function SongsPage() {
-  const songs = await getPublishedContent("song");
+export default async function SongsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  const t = await getTranslations("songs");
+
+  // Get songs filtered by locale
+  const allSongs = await getPublishedContent("song");
+  const songs = allSongs.filter(
+    (song) => song.language === (locale as ContentLanguage)
+  );
   const tags = getUniqueTags(songs);
 
   return (
-    <div className="min-h-screen flex flex-col bg-cream">
+    <div className="min-h-screen flex flex-col bg-cream pt-16">
       <main className="flex-1">
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-4xl mx-auto">
@@ -63,16 +70,14 @@ export default async function SongsPage() {
                 <path d="m12 19-7-7 7-7" />
                 <path d="M19 12H5" />
               </svg>
-              Back to Home
+              {t("backToHome")}
             </Link>
 
             <header className="mb-12">
               <h1 className="font-serif text-4xl font-bold tracking-tight mb-4 text-navy">
-                Songs
+                {t("title")}
               </h1>
-              <p className="text-xl text-muted-foreground">
-                Worship songs and hymns from Good News Bible Church.
-              </p>
+              <p className="text-xl text-muted-foreground">{t("description")}</p>
             </header>
 
             {tags.length > 0 && (
@@ -90,9 +95,7 @@ export default async function SongsPage() {
 
             {songs.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-muted-foreground">
-                  No songs yet. Check back soon!
-                </p>
+                <p className="text-muted-foreground">{t("noSongsYet")}</p>
               </div>
             ) : (
               <div className="grid gap-6 md:grid-cols-2">

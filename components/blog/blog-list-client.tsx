@@ -6,6 +6,7 @@ import { useBlogFilters } from "@/lib/hooks/use-blog-filters";
 import { BlogFiltersComponent } from "./blog-filters";
 import { BlogPostCard } from "./blog-post-card";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 interface BlogListClientProps {
   posts: Content[];
@@ -13,6 +14,8 @@ interface BlogListClientProps {
 }
 
 export function BlogListClient({ posts, availableTags }: BlogListClientProps) {
+  const t = useTranslations("blog");
+
   const {
     filters,
     setFilter,
@@ -22,7 +25,7 @@ export function BlogListClient({ posts, availableTags }: BlogListClientProps) {
     hasActiveFilters,
   } = useBlogFilters();
 
-  // Filter posts based on current filters
+  // Filter posts based on current filters (language already filtered on server)
   const filteredPosts = useMemo(() => {
     return posts.filter((post) => {
       // Search filter
@@ -36,11 +39,6 @@ export function BlogListClient({ posts, availableTags }: BlogListClientProps) {
 
       // Tag filter
       if (filters.tag && !post.tags.includes(filters.tag)) {
-        return false;
-      }
-
-      // Language filter
-      if (filters.language && post.language !== filters.language) {
         return false;
       }
 
@@ -65,13 +63,11 @@ export function BlogListClient({ posts, availableTags }: BlogListClientProps) {
       {filteredPosts.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-muted-foreground mb-4">
-            {hasActiveFilters
-              ? "No posts match your filters."
-              : "No blog posts yet. Check back soon!"}
+            {hasActiveFilters ? t("noPostsFiltered") : t("noPostsYet")}
           </p>
           {hasActiveFilters && (
             <Button variant="outline" onClick={clearFilters}>
-              Clear filters
+              {t("clearFilters")}
             </Button>
           )}
         </div>
@@ -86,7 +82,8 @@ export function BlogListClient({ posts, availableTags }: BlogListClientProps) {
           {hasMorePosts && (
             <div className="flex justify-center mt-8">
               <Button variant="outline" onClick={loadMore} size="lg">
-                Load More ({filteredPosts.length - loadedCount} remaining)
+                {t("loadMore")} ({filteredPosts.length - loadedCount}{" "}
+                {t("remaining")})
               </Button>
             </div>
           )}

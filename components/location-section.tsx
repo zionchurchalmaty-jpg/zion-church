@@ -1,6 +1,9 @@
 import { Clock, MapPin, Phone } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function LocationSection() {
+  const t = useTranslations("location");
+
   return (
     <section id="location" className="py-20 bg-cream">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -11,16 +14,14 @@ export function LocationSection() {
               <div className="flex items-center gap-3 mb-4">
                 <div className="h-px w-12 bg-primary" />
                 <span className="text-sm font-semibold text-navy uppercase tracking-wider">
-                  Visit Us
+                  {t("eyebrow")}
                 </span>
                 <div className="h-px w-12 bg-primary" />
               </div>
               <h2 className="font-serif font-bold text-4xl md:text-5xl text-navy mb-4 text-balance">
-                Find Us
+                {t("title")}
               </h2>
-              <p className="text-lg text-gray-700">
-                We'd love to see you this Sunday
-              </p>
+              <p className="text-lg text-gray-700">{t("subtitle")}</p>
             </div>
 
             <div className="space-y-6">
@@ -30,10 +31,10 @@ export function LocationSection() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg text-navy mb-1">
-                    Address
+                    {t("address")}
                   </h3>
-                  <p className="text-gray-700">20430 Ashburn Village Blvd</p>
-                  <p className="text-gray-700">Ashburn, VA 20147</p>
+                  <p className="text-gray-700">{t("addressLine1")}</p>
+                  <p className="text-gray-700">{t("addressLine2")}</p>
                 </div>
               </div>
 
@@ -43,12 +44,10 @@ export function LocationSection() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg text-navy mb-1">
-                    Service Times
+                    {t("serviceTimes")}
                   </h3>
-                  <p className="text-gray-700">Sunday Worship: 1:30 PM</p>
-                  <p className="text-gray-700">
-                    Thursday Prayer Meeting: 6:00 PM
-                  </p>
+                  <p className="text-gray-700">{t("sundayWorship")}</p>
+                  <p className="text-gray-700">{t("thursdayPrayer")}</p>
                 </div>
               </div>
 
@@ -58,10 +57,10 @@ export function LocationSection() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg text-navy mb-1">
-                    Contact
+                    {t("contact")}
                   </h3>
-                  <p className="text-gray-700">Phone: 703-594-1088</p>
-                  <p className="text-gray-700">Email: info@goodnewsbible.org</p>
+                  <p className="text-gray-700">{t("phone")}</p>
+                  <p className="text-gray-700">{t("email")}</p>
                 </div>
               </div>
             </div>

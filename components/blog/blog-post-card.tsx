@@ -1,5 +1,5 @@
 import type { Content } from "@/lib/firestore/types";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 function stripHtmlAndTruncate(html: string, maxLength: number = 150): string {
   const text = html.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim();

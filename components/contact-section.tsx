@@ -13,8 +13,10 @@ import {
   contactFormClientSchema,
   type ContactFormClientData,
 } from "@/lib/validations/form-schemas";
+import { useTranslations } from "next-intl";
 
 export function ContactSection() {
+  const t = useTranslations("contact");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { executeRecaptcha } = useGoogleReCaptcha();
 
@@ -45,7 +47,7 @@ export function ContactSection() {
 
     try {
       if (!executeRecaptcha) {
-        toast.error("reCAPTCHA not available. Please refresh and try again.");
+        toast.error(t("errors.recaptchaNotAvailable"));
         return;
       }
 
@@ -68,10 +70,10 @@ export function ContactSection() {
         });
         reset();
       } else {
-        toast.error(result.error || "Something went wrong. Please try again.");
+        toast.error(result.error || t("errors.somethingWentWrong"));
       }
     } catch {
-      toast.error("Failed to submit. Please try again.");
+      toast.error(t("errors.failedToSubmit"));
     } finally {
       setIsSubmitting(false);
     }
@@ -91,16 +93,14 @@ export function ContactSection() {
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="h-px w-12 bg-primary" />
             <span className="text-sm font-semibold text-primary uppercase tracking-wider">
-              Get in Touch
+              {t("eyebrow")}
             </span>
             <div className="h-px w-12 bg-primary" />
           </div>
           <h2 className="font-serif font-bold text-4xl md:text-5xl text-white mb-4 text-balance">
-            We'd Love to Meet You
+            {t("title")}
           </h2>
-          <p className="text-lg text-white/80">
-            Planning to visit or have a question? Drop us a message.
-          </p>
+          <p className="text-lg text-white/80">{t("subtitle")}</p>
         </div>
 
         {/* Form */}
@@ -113,7 +113,7 @@ export function ContactSection() {
                     htmlFor="contactFirstName"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    First Name *
+                    {t("form.firstName")} {t("form.required")}
                   </label>
                   <input
                     type="text"
@@ -132,7 +132,7 @@ export function ContactSection() {
                     htmlFor="lastName"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Last Name *
+                    {t("form.lastName")} {t("form.required")}
                   </label>
                   <input
                     type="text"
@@ -153,7 +153,7 @@ export function ContactSection() {
                   htmlFor="contactEmail"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Email *
+                  {t("form.email")} {t("form.required")}
                 </label>
                 <input
                   type="email"
@@ -173,7 +173,7 @@ export function ContactSection() {
                   htmlFor="message"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Message
+                  {t("form.message")}
                 </label>
                 <textarea
                   id="message"
@@ -190,7 +190,7 @@ export function ContactSection() {
 
               <div className="bg-gray-50 p-4 rounded-lg space-y-3">
                 <p className="text-sm font-medium text-gray-700 mb-2">
-                  I'm interested in:
+                  {t("form.interestedIn")}
                 </p>
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
@@ -198,9 +198,7 @@ export function ContactSection() {
                     {...register("interests.planningToVisit")}
                     className="size-4 text-primary rounded border-gray-300 focus:ring-primary"
                   />
-                  <span className="text-gray-700">
-                    I'm planning to visit this Sunday
-                  </span>
+                  <span className="text-gray-700">{t("form.planningToVisit")}</span>
                 </label>
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
@@ -208,9 +206,7 @@ export function ContactSection() {
                     {...register("interests.eslClasses")}
                     className="size-4 text-primary rounded border-gray-300 focus:ring-primary"
                   />
-                  <span className="text-gray-700">
-                    I'd like to learn about ESL classes
-                  </span>
+                  <span className="text-gray-700">{t("form.eslClasses")}</span>
                 </label>
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
@@ -218,7 +214,7 @@ export function ContactSection() {
                     {...register("interests.prayerRequest")}
                     className="size-4 text-primary rounded border-gray-300 focus:ring-primary"
                   />
-                  <span className="text-gray-700">I have a prayer request</span>
+                  <span className="text-gray-700">{t("form.prayerRequest")}</span>
                 </label>
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
@@ -226,9 +222,7 @@ export function ContactSection() {
                     {...register("interests.newsletterSubscription")}
                     className="size-4 text-primary rounded border-gray-300 focus:ring-primary"
                   />
-                  <span className="text-gray-700">
-                    Subscribe to our newsletter
-                  </span>
+                  <span className="text-gray-700">{t("form.newsletter")}</span>
                 </label>
               </div>
 
@@ -236,33 +230,33 @@ export function ContactSection() {
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Sending...
+                    {t("form.sending")}
                   </>
                 ) : (
-                  "Send Message"
+                  t("form.submit")
                 )}
               </Button>
 
               <p className="text-xs text-gray-500 text-center">
-                This site is protected by reCAPTCHA and the Google{" "}
+                {t("recaptchaNotice")}{" "}
                 <a
                   href="https://policies.google.com/privacy"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="underline hover:text-gray-700"
                 >
-                  Privacy Policy
+                  {t("privacyPolicy")}
                 </a>{" "}
-                and{" "}
+                {t("and")}{" "}
                 <a
                   href="https://policies.google.com/terms"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="underline hover:text-gray-700"
                 >
-                  Terms of Service
+                  {t("termsOfService")}
                 </a>{" "}
-                apply.
+                {t("apply")}
               </p>
             </form>
           </CardContent>

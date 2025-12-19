@@ -1,8 +1,12 @@
 "use client";
 
+import { Link } from "@/i18n/navigation";
 import { Facebook, Instagram, Youtube } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function Footer() {
+  const t = useTranslations("footer");
+
   return (
     <footer className="bg-[rgb(var(--secondary-navy))] text-white py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -12,12 +16,10 @@ export function Footer() {
             <div className="flex items-center gap-3">
               <img src="/icon_only.png" alt="GNBC Icon" className="size-10" />
               <div className="font-serif font-semibold text-lg">
-                Good News Bible Church
+                {t("churchName")}
               </div>
             </div>
-            <p className="font-serif text-white/80 italic">
-              Bring God's Joy to All People
-            </p>
+            <p className="font-serif text-white/80 italic">{t("motto")}</p>
             <div className="flex items-center gap-4">
               <a
                 href="https://www.instagram.com/goodnewsbibleorg/"
@@ -48,62 +50,62 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
+            <h3 className="font-semibold text-lg mb-4">{t("quickLinks")}</h3>
             <ul className="space-y-2 text-white/80">
               <li>
-                <a
+                <Link
                   href="/#about"
                   className="hover:text-primary transition-colors"
                 >
-                  About
-                </a>
+                  {t("about")}
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="/#what-to-expect"
                   className="hover:text-primary transition-colors"
                 >
-                  Visit
-                </a>
+                  {t("visit")}
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="/#groups"
                   className="hover:text-primary transition-colors"
                 >
-                  Groups
-                </a>
+                  {t("groups")}
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="/blog"
                   className="hover:text-primary transition-colors"
                 >
-                  Blog
-                </a>
+                  {t("blog")}
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="/#contact"
                   className="hover:text-primary transition-colors"
                 >
-                  Contact
-                </a>
+                  {t("contact")}
+                </Link>
               </li>
             </ul>
           </div>
 
           {/* Resources */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Resources</h3>
+            <h3 className="font-semibold text-lg mb-4">{t("resources")}</h3>
             <ul className="space-y-2 text-white/80">
               <li>
-                <a
+                <Link
                   href="/#calendar"
                   className="hover:text-primary transition-colors"
                 >
-                  Events Calendar
-                </a>
+                  {t("eventsCalendar")}
+                </Link>
               </li>
               <li>
                 <a
@@ -112,7 +114,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Give Online
+                  {t("giveOnline")}
                 </a>
               </li>
               <li>
@@ -122,7 +124,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Watch Online
+                  {t("watchOnline")}
                 </a>
               </li>
               <li>
@@ -132,7 +134,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Church App
+                  {t("churchApp")}
                 </a>
               </li>
             </ul>
@@ -140,31 +142,31 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Address</h3>
+            <h3 className="font-semibold text-lg mb-4">{t("address")}</h3>
             <ul className="space-y-3 text-white/80 text-sm">
-              <li>20430 Ashburn Village Blvd</li>
-              <li>Ashburn, VA 20147</li>
+              <li>{t("addressLine1")}</li>
+              <li>{t("addressLine2")}</li>
             </ul>
           </div>
         </div>
 
         {/* Footer Bottom */}
         <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/60">
-          <p>© 2025 Good News Bible Church. All rights reserved.</p>
+          <p>{t("copyright")}</p>
           <div className="flex items-center gap-4">
-            <a
+            <Link
               href="/legal/privacy-policy"
               className="hover:text-primary transition-colors"
             >
-              Privacy Policy
-            </a>
+              {t("privacyPolicy")}
+            </Link>
             <span>·</span>
-            <a
+            <Link
               href="/legal/terms-of-service"
               className="hover:text-primary transition-colors"
             >
-              Terms of Service
-            </a>
+              {t("termsOfService")}
+            </Link>
             <span>·</span>
             <button
               onClick={() =>
@@ -172,10 +174,10 @@ export function Footer() {
               }
               className="hover:text-primary transition-colors"
             >
-              Cookie Settings
+              {t("cookieSettings")}
             </button>
           </div>
-          <p>Sundays at 1:30 PM · Ashburn, Virginia</p>
+          <p>{t("serviceInfo")}</p>
         </div>
       </div>
     </footer>
