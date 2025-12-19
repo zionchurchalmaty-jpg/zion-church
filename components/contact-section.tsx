@@ -35,6 +35,7 @@ export function ContactSection() {
         planningToVisit: false,
         eslClasses: false,
         prayerRequest: false,
+        newsletterSubscription: false,
       },
     },
   });
@@ -218,6 +219,16 @@ export function ContactSection() {
                     className="size-4 text-primary rounded border-gray-300 focus:ring-primary"
                   />
                   <span className="text-gray-700">I have a prayer request</span>
+                </label>
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    {...register("interests.newsletterSubscription")}
+                    className="size-4 text-primary rounded border-gray-300 focus:ring-primary"
+                  />
+                  <span className="text-gray-700">
+                    Subscribe to our newsletter
+                  </span>
                 </label>
               </div>
 

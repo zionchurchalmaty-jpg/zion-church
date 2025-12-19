@@ -14,7 +14,7 @@ const fallbackEvents: CalendarEvent[] = [
   },
   {
     id: "fallback-2",
-    name: "Wednesday Bible Study",
+    name: "Thursday Prayer Meeting",
     description: "Midweek study and fellowship for all ages.",
     image: null,
     startsAt: new Date(),

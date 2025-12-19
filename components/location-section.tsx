@@ -47,7 +47,7 @@ export function LocationSection() {
                   </h3>
                   <p className="text-gray-700">Sunday Worship: 1:30 PM</p>
                   <p className="text-gray-700">
-                    Wednesday Bible Study: 7:00 PM
+                    Thursday Prayer Meeting: 6:00 PM
                   </p>
                 </div>
               </div>
@@ -61,9 +61,7 @@ export function LocationSection() {
                     Contact
                   </h3>
                   <p className="text-gray-700">Phone: 703-594-1088</p>
-                  <p className="text-gray-700">
-                    Email: info@goodnewsbible.org
-                  </p>
+                  <p className="text-gray-700">Email: info@goodnewsbible.org</p>
                 </div>
               </div>
             </div>

@@ -68,10 +68,10 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="/#ministries"
+                  href="/#groups"
                   className="hover:text-primary transition-colors"
                 >
-                  Ministries
+                  Groups
                 </a>
               </li>
               <li>

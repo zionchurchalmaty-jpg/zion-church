@@ -70,11 +70,14 @@ export async function POST(request: NextRequest) {
         interests: data.interests,
         recaptchaScore: recaptchaResult.score,
       }).catch((err) => console.error("Failed to send contact emails:", err));
-    } else if (data.formType === "newsletter") {
-      handleNewsletterSubmissionEmails({
-        firstName: data.firstName,
-        email: data.email,
-      }).catch((err) => console.error("Failed to send newsletter emails:", err));
+
+      // Also send newsletter emails if they opted in
+      if (data.interests.newsletterSubscription) {
+        handleNewsletterSubmissionEmails({
+          firstName: data.firstName,
+          email: data.email,
+        }).catch((err) => console.error("Failed to send newsletter emails:", err));
+      }
     }
 
     return NextResponse.json({

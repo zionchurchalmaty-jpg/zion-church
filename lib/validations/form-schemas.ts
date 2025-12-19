@@ -4,6 +4,7 @@ export const contactInterestsSchema = z.object({
   planningToVisit: z.boolean().default(false),
   eslClasses: z.boolean().default(false),
   prayerRequest: z.boolean().default(false),
+  newsletterSubscription: z.boolean().default(false),
 });
 
 export const contactFormSchema = z.object({
