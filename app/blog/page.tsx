@@ -31,19 +31,12 @@ function toDate(timestamp: any): Date | null {
   return null;
 }
 
-function formatDate(timestamp: unknown): string {
-  const date = toDate(timestamp);
-  if (!date) return "";
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-}
-
-function getISOString(timestamp: unknown): string | undefined {
-  const date = toDate(timestamp);
-  return date?.toISOString();
+function stripHtmlAndTruncate(html: string, maxLength: number = 150): string {
+  // Remove HTML tags
+  const text = html.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim();
+  // Truncate if needed
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength).trim() + "...";
 }
 
 function getUniqueTags(posts: Content[]): string[] {
@@ -62,7 +55,7 @@ export default async function BlogPage() {
   return (
     <div className="bg-cream pt-16">
       <div className="container mx-auto px-4 py-16">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <Link
             href="/"
             className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-8"
@@ -115,47 +108,35 @@ export default async function BlogPage() {
               </p>
             </div>
           ) : (
-            <div className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {posts.map((post) => (
                 <article
                   key={post.id}
-                  className="group border rounded-lg p-6 hover:border-primary/50 transition-colors bg-white"
+                  className="group border rounded-lg overflow-hidden hover:border-primary/50 hover:shadow-lg transition-all bg-white flex flex-col"
                 >
-                  <Link href={`/blog/${post.slug}`}>
-                    <div className="flex flex-col space-y-3">
-                      {post.coverImage && (
+                  <Link href={`/blog/${post.slug}`} className="flex flex-col h-full">
+                    {post.coverImage && (
+                      <div className="aspect-video overflow-hidden">
                         <img
                           src={post.coverImage}
                           alt={post.title}
-                          className="w-full h-48 object-cover rounded-lg mb-2"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
-                      )}
-                      <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                        <time dateTime={getISOString(post.publishedAt)}>
-                          {formatDate(post.publishedAt)}
-                        </time>
                       </div>
-                      <h2 className="text-2xl font-semibold group-hover:text-primary transition-colors text-navy">
+                    )}
+                    <div className="flex flex-col flex-1 p-5">
+                      <h2 className="text-lg font-semibold group-hover:text-primary transition-colors text-navy mb-2 line-clamp-2">
                         {post.title}
                       </h2>
-                      <p className="text-muted-foreground line-clamp-2">
-                        {post.excerpt || post.seo.metaDescription}
+                      <p className="text-sm text-muted-foreground line-clamp-3 mb-4 flex-1">
+                        {post.excerpt || post.seo.metaDescription || stripHtmlAndTruncate(post.content)}
                       </p>
-                      <div className="flex items-center justify-between pt-2">
-                        <div className="flex items-center gap-2 text-sm">
-                          <span className="font-medium">{post.author}</span>
-                        </div>
+                      <div className="flex items-center justify-between mt-auto pt-3 border-t">
+                        <span className="text-sm font-medium text-navy/80">{post.author}</span>
                         {post.tags && post.tags.length > 0 && (
-                          <div className="flex gap-2">
-                            {post.tags.slice(0, 3).map((tag) => (
-                              <span
-                                key={tag}
-                                className="px-2 py-0.5 text-xs rounded-full bg-muted text-muted-foreground"
-                              >
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
+                          <span className="px-2 py-0.5 text-xs rounded-full bg-muted text-muted-foreground">
+                            {post.tags[0]}
+                          </span>
                         )}
                       </div>
                     </div>
