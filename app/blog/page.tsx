@@ -1,7 +1,9 @@
+import { Suspense } from "react";
 import { getPublishedContent } from "@/lib/firestore/content";
 import type { Content } from "@/lib/firestore/types";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BlogListClient } from "@/components/blog/blog-list-client";
 
 export const metadata: Metadata = {
   title: "Blog - Good News Bible Church",
@@ -11,33 +13,6 @@ export const metadata: Metadata = {
 
 // Revalidate every 5 minutes
 export const revalidate = 300;
-
-// Helper to convert Firestore timestamp (may be object with _seconds or Timestamp instance)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function toDate(timestamp: any): Date | null {
-  if (!timestamp) return null;
-  // If it's a Firestore Timestamp instance with toDate method
-  if (typeof timestamp.toDate === "function") {
-    return timestamp.toDate();
-  }
-  // If it's a plain object with _seconds (serialized Timestamp)
-  if (timestamp._seconds !== undefined) {
-    return new Date(timestamp._seconds * 1000);
-  }
-  // If it's already a Date
-  if (timestamp instanceof Date) {
-    return timestamp;
-  }
-  return null;
-}
-
-function stripHtmlAndTruncate(html: string, maxLength: number = 150): string {
-  // Remove HTML tags
-  const text = html.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim();
-  // Truncate if needed
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength).trim() + "...";
-}
 
 function getUniqueTags(posts: Content[]): string[] {
   const tagsSet = new Set<string>();
@@ -49,7 +24,6 @@ function getUniqueTags(posts: Content[]): string[] {
 
 export default async function BlogPage() {
   const posts = await getPublishedContent("blog");
-  console.log("posts =====>", posts);
   const tags = getUniqueTags(posts);
 
   return (
@@ -88,64 +62,33 @@ export default async function BlogPage() {
             </p>
           </header>
 
-          {tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-8">
-              {tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-3 py-1 text-sm rounded-full bg-secondary text-secondary-foreground"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
-
-          {posts.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground">
-                No blog posts yet. Check back soon!
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {posts.map((post) => (
-                <article
-                  key={post.id}
-                  className="group border rounded-lg overflow-hidden hover:border-primary/50 hover:shadow-lg transition-all bg-white flex flex-col"
-                >
-                  <Link href={`/blog/${post.slug}`} className="flex flex-col h-full">
-                    {post.coverImage && (
-                      <div className="aspect-video overflow-hidden">
-                        <img
-                          src={post.coverImage}
-                          alt={post.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                    )}
-                    <div className="flex flex-col flex-1 p-5">
-                      <h2 className="text-lg font-semibold group-hover:text-primary transition-colors text-navy mb-2 line-clamp-2">
-                        {post.title}
-                      </h2>
-                      <p className="text-sm text-muted-foreground line-clamp-3 mb-4 flex-1">
-                        {post.excerpt || post.seo.metaDescription || stripHtmlAndTruncate(post.content)}
-                      </p>
-                      <div className="flex items-center justify-between mt-auto pt-3 border-t">
-                        <span className="text-sm font-medium text-navy/80">{post.author}</span>
-                        {post.tags && post.tags.length > 0 && (
-                          <span className="px-2 py-0.5 text-xs rounded-full bg-muted text-muted-foreground">
-                            {post.tags[0]}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </Link>
-                </article>
-              ))}
-            </div>
-          )}
+          <Suspense fallback={<BlogListSkeleton />}>
+            <BlogListClient posts={posts} availableTags={tags} />
+          </Suspense>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function BlogListSkeleton() {
+  return (
+    <div className="space-y-4">
+      <div className="flex gap-4 mb-8">
+        <div className="h-10 bg-muted rounded flex-1 animate-pulse" />
+        <div className="h-10 bg-muted rounded w-40 animate-pulse" />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="border rounded-lg overflow-hidden bg-white">
+            <div className="aspect-video bg-muted animate-pulse" />
+            <div className="p-5 space-y-3">
+              <div className="h-5 bg-muted rounded animate-pulse" />
+              <div className="h-4 bg-muted rounded w-3/4 animate-pulse" />
+              <div className="h-4 bg-muted rounded w-1/2 animate-pulse" />
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

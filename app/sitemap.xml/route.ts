@@ -1,6 +1,8 @@
-import { getAllPosts } from "@/lib/blog";
+import { getPublishedContent } from "@/lib/firestore/content";
+import type { Content } from "@/lib/firestore/types";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://proagentme.com";
+const BASE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://www.goodnewsbible.org";
 
 interface SitemapEntry {
   url: string;
@@ -35,6 +37,15 @@ ${urlEntries}
 </urlset>`;
 }
 
+function getLastModified(content: Content): string {
+  const timestamp =
+    content.updatedAt || content.publishedAt || content.createdAt;
+  if (timestamp?.toDate) {
+    return timestamp.toDate().toISOString();
+  }
+  return new Date().toISOString();
+}
+
 export async function GET() {
   const now = new Date().toISOString();
 
@@ -53,6 +64,12 @@ export async function GET() {
       priority: 0.9,
     },
     {
+      url: `${BASE_URL}/songs`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
       url: `${BASE_URL}/legal/privacy-policy`,
       lastModified: now,
       changeFrequency: "monthly",
@@ -66,16 +83,25 @@ export async function GET() {
     },
   ];
 
-  // Blog posts
-  const posts = getAllPosts();
-  const blogEntries: SitemapEntry[] = posts.map((post) => ({
-    url: `${BASE_URL}/blog/${post.slug}`,
-    lastModified: new Date(post.date).toISOString(),
+  // Blog posts from Firebase
+  const blogPosts = await getPublishedContent("blog");
+  const blogEntries: SitemapEntry[] = blogPosts.map((post) => ({
+    url: `${BASE_URL}/blog/${post.slug || post.id}`,
+    lastModified: getLastModified(post),
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));
 
-  const allEntries = [...staticPages, ...blogEntries];
+  // Songs from Firebase
+  const songs = await getPublishedContent("song");
+  const songEntries: SitemapEntry[] = songs.map((song) => ({
+    url: `${BASE_URL}/songs/${song.slug || song.id}`,
+    lastModified: getLastModified(song),
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
+
+  const allEntries = [...staticPages, ...blogEntries, ...songEntries];
   const sitemap = generateSitemapXml(allEntries);
 
   return new Response(sitemap, {
