@@ -1,19 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
-import { event } from "@/lib/gtag";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { event } from "@/lib/gtag";
 import {
   contactFormClientSchema,
   type ContactFormClientData,
 } from "@/lib/validations/form-schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export function ContactSection() {
   const t = useTranslations("contact");
@@ -67,6 +67,7 @@ export function ContactSection() {
           interests_visit: data.interests.planningToVisit,
           interests_esl: data.interests.eslClasses,
           interests_prayer: data.interests.prayerRequest,
+          interests_newsletter: data.interests.newsletterSubscription,
         });
         reset();
       } else {
@@ -198,7 +199,9 @@ export function ContactSection() {
                     {...register("interests.planningToVisit")}
                     className="size-4 text-primary rounded border-gray-300 focus:ring-primary"
                   />
-                  <span className="text-gray-700">{t("form.planningToVisit")}</span>
+                  <span className="text-gray-700">
+                    {t("form.planningToVisit")}
+                  </span>
                 </label>
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
@@ -214,7 +217,9 @@ export function ContactSection() {
                     {...register("interests.prayerRequest")}
                     className="size-4 text-primary rounded border-gray-300 focus:ring-primary"
                   />
-                  <span className="text-gray-700">{t("form.prayerRequest")}</span>
+                  <span className="text-gray-700">
+                    {t("form.prayerRequest")}
+                  </span>
                 </label>
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
@@ -226,7 +231,11 @@ export function ContactSection() {
                 </label>
               </div>
 
-              <Button type="submit" className="w-full h-12" disabled={isSubmitting}>
+              <Button
+                type="submit"
+                className="w-full h-12"
+                disabled={isSubmitting}
+              >
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
