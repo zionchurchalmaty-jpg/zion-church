@@ -23,21 +23,21 @@ const GROUPS_CONFIG: GroupConfig[] = [
     id: "youth-teens",
     nameKey: "groups.youth.name",
     descriptionKey: "groups.youth.description",
-    image: "/youth-teens-church-group.jpg",
+    image: "/youth-teens-church-group.png",
     url: "https://goodnewsbible.churchcenter.com/groups/teen-youth-ministry/fc22c291-a386-4c20-8077-4995b739d2d8",
   },
   {
     id: "womens-meetups",
     nameKey: "groups.women.name",
     descriptionKey: "groups.women.description",
-    image: "/womens-ministry-fellowship.jpg",
+    image: "/womens-ministry-fellowship.png",
     url: "https://goodnewsbible.churchcenter.com/groups/women-s-ministry/women-s-ministry",
   },
   {
     id: "mens-meetups",
     nameKey: "groups.men.name",
     descriptionKey: "groups.men.description",
-    image: "/mens-ministry-fellowship.jpg",
+    image: "/mens-ministry-fellowship.png",
     url: "https://goodnewsbible.churchcenter.com/groups/men-s-ministry-groups/the-rock",
   },
   {
@@ -51,7 +51,7 @@ const GROUPS_CONFIG: GroupConfig[] = [
     id: "joyful-kicks",
     nameKey: "groups.soccer.name",
     descriptionKey: "groups.soccer.description",
-    image: "/joyful-kicks-soccer-ministry.jpg",
+    image: "/joyful-kicks-soccer-ministry.png",
     url: "https://goodnewsbible.churchcenter.com/groups/sport-ministries/joyful-kicks",
   },
 ];
