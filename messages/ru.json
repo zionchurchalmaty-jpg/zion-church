@@ -136,7 +136,8 @@
         "description": "Игры, прославление и изучение Библии для подростков."
       }
     },
-    "viewFullCalendar": "Полный календарь"
+    "viewFullCalendar": "Полный календарь",
+    "learnMore": "Подробнее"
   },
   "location": {
     "eyebrow": "Посетите нас",

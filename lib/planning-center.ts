@@ -60,6 +60,7 @@ export interface CalendarEvent {
   image: string | null;
   startsAt: Date;
   endsAt: Date;
+  church_center_url?: string;
 }
 
 // Simplified group type for components
@@ -212,6 +213,7 @@ export async function getUpcomingEvents(): Promise<CalendarEvent[]> {
 
     return data.data.slice(0, 6).map((instance) => {
       const eventId = instance.relationships.event.data.id;
+      console.log("instance =====>", JSON.stringify(instance, null, 2));
       return {
         id: instance.id,
         name: instance.attributes.name.trim(),
@@ -219,6 +221,7 @@ export async function getUpcomingEvents(): Promise<CalendarEvent[]> {
         image: eventImages.get(eventId) || null,
         startsAt: new Date(instance.attributes.starts_at),
         endsAt: new Date(instance.attributes.ends_at),
+        church_center_url: instance.attributes.church_center_url,
       };
     });
   } catch (error) {

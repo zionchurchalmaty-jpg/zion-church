@@ -30,6 +30,65 @@ function getDay(date: Date): string {
   return date.getDate().toString();
 }
 
+/**
+ * Normalizes bilingual event names based on locale.
+ *
+ * Handles formats like:
+ * - "Good News Youth - Молодежь: Friday Nights - Встречи по Пятницам" (group: event, both bilingual)
+ * - "Christmas concert - Праздничный концерт" (simple bilingual)
+ * - "Christmas Eve - Сочельник" (simple bilingual)
+ *
+ * @param name - The raw event name from Planning Center
+ * @param locale - The current locale ('en' or 'ru')
+ * @returns The localized event name
+ */
+function normalizeEventName(name: string, locale: string): string {
+  const isRussian = locale === "ru";
+
+  /**
+   * Extracts the localized part from a bilingual string.
+   * Format: "English text - Russian текст"
+   * Returns the appropriate part based on locale, or the original if no separator found.
+   */
+  function extractLocalizedPart(text: string): string {
+    const trimmed = text.trim();
+    // Look for " - " separator (with spaces to avoid splitting on hyphens within words)
+    const separatorIndex = trimmed.indexOf(" - ");
+
+    if (separatorIndex === -1) {
+      // No bilingual separator found, return as-is
+      return trimmed;
+    }
+
+    const englishPart = trimmed.substring(0, separatorIndex).trim();
+    const russianPart = trimmed.substring(separatorIndex + 3).trim();
+
+    // Fallback: if the expected part is empty, use the other one
+    if (isRussian) {
+      return russianPart || englishPart || trimmed;
+    }
+    return englishPart || russianPart || trimmed;
+  }
+
+  // Check if there's a group:event format (colon separator)
+  const colonIndex = name.indexOf(":");
+
+  if (colonIndex !== -1) {
+    // Format: "Group Name - Группа: Event Name - Название"
+    const groupPart = name.substring(0, colonIndex);
+    const eventPart = name.substring(colonIndex + 1);
+
+    const localizedGroup = extractLocalizedPart(groupPart);
+    const localizedEvent = extractLocalizedPart(eventPart);
+
+    // Return combined format: "Group: Event"
+    return `${localizedGroup}: ${localizedEvent}`;
+  }
+
+  // Simple bilingual format: "English - Russian"
+  return extractLocalizedPart(name);
+}
+
 export async function CalendarSection() {
   const locale = await getLocale();
   const t = await getTranslations("calendar");
@@ -64,6 +123,8 @@ export async function CalendarSection() {
   const events = await getUpcomingEvents();
   const displayEvents = events.length > 0 ? events : fallbackEvents;
 
+  console.log("displayEvents =====>", displayEvents);
+
   return (
     <section id="calendar" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -95,7 +156,7 @@ export async function CalendarSection() {
                 <div className="relative aspect-video overflow-hidden">
                   <img
                     src={event.image}
-                    alt={event.name}
+                    alt={normalizeEventName(event.name, locale)}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-navy/60 to-transparent" />
@@ -122,20 +183,31 @@ export async function CalendarSection() {
                 </div>
               )}
               <CardContent className="py-6 flex flex-col flex-1">
-                <h3 className="font-semibold text-xl mb-2 text-navy">
-                  {event.name}
-                </h3>
-                <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
-                  <Clock className="size-4" />
+                <div className="flex items-center gap-2 text-sm font-semibold text-navy mb-2">
+                  <Clock className="size-4 text-primary" />
                   <span>
-                    {formatEventDate(event.startsAt, locale)} at{" "}
+                    {formatEventDate(event.startsAt, locale)} &middot;{" "}
                     {formatEventTime(event.startsAt, locale)}
                   </span>
                 </div>
+                <h3 className="font-semibold text-xl mb-2 text-navy">
+                  {normalizeEventName(event.name, locale)}
+                </h3>
                 {event.description && (
-                  <p className="text-gray-600 leading-relaxed flex-1">
+                  <p className="text-gray-600 leading-relaxed">
                     {event.description}
                   </p>
+                )}
+                {event.church_center_url && (
+                  <a
+                    href={event.church_center_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center mt-auto pt-4 text-primary hover:underline text-sm font-medium"
+                  >
+                    {t("learnMore")}
+                    <ChevronRight className="size-4 ml-1" />
+                  </a>
                 )}
               </CardContent>
             </Card>
