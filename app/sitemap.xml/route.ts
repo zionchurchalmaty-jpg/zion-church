@@ -1,8 +1,15 @@
 import { getPublishedContent } from "@/lib/firestore/content";
-import type { Content } from "@/lib/firestore/types";
+import type { Content, ContentLanguage } from "@/lib/firestore/types";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://www.goodnewsbible.org";
+
+const LOCALES: ContentLanguage[] = ["en", "ru"];
+const DEFAULT_LOCALE: ContentLanguage = "en";
+
+function getLocalePrefix(locale: ContentLanguage): string {
+  return locale === DEFAULT_LOCALE ? "" : `/${locale}`;
+}
 
 interface SitemapEntry {
   url: string;
@@ -49,53 +56,45 @@ function getLastModified(content: Content): string {
 export async function GET() {
   const now = new Date().toISOString();
 
-  // Static pages
-  const staticPages: SitemapEntry[] = [
+  // Static pages for all locales
+  const staticPagePaths = [
+    { path: "", changeFrequency: "weekly" as const, priority: 1.0 },
+    { path: "/blog", changeFrequency: "daily" as const, priority: 0.9 },
+    { path: "/songs", changeFrequency: "weekly" as const, priority: 0.8 },
     {
-      url: BASE_URL,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 1.0,
-    },
-    {
-      url: `${BASE_URL}/blog`,
-      lastModified: now,
-      changeFrequency: "daily",
-      priority: 0.9,
-    },
-    {
-      url: `${BASE_URL}/songs`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/legal/privacy-policy`,
-      lastModified: now,
-      changeFrequency: "monthly",
+      path: "/legal/privacy-policy",
+      changeFrequency: "monthly" as const,
       priority: 0.3,
     },
     {
-      url: `${BASE_URL}/legal/terms-of-service`,
-      lastModified: now,
-      changeFrequency: "monthly",
+      path: "/legal/terms-of-service",
+      changeFrequency: "monthly" as const,
       priority: 0.3,
     },
   ];
 
-  // Blog posts from Firebase
+  const staticPages: SitemapEntry[] = LOCALES.flatMap((locale) =>
+    staticPagePaths.map((page) => ({
+      url: `${BASE_URL}${getLocalePrefix(locale)}${page.path}`,
+      lastModified: now,
+      changeFrequency: page.changeFrequency,
+      priority: page.priority,
+    }))
+  );
+
+  // Blog posts from Firebase - filtered by language
   const blogPosts = await getPublishedContent("blog");
   const blogEntries: SitemapEntry[] = blogPosts.map((post) => ({
-    url: `${BASE_URL}/blog/${post.slug || post.id}`,
+    url: `${BASE_URL}${getLocalePrefix(post.language)}/blog/${post.slug || post.id}`,
     lastModified: getLastModified(post),
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));
 
-  // Songs from Firebase
+  // Songs from Firebase - filtered by language
   const songs = await getPublishedContent("song");
   const songEntries: SitemapEntry[] = songs.map((song) => ({
-    url: `${BASE_URL}/songs/${song.slug || song.id}`,
+    url: `${BASE_URL}${getLocalePrefix(song.language)}/songs/${song.slug || song.id}`,
     lastModified: getLastModified(song),
     changeFrequency: "monthly" as const,
     priority: 0.6,
