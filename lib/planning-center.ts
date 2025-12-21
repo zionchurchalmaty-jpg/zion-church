@@ -213,7 +213,7 @@ export async function getUpcomingEvents(): Promise<CalendarEvent[]> {
 
     return data.data.slice(0, 6).map((instance) => {
       const eventId = instance.relationships.event.data.id;
-      console.log("instance =====>", JSON.stringify(instance, null, 2));
+
       return {
         id: instance.id,
         name: instance.attributes.name.trim(),

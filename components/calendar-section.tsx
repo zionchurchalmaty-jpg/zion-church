@@ -17,6 +17,7 @@ function formatEventTime(date: Date, locale: string): string {
     hour: "numeric",
     minute: "2-digit",
     hour12: locale !== "ru",
+    timeZone: "America/New_York",
   });
 }
 
@@ -122,8 +123,6 @@ export async function CalendarSection() {
 
   const events = await getUpcomingEvents();
   const displayEvents = events.length > 0 ? events : fallbackEvents;
-
-  console.log("displayEvents =====>", displayEvents);
 
   return (
     <section id="calendar" className="py-20 bg-white">
