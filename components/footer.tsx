@@ -14,7 +14,11 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <img src="/icon_only.png" alt="GNBC Icon" className="size-10" />
+              <img
+                src="/logo.png"
+                alt="Zion Church Icon"
+                className="h-10 w-auto"
+              />
               <div className="font-serif font-semibold text-lg">
                 {t("churchName")}
               </div>
