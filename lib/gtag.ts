@@ -57,7 +57,7 @@
  * ```
  */
 
-export const GA_TRACKING_ID = "G-91JSJLWXZL";
+export const GA_TRACKING_ID = "G-XXXXXXXXXX";
 
 declare global {
   interface Window {

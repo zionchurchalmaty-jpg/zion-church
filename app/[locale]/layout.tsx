@@ -3,17 +3,21 @@ import {
   CookieConsentProvider,
   CookieSettingsModal,
 } from "@/components/cookie-consent";
+import { HtmlLangUpdater } from "@/components/html-lang-updater";
 import { RecaptchaProvider } from "@/components/recaptcha-provider";
 import { routing, type Locale } from "@/i18n/routing";
 import { GA_TRACKING_ID } from "@/lib/gtag";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
+import {
+  getMessages,
+  getTranslations,
+  setRequestLocale,
+} from "next-intl/server";
 import { notFound } from "next/navigation";
 import Script from "next/script";
 import type React from "react";
 import { Toaster } from "sonner";
-import { HtmlLangUpdater } from "@/components/html-lang-updater";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -44,10 +48,10 @@ export async function generateMetadata({
       apple: "/icon_only.png",
     },
     alternates: {
-      canonical: locale === "en" ? "/" : "/ru",
+      canonical: locale === "ru" ? "/" : "/en",
       languages: {
-        en: "/",
-        ru: "/ru",
+        ru: "/",
+        en: "/en",
       },
     },
   };

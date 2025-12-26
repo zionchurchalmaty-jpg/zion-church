@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Good News Bible Church website - a bilingual Russian-English church landing page for a Bible church in Ashburn, Virginia serving the Slavic community.
+Zion Church (Церковь Сион) website - a Russian-language church website for a Presbyterian church in Almaty, Kazakhstan. Internationalization infrastructure is in place for future multi-language support.
 
 ## Commands
 

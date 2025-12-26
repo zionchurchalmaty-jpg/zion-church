@@ -16,7 +16,9 @@
       "Bash(npm install:*)",
       "Bash(ffprobe:*)",
       "WebSearch",
-      "WebFetch(domain:next-intl.dev)"
+      "WebFetch(domain:next-intl.dev)",
+      "WebFetch(domain:zion-church.kz)",
+      "Bash(head:*)"
     ]
   }
 }
