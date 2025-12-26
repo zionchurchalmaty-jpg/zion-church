@@ -48,10 +48,9 @@ export async function generateMetadata({
       apple: "/icon_only.png",
     },
     alternates: {
-      canonical: locale === "ru" ? "/" : "/en",
+      canonical: "/",
       languages: {
         ru: "/",
-        en: "/en",
       },
     },
   };

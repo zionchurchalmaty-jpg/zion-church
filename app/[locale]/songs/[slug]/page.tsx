@@ -1,13 +1,13 @@
+import { Link } from "@/i18n/navigation";
 import {
   getPublishedContent,
   getPublishedContentBySlug,
 } from "@/lib/firestore/content";
-import type { Metadata } from "next";
-import { Link } from "@/i18n/navigation";
-import { notFound } from "next/navigation";
 import DOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
+import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { notFound } from "next/navigation";
 
 interface SongPageProps {
   params: Promise<{
@@ -34,7 +34,7 @@ export async function generateMetadata({
 
   if (!song) {
     return {
-      title: "Song Not Found - Good News Bible Church",
+      title: "Song Not Found - Церкось Сион",
     };
   }
 
@@ -43,7 +43,7 @@ export async function generateMetadata({
   const ogImage = song.seo.ogImage || song.coverImage;
 
   return {
-    title: `${title} - Good News Bible Church Songs`,
+    title: `${title} - Церкось Сион Songs`,
     description,
     openGraph: {
       title,

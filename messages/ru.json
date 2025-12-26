@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "title": "Good News Bible Church | Двуязычная церковь в Ашберне, Вирджиния",
+    "title": "Церкось Сион | Двуязычная церковь в Ашберне, Вирджиния",
     "description": "Двуязычная русско-английская библейская церковь в Ашберне, Вирджиния, служащая славянской общине. Присоединяйтесь к нам по воскресеньям в 13:30 для богослужения, общения и духовного роста."
   },
   "navbar": {
@@ -13,7 +13,7 @@
   },
   "hero": {
     "welcomeTo": "Добро пожаловать в",
-    "churchName": "Good News Bible Church",
+    "churchName": "Церкось Сион",
     "subtitle": "Двуязычная русско-английская библейская церковь, служащая славянской общине Большого Вашингтона.",
     "address": "20430 Ashburn Village Blvd, Ashburn, VA",
     "serviceTime": "Воскресенье в 13:30",
@@ -197,18 +197,18 @@
       "button": "Молодёжь в Instagram"
     },
     "facebook": {
-      "name": "Good News Bible Church",
+      "name": "Церкось Сион",
       "description": "Присоединяйтесь к нашему сообществу в Facebook для событий, трансляций и обсуждений",
       "button": "Мы в Facebook"
     },
     "youtube": {
-      "name": "Good News Bible Church YT",
+      "name": "Церкось Сион YT",
       "description": "Смотрите проповеди, прославление и учения на нашем YouTube-канале",
       "button": "Подписаться на YouTube"
     }
   },
   "footer": {
-    "churchName": "Good News Bible Church",
+    "churchName": "Церкось Сион",
     "motto": "Нести Божью радость всем людям",
     "quickLinks": "Быстрые ссылки",
     "about": "О нас",
@@ -224,7 +224,7 @@
     "address": "Адрес",
     "addressLine1": "20430 Ashburn Village Blvd",
     "addressLine2": "Ashburn, VA 20147",
-    "copyright": "© 2025 Good News Bible Church. Все права защищены.",
+    "copyright": "© 2025 Церкось Сион. Все права защищены.",
     "privacyPolicy": "Политика конфиденциальности",
     "termsOfService": "Условия использования",
     "cookieSettings": "Настройки cookie",
@@ -262,9 +262,9 @@
   },
   "blog": {
     "title": "Блог",
-    "metaTitle": "Блог - Good News Bible Church",
-    "metaDescription": "Новости, обновления и духовное ободрение от Good News Bible Church в Ашберне, Вирджиния.",
-    "description": "Новости, обновления и духовное ободрение от Good News Bible Church.",
+    "metaTitle": "Блог - Церкось Сион",
+    "metaDescription": "Новости, обновления и духовное ободрение от Церкось Сион в Ашберне, Вирджиния.",
+    "description": "Новости, обновления и духовное ободрение от Церкось Сион.",
     "backToHome": "На главную",
     "backToBlog": "Назад к блогу",
     "backToAllPosts": "Все статьи",
@@ -281,9 +281,9 @@
   },
   "songs": {
     "title": "Песни",
-    "metaTitle": "Песни - Good News Bible Church",
-    "metaDescription": "Песни прославления и гимны от Good News Bible Church в Ашберне, Вирджиния.",
-    "description": "Песни прославления и гимны от Good News Bible Church.",
+    "metaTitle": "Песни - Церкось Сион",
+    "metaDescription": "Песни прославления и гимны от Церкось Сион в Ашберне, Вирджиния.",
+    "description": "Песни прославления и гимны от Церкось Сион.",
     "backToHome": "На главную",
     "backToSongs": "Назад к песням",
     "backToAllSongs": "Все песни",

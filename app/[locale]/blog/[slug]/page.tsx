@@ -1,3 +1,4 @@
+import { Link } from "@/i18n/navigation";
 import {
   getContentById,
   getPublishedContent,
@@ -6,9 +7,8 @@ import {
 import DOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
 import type { Metadata } from "next";
-import { Link } from "@/i18n/navigation";
-import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { notFound } from "next/navigation";
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -77,7 +77,7 @@ export async function generateMetadata({
 
   if (!post) {
     return {
-      title: "Post Not Found - Good News Bible Church",
+      title: "Post Not Found - Церкось Сион",
     };
   }
 
@@ -86,7 +86,7 @@ export async function generateMetadata({
   const ogImage = post.seo.ogImage || post.coverImage;
 
   return {
-    title: `${title} - Good News Bible Church Blog`,
+    title: `${title} - Церкось Сион Blog`,
     description,
     openGraph: {
       title,

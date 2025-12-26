@@ -1,18 +1,18 @@
 # **Terms of Service**
 
-Good News Bible Church
+Церкось Сион
 
-*Effective Date: December 15, 2025*
+_Effective Date: December 15, 2025_
 
 # **1\. Agreement to Terms**
 
-Welcome to Good News Bible Church ("GNBC," "we," "us," or "our"). These Terms of Service ("Terms") govern your access to and use of our website at [www.goodnewsbible.org](https://www.goodnewsbible.org), our church management platform at [goodnewsbible.churchcenter.com](https://goodnewsbible.churchcenter.com), our mobile application, and any related services, content, or features (collectively, the "Services").
+Welcome to Церкось Сион ("GNBC," "we," "us," or "our"). These Terms of Service ("Terms") govern your access to and use of our website at [www.goodnewsbible.org](https://www.goodnewsbible.org), our church management platform at [goodnewsbible.churchcenter.com](https://goodnewsbible.churchcenter.com), our mobile application, and any related services, content, or features (collectively, the "Services").
 
 By accessing or using our Services, you agree to be bound by these Terms and our Privacy Policy. If you do not agree to these Terms, please do not use our Services.
 
-# **2\. About Good News Bible Church**
+# **2\. About Церкось Сион**
 
-Good News Bible Church is a nondenominational Christian Bible Church located at 20430 Ashburn Village Blvd, Ashburn, VA 20147\. We are registered as a Virginia nonprofit corporation. Our mission is to share the good news of Jesus Christ and to practice the Christian faith to glorify God, carrying out our ministry through acts of evangelism, worship, teaching, preaching, ministry, missions, and charity.
+Церкось Сион is a nondenominational Christian Bible Church located at 20430 Ashburn Village Blvd, Ashburn, VA 20147\. We are registered as a Virginia nonprofit corporation. Our mission is to share the good news of Jesus Christ and to practice the Christian faith to glorify God, carrying out our ministry through acts of evangelism, worship, teaching, preaching, ministry, missions, and charity.
 
 # **3\. Use of Services**
 
@@ -28,21 +28,21 @@ Some features of our Services may require you to create an account through our P
 
 When using our Services, you agree not to:
 
-* Use the Services for any unlawful purpose or in violation of these Terms  
-* Post or transmit any content that is harmful, offensive, obscene, or inappropriate  
-* Harass, threaten, or discriminate against others  
-* Impersonate any person or entity or misrepresent your affiliation  
-* Attempt to gain unauthorized access to any portion of the Services  
-* Interfere with or disrupt the integrity or performance of the Services  
-* Use automated systems to access the Services without permission  
-* Collect personal information of other users without consent  
-* Use the Services for commercial solicitation or advertising unrelated to church activities
+- Use the Services for any unlawful purpose or in violation of these Terms
+- Post or transmit any content that is harmful, offensive, obscene, or inappropriate
+- Harass, threaten, or discriminate against others
+- Impersonate any person or entity or misrepresent your affiliation
+- Attempt to gain unauthorized access to any portion of the Services
+- Interfere with or disrupt the integrity or performance of the Services
+- Use automated systems to access the Services without permission
+- Collect personal information of other users without consent
+- Use the Services for commercial solicitation or advertising unrelated to church activities
 
 # **4\. Content**
 
 ## **4.1 Our Content**
 
-All content on our Services, including but not limited to sermons, articles, graphics, logos, images, audio, video, and software ("Church Content"), is owned by or licensed to Good News Bible Church and is protected by copyright, trademark, and other intellectual property laws. Church Content is provided for personal, non-commercial, spiritual use. You may share sermon recordings and ministry resources for non-commercial purposes with attribution to GNBC.
+All content on our Services, including but not limited to sermons, articles, graphics, logos, images, audio, video, and software ("Church Content"), is owned by or licensed to Церкось Сион and is protected by copyright, trademark, and other intellectual property laws. Church Content is provided for personal, non-commercial, spiritual use. You may share sermon recordings and ministry resources for non-commercial purposes with attribution to GNBC.
 
 ## **4.2 User Content**
 
@@ -78,7 +78,7 @@ TO THE FULLEST EXTENT PERMITTED BY LAW, GNBC AND ITS PASTORS, DEACONS, STAFF, VO
 
 # **9\. Indemnification**
 
-You agree to indemnify, defend, and hold harmless Good News Bible Church, its pastors, deacons, staff, volunteers, and affiliates from and against any claims, liabilities, damages, losses, costs, or expenses (including reasonable attorneys' fees) arising out of or related to your use of the Services, your violation of these Terms, or your violation of any rights of another person or entity.
+You agree to indemnify, defend, and hold harmless Церкось Сион, its pastors, deacons, staff, volunteers, and affiliates from and against any claims, liabilities, damages, losses, costs, or expenses (including reasonable attorneys' fees) arising out of or related to your use of the Services, your violation of these Terms, or your violation of any rights of another person or entity.
 
 # **10\. Termination**
 
@@ -104,11 +104,11 @@ These Terms, together with our Privacy Policy, constitute the entire agreement b
 
 If you have any questions about these Terms of Service, please contact us:
 
-**Good News Bible Church**
+**Церкось Сион**
 
 20430 Ashburn Village Blvd  
 Ashburn, VA 20147  
 Phone: 703-594-1088  
 Website: [www.goodnewsbible.org](https://www.goodnewsbible.org)
 
-*By using our Services, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.*
+_By using our Services, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service._

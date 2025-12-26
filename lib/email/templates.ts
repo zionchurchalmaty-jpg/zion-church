@@ -49,7 +49,9 @@ const baseStyles = `
   .cta { background: #ea5808; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block; margin: 10px 0; }
 `;
 
-function getInterestLabels(interests: ContactNotificationData["interests"]): string[] {
+function getInterestLabels(
+  interests: ContactNotificationData["interests"]
+): string[] {
   const labels: string[] = [];
   if (interests.planningToVisit) labels.push("Planning to Visit");
   if (interests.eslClasses) labels.push("ESL Classes Interest");
@@ -62,7 +64,8 @@ export function contactNotificationTemplate(data: ContactNotificationData): {
   html: string;
 } {
   const interestLabels = getInterestLabels(data.interests);
-  const interestText = interestLabels.length > 0 ? interestLabels.join(", ") : "General Inquiry";
+  const interestText =
+    interestLabels.length > 0 ? interestLabels.join(", ") : "General Inquiry";
 
   const interestTags = interestLabels
     .map((label) => `<span class="interest-tag">${label}</span>`)
@@ -83,29 +86,41 @@ export function contactNotificationTemplate(data: ContactNotificationData): {
   </div>
   <div class="content">
     <p><span class="label">Name:</span> ${data.firstName} ${data.lastName}</p>
-    <p><span class="label">Email:</span> <a href="mailto:${data.email}">${data.email}</a></p>
+    <p><span class="label">Email:</span> <a href="mailto:${data.email}">${
+    data.email
+  }</a></p>
 
-    ${interestLabels.length > 0 ? `
+    ${
+      interestLabels.length > 0
+        ? `
     <div class="interests">
       <span class="label">Interests:</span><br>
       ${interestTags}
     </div>
-    ` : ""}
+    `
+        : ""
+    }
 
-    ${data.message ? `
+    ${
+      data.message
+        ? `
     <div>
       <span class="label">Message:</span>
       <div class="message-box">${data.message.replace(/\n/g, "<br>")}</div>
     </div>
-    ` : "<p><em>No message provided</em></p>"}
+    `
+        : "<p><em>No message provided</em></p>"
+    }
 
     <div class="meta">
       <p>Submitted: ${data.submittedAt}</p>
-      <p>reCAPTCHA Score: ${data.recaptchaScore.toFixed(2)} (1.0 = likely human)</p>
+      <p>reCAPTCHA Score: ${data.recaptchaScore.toFixed(
+        2
+      )} (1.0 = likely human)</p>
     </div>
   </div>
   <div class="footer">
-    <p>Good News Bible Church - Contact Form Notification</p>
+    <p>Церкось Сион - Contact Form Notification</p>
   </div>
 </body>
 </html>`;
@@ -113,7 +128,9 @@ export function contactNotificationTemplate(data: ContactNotificationData): {
   return { subject, html };
 }
 
-export function newsletterNotificationTemplate(data: NewsletterNotificationData): {
+export function newsletterNotificationTemplate(
+  data: NewsletterNotificationData
+): {
   subject: string;
   html: string;
 } {
@@ -139,7 +156,7 @@ export function newsletterNotificationTemplate(data: NewsletterNotificationData)
     </div>
   </div>
   <div class="footer">
-    <p>Good News Bible Church - Newsletter Subscription Notification</p>
+    <p>Церкось Сион - Newsletter Subscription Notification</p>
   </div>
 </body>
 </html>`;
@@ -151,7 +168,7 @@ export function contactConfirmationTemplate(data: ContactConfirmationData): {
   subject: string;
   html: string;
 } {
-  const subject = "Thank you for contacting Good News Bible Church";
+  const subject = "Thank you for contacting Церкось Сион";
 
   const visitMessage = data.interests.planningToVisit
     ? `<p style="background: #fff8f0; padding: 15px; border-radius: 4px; border-left: 4px solid #ea5808;">
@@ -183,7 +200,7 @@ export function contactConfirmationTemplate(data: ContactConfirmationData): {
   <div class="content">
     <p>Dear ${data.firstName},</p>
 
-    <p>Thank you for contacting Good News Bible Church! We have received your message and will get back to you as soon as possible.</p>
+    <p>Thank you for contacting Церкось Сион! We have received your message and will get back to you as soon as possible.</p>
 
     ${visitMessage}
     ${prayerMessage}
@@ -192,10 +209,10 @@ export function contactConfirmationTemplate(data: ContactConfirmationData): {
     <p>If you have any urgent questions, feel free to reach out to us directly.</p>
 
     <p>Blessings,<br>
-    <strong>Good News Bible Church</strong></p>
+    <strong>Церкось Сион</strong></p>
   </div>
   <div class="footer">
-    <p>Good News Bible Church | Ashburn, VA</p>
+    <p>Церкось Сион | Ashburn, VA</p>
     <p><a href="https://goodnewsbible.org" style="color: #ea5808;">goodnewsbible.org</a></p>
   </div>
 </body>
@@ -204,11 +221,13 @@ export function contactConfirmationTemplate(data: ContactConfirmationData): {
   return { subject, html };
 }
 
-export function newsletterConfirmationTemplate(data: NewsletterConfirmationData): {
+export function newsletterConfirmationTemplate(
+  data: NewsletterConfirmationData
+): {
   subject: string;
   html: string;
 } {
-  const subject = "Welcome to Good News Bible Church Newsletter";
+  const subject = "Welcome to Церкось Сион Newsletter";
 
   const html = `
 <!DOCTYPE html>
@@ -224,7 +243,7 @@ export function newsletterConfirmationTemplate(data: NewsletterConfirmationData)
   <div class="content">
     <p>Dear ${data.firstName},</p>
 
-    <p>Thank you for subscribing to the Good News Bible Church newsletter!</p>
+    <p>Thank you for subscribing to the Церкось Сион newsletter!</p>
 
     <p>You'll receive updates about:</p>
     <ul>
@@ -236,10 +255,10 @@ export function newsletterConfirmationTemplate(data: NewsletterConfirmationData)
     <p>We're glad to have you as part of our community!</p>
 
     <p>Blessings,<br>
-    <strong>Good News Bible Church</strong></p>
+    <strong>Церкось Сион</strong></p>
   </div>
   <div class="footer">
-    <p>Good News Bible Church | Ashburn, VA</p>
+    <p>Церкось Сион | Ashburn, VA</p>
     <p><a href="https://goodnewsbible.org" style="color: #ea5808;">goodnewsbible.org</a></p>
     <p style="font-size: 11px; color: #999;">You're receiving this because you subscribed to our newsletter. You can unsubscribe anytime.</p>
   </div>

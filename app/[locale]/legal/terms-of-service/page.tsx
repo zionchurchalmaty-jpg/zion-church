@@ -1,10 +1,9 @@
-import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms of Service - Good News Bible Church",
-  description:
-    "Terms of Service for Good News Bible Church website and services.",
+  title: "Terms of Service - Церкось Сион",
+  description: "Terms of Service for Церкось Сион website and services.",
 };
 
 export default function TermsOfServicePage() {
@@ -37,7 +36,7 @@ export default function TermsOfServicePage() {
           <h1 className="font-serif text-navy">Terms of Service</h1>
 
           <p className="text-lg text-muted-foreground">
-            <strong>Good News Bible Church</strong>
+            <strong>Церкось Сион</strong>
           </p>
 
           <p>
@@ -49,19 +48,44 @@ export default function TermsOfServicePage() {
           <h2>1. Agreement to Terms</h2>
 
           <p>
-            Welcome to Good News Bible Church (&ldquo;GNBC,&rdquo; &ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;). These Terms of Service (&ldquo;Terms&rdquo;) govern your access to and use of our website at{" "}
-            <a href="https://www.goodnewsbible.org" target="_blank" rel="noopener noreferrer">www.goodnewsbible.org</a>, our church management platform at{" "}
-            <a href="https://goodnewsbible.churchcenter.com" target="_blank" rel="noopener noreferrer">goodnewsbible.churchcenter.com</a>, our mobile application, and any related services, content, or features (collectively, the &ldquo;Services&rdquo;).
+            Welcome to Церкось Сион (&ldquo;GNBC,&rdquo; &ldquo;we,&rdquo;
+            &ldquo;us,&rdquo; or &ldquo;our&rdquo;). These Terms of Service
+            (&ldquo;Terms&rdquo;) govern your access to and use of our website
+            at{" "}
+            <a
+              href="https://www.goodnewsbible.org"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              www.goodnewsbible.org
+            </a>
+            , our church management platform at{" "}
+            <a
+              href="https://goodnewsbible.churchcenter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              goodnewsbible.churchcenter.com
+            </a>
+            , our mobile application, and any related services, content, or
+            features (collectively, the &ldquo;Services&rdquo;).
           </p>
 
           <p>
-            By accessing or using our Services, you agree to be bound by these Terms and our Privacy Policy. If you do not agree to these Terms, please do not use our Services.
+            By accessing or using our Services, you agree to be bound by these
+            Terms and our Privacy Policy. If you do not agree to these Terms,
+            please do not use our Services.
           </p>
 
-          <h2>2. About Good News Bible Church</h2>
+          <h2>2. About Церкось Сион</h2>
 
           <p>
-            Good News Bible Church is a nondenominational Christian Bible Church located at 20430 Ashburn Village Blvd, Ashburn, VA 20147. We are registered as a Virginia nonprofit corporation. Our mission is to share the good news of Jesus Christ and to practice the Christian faith to glorify God, carrying out our ministry through acts of evangelism, worship, teaching, preaching, ministry, missions, and charity.
+            Церкось Сион is a nondenominational Christian Bible Church located
+            at 20430 Ashburn Village Blvd, Ashburn, VA 20147. We are registered
+            as a Virginia nonprofit corporation. Our mission is to share the
+            good news of Jesus Christ and to practice the Christian faith to
+            glorify God, carrying out our ministry through acts of evangelism,
+            worship, teaching, preaching, ministry, missions, and charity.
           </p>
 
           <h2>3. Use of Services</h2>
@@ -69,13 +93,22 @@ export default function TermsOfServicePage() {
           <h3>3.1 Eligibility</h3>
 
           <p>
-            Our Services are intended for individuals of all ages seeking spiritual resources and church community. However, users under 18 should use our Services under parental supervision. Account registration features require you to be at least 13 years old, or have parental consent.
+            Our Services are intended for individuals of all ages seeking
+            spiritual resources and church community. However, users under 18
+            should use our Services under parental supervision. Account
+            registration features require you to be at least 13 years old, or
+            have parental consent.
           </p>
 
           <h3>3.2 Account Registration</h3>
 
           <p>
-            Some features of our Services may require you to create an account through our Planning Center platform. You agree to provide accurate, current, and complete information during registration and to keep your account information updated. You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account.
+            Some features of our Services may require you to create an account
+            through our Planning Center platform. You agree to provide accurate,
+            current, and complete information during registration and to keep
+            your account information updated. You are responsible for
+            maintaining the confidentiality of your account credentials and for
+            all activities that occur under your account.
           </p>
 
           <h3>3.3 Acceptable Use</h3>
@@ -83,15 +116,33 @@ export default function TermsOfServicePage() {
           <p>When using our Services, you agree not to:</p>
 
           <ul>
-            <li>Use the Services for any unlawful purpose or in violation of these Terms</li>
-            <li>Post or transmit any content that is harmful, offensive, obscene, or inappropriate</li>
+            <li>
+              Use the Services for any unlawful purpose or in violation of these
+              Terms
+            </li>
+            <li>
+              Post or transmit any content that is harmful, offensive, obscene,
+              or inappropriate
+            </li>
             <li>Harass, threaten, or discriminate against others</li>
-            <li>Impersonate any person or entity or misrepresent your affiliation</li>
-            <li>Attempt to gain unauthorized access to any portion of the Services</li>
-            <li>Interfere with or disrupt the integrity or performance of the Services</li>
-            <li>Use automated systems to access the Services without permission</li>
+            <li>
+              Impersonate any person or entity or misrepresent your affiliation
+            </li>
+            <li>
+              Attempt to gain unauthorized access to any portion of the Services
+            </li>
+            <li>
+              Interfere with or disrupt the integrity or performance of the
+              Services
+            </li>
+            <li>
+              Use automated systems to access the Services without permission
+            </li>
             <li>Collect personal information of other users without consent</li>
-            <li>Use the Services for commercial solicitation or advertising unrelated to church activities</li>
+            <li>
+              Use the Services for commercial solicitation or advertising
+              unrelated to church activities
+            </li>
           </ul>
 
           <h2>4. Content</h2>
@@ -99,13 +150,27 @@ export default function TermsOfServicePage() {
           <h3>4.1 Our Content</h3>
 
           <p>
-            All content on our Services, including but not limited to sermons, articles, graphics, logos, images, audio, video, and software (&ldquo;Church Content&rdquo;), is owned by or licensed to Good News Bible Church and is protected by copyright, trademark, and other intellectual property laws. Church Content is provided for personal, non-commercial, spiritual use. You may share sermon recordings and ministry resources for non-commercial purposes with attribution to GNBC.
+            All content on our Services, including but not limited to sermons,
+            articles, graphics, logos, images, audio, video, and software
+            (&ldquo;Church Content&rdquo;), is owned by or licensed to Церкось
+            Сион and is protected by copyright, trademark, and other
+            intellectual property laws. Church Content is provided for personal,
+            non-commercial, spiritual use. You may share sermon recordings and
+            ministry resources for non-commercial purposes with attribution to
+            GNBC.
           </p>
 
           <h3>4.2 User Content</h3>
 
           <p>
-            You may submit content through our Services, such as prayer requests, event registrations, comments, or photos (&ldquo;User Content&rdquo;). You retain ownership of your User Content, but by submitting it, you grant GNBC a non-exclusive, royalty-free, worldwide license to use, display, and distribute your User Content for ministry purposes. You represent that you have the right to submit such content and that it does not violate any third-party rights.
+            You may submit content through our Services, such as prayer
+            requests, event registrations, comments, or photos (&ldquo;User
+            Content&rdquo;). You retain ownership of your User Content, but by
+            submitting it, you grant GNBC a non-exclusive, royalty-free,
+            worldwide license to use, display, and distribute your User Content
+            for ministry purposes. You represent that you have the right to
+            submit such content and that it does not violate any third-party
+            rights.
           </p>
 
           <h2>5. Donations and Financial Contributions</h2>
@@ -113,85 +178,147 @@ export default function TermsOfServicePage() {
           <h3>5.1 Online Giving</h3>
 
           <p>
-            Our Services allow you to make financial contributions to GNBC. All donations are processed by Stripe, our third-party payment processor. By making a donation, you agree to Stripe&apos;s terms of service and privacy policy. Donations are generally non-refundable except in cases of error or fraud.
+            Our Services allow you to make financial contributions to GNBC. All
+            donations are processed by Stripe, our third-party payment
+            processor. By making a donation, you agree to Stripe&apos;s terms of
+            service and privacy policy. Donations are generally non-refundable
+            except in cases of error or fraud.
           </p>
 
           <h3>5.2 Tax Deductibility</h3>
 
           <p>
-            GNBC is pursuing 501(c)(3) tax-exempt status with the Internal Revenue Service. Once approved, donations may be tax-deductible to the extent permitted by law. Annual giving statements will be provided for tax purposes. Please consult your tax advisor regarding the deductibility of your contributions.
+            GNBC is pursuing 501(c)(3) tax-exempt status with the Internal
+            Revenue Service. Once approved, donations may be tax-deductible to
+            the extent permitted by law. Annual giving statements will be
+            provided for tax purposes. Please consult your tax advisor regarding
+            the deductibility of your contributions.
           </p>
 
           <h3>5.3 Use of Donations</h3>
 
           <p>
-            Donations to GNBC will be used to support our ministry operations, programs, facilities, missions, and charitable activities in accordance with our mission and nonprofit purposes. While we welcome designated gifts, GNBC reserves the right to redirect donations if the designated purpose has been fulfilled or is no longer feasible.
+            Donations to GNBC will be used to support our ministry operations,
+            programs, facilities, missions, and charitable activities in
+            accordance with our mission and nonprofit purposes. While we welcome
+            designated gifts, GNBC reserves the right to redirect donations if
+            the designated purpose has been fulfilled or is no longer feasible.
           </p>
 
           <h2>6. Third-Party Services and Links</h2>
 
           <p>
-            Our Services may contain links to third-party websites, applications, or services not owned or controlled by GNBC, including Planning Center, Stripe, YouTube, Facebook, Instagram, and X (Twitter). We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services. Your use of third-party services is at your own risk and subject to their respective terms.
+            Our Services may contain links to third-party websites,
+            applications, or services not owned or controlled by GNBC, including
+            Planning Center, Stripe, YouTube, Facebook, Instagram, and X
+            (Twitter). We have no control over and assume no responsibility for
+            the content, privacy policies, or practices of any third-party sites
+            or services. Your use of third-party services is at your own risk
+            and subject to their respective terms.
           </p>
 
           <h2>7. Disclaimer of Warranties</h2>
 
           <p>
-            <strong>THE SERVICES ARE PROVIDED &ldquo;AS IS&rdquo; AND &ldquo;AS AVAILABLE&rdquo; WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.</strong> GNBC does not warrant that the Services will be uninterrupted, secure, or error-free. We do not guarantee the accuracy, completeness, or usefulness of any content on our Services.
+            <strong>
+              THE SERVICES ARE PROVIDED &ldquo;AS IS&rdquo; AND &ldquo;AS
+              AVAILABLE&rdquo; WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
+              IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF
+              MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
+              NON-INFRINGEMENT.
+            </strong>{" "}
+            GNBC does not warrant that the Services will be uninterrupted,
+            secure, or error-free. We do not guarantee the accuracy,
+            completeness, or usefulness of any content on our Services.
           </p>
 
           <p>
-            The spiritual, pastoral, and educational content provided through our Services is intended for general religious and informational purposes only and should not be considered a substitute for professional counseling, legal, medical, or financial advice.
+            The spiritual, pastoral, and educational content provided through
+            our Services is intended for general religious and informational
+            purposes only and should not be considered a substitute for
+            professional counseling, legal, medical, or financial advice.
           </p>
 
           <h2>8. Limitation of Liability</h2>
 
           <p>
-            TO THE FULLEST EXTENT PERMITTED BY LAW, GNBC AND ITS PASTORS, DEACONS, STAFF, VOLUNTEERS, AND AFFILIATES SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING OUT OF OR RELATED TO YOUR USE OF THE SERVICES, INCLUDING BUT NOT LIMITED TO DAMAGES FOR LOSS OF DATA, PROFITS, OR OTHER INTANGIBLE LOSSES, EVEN IF WE HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+            TO THE FULLEST EXTENT PERMITTED BY LAW, GNBC AND ITS PASTORS,
+            DEACONS, STAFF, VOLUNTEERS, AND AFFILIATES SHALL NOT BE LIABLE FOR
+            ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE
+            DAMAGES ARISING OUT OF OR RELATED TO YOUR USE OF THE SERVICES,
+            INCLUDING BUT NOT LIMITED TO DAMAGES FOR LOSS OF DATA, PROFITS, OR
+            OTHER INTANGIBLE LOSSES, EVEN IF WE HAVE BEEN ADVISED OF THE
+            POSSIBILITY OF SUCH DAMAGES.
           </p>
 
           <h2>9. Indemnification</h2>
 
           <p>
-            You agree to indemnify, defend, and hold harmless Good News Bible Church, its pastors, deacons, staff, volunteers, and affiliates from and against any claims, liabilities, damages, losses, costs, or expenses (including reasonable attorneys&apos; fees) arising out of or related to your use of the Services, your violation of these Terms, or your violation of any rights of another person or entity.
+            You agree to indemnify, defend, and hold harmless Церкось Сион, its
+            pastors, deacons, staff, volunteers, and affiliates from and against
+            any claims, liabilities, damages, losses, costs, or expenses
+            (including reasonable attorneys&apos; fees) arising out of or
+            related to your use of the Services, your violation of these Terms,
+            or your violation of any rights of another person or entity.
           </p>
 
           <h2>10. Termination</h2>
 
           <p>
-            We reserve the right to suspend or terminate your access to the Services at any time, with or without cause and with or without notice, including if we believe you have violated these Terms. Upon termination, your right to use the Services will immediately cease.
+            We reserve the right to suspend or terminate your access to the
+            Services at any time, with or without cause and with or without
+            notice, including if we believe you have violated these Terms. Upon
+            termination, your right to use the Services will immediately cease.
           </p>
 
           <h2>11. Governing Law and Dispute Resolution</h2>
 
           <p>
-            These Terms shall be governed by and construed in accordance with the laws of the Commonwealth of Virginia, without regard to its conflict of law provisions. Any disputes arising under these Terms shall be resolved through good-faith mediation before pursuing any legal action. If mediation is unsuccessful, disputes shall be subject to the exclusive jurisdiction of the courts located in Loudoun County, Virginia.
+            These Terms shall be governed by and construed in accordance with
+            the laws of the Commonwealth of Virginia, without regard to its
+            conflict of law provisions. Any disputes arising under these Terms
+            shall be resolved through good-faith mediation before pursuing any
+            legal action. If mediation is unsuccessful, disputes shall be
+            subject to the exclusive jurisdiction of the courts located in
+            Loudoun County, Virginia.
           </p>
 
           <h2>12. Changes to Terms</h2>
 
           <p>
-            We reserve the right to modify these Terms at any time. Changes will be posted on this page with an updated effective date. Your continued use of the Services after changes constitutes acceptance of the updated Terms. We encourage you to review these Terms periodically.
+            We reserve the right to modify these Terms at any time. Changes will
+            be posted on this page with an updated effective date. Your
+            continued use of the Services after changes constitutes acceptance
+            of the updated Terms. We encourage you to review these Terms
+            periodically.
           </p>
 
           <h2>13. Severability</h2>
 
           <p>
-            If any provision of these Terms is found to be unenforceable or invalid, that provision shall be limited or eliminated to the minimum extent necessary so that these Terms shall otherwise remain in full force and effect.
+            If any provision of these Terms is found to be unenforceable or
+            invalid, that provision shall be limited or eliminated to the
+            minimum extent necessary so that these Terms shall otherwise remain
+            in full force and effect.
           </p>
 
           <h2>14. Entire Agreement</h2>
 
           <p>
-            These Terms, together with our Privacy Policy, constitute the entire agreement between you and GNBC regarding your use of the Services and supersede any prior agreements or understandings.
+            These Terms, together with our Privacy Policy, constitute the entire
+            agreement between you and GNBC regarding your use of the Services
+            and supersede any prior agreements or understandings.
           </p>
 
           <h2>15. Contact Information</h2>
 
-          <p>If you have any questions about these Terms of Service, please contact us:</p>
+          <p>
+            If you have any questions about these Terms of Service, please
+            contact us:
+          </p>
 
           <p>
-            <strong>Good News Bible Church</strong>
+            <strong>Церкось Сион</strong>
             <br />
             20430 Ashburn Village Blvd
             <br />
@@ -200,11 +327,20 @@ export default function TermsOfServicePage() {
             Phone: 703-594-1088
             <br />
             Website:{" "}
-            <a href="https://www.goodnewsbible.org" target="_blank" rel="noopener noreferrer">www.goodnewsbible.org</a>
+            <a
+              href="https://www.goodnewsbible.org"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              www.goodnewsbible.org
+            </a>
           </p>
 
           <p>
-            <em>By using our Services, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.</em>
+            <em>
+              By using our Services, you acknowledge that you have read,
+              understood, and agree to be bound by these Terms of Service.
+            </em>
           </p>
         </article>
       </div>

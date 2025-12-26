@@ -1,16 +1,14 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { Menu, X } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 export function Navbar() {
   const t = useTranslations("navbar");
-  const locale = useLocale();
   const pathname = usePathname();
-  const router = useRouter();
 
   const isHomePage = pathname === "/";
 
@@ -39,10 +37,6 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isHomePage]);
 
-  const handleLanguageChange = (newLocale: "en" | "ru") => {
-    router.replace(pathname, { locale: newLocale });
-  };
-
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -55,7 +49,7 @@ export function Navbar() {
           <Link href="/" className="flex items-center gap-3">
             <img
               src="/GNBC_logo.png"
-              alt="Good News Bible Church"
+              alt="Церкось Сион"
               className="h-14 md:h-14 w-auto"
             />
           </Link>
@@ -75,38 +69,6 @@ export function Navbar() {
                 {link.label}
               </Link>
             ))}
-
-            {/* Language Toggle */}
-            <div
-              className={`flex items-center gap-1 rounded-full p-1 transition-colors ${
-                scrolled ? "bg-gray-100" : "bg-white/20"
-              }`}
-            >
-              <button
-                onClick={() => handleLanguageChange("en")}
-                className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
-                  locale === "en"
-                    ? "bg-primary text-white"
-                    : scrolled
-                    ? "text-gray-600"
-                    : "text-white"
-                }`}
-              >
-                EN
-              </button>
-              <button
-                onClick={() => handleLanguageChange("ru")}
-                className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
-                  locale === "ru"
-                    ? "bg-primary text-white"
-                    : scrolled
-                    ? "text-gray-600"
-                    : "text-white"
-                }`}
-              >
-                RU
-              </button>
-            </div>
 
             <Button size="sm" asChild>
               <a
@@ -147,30 +109,8 @@ export function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <div className="flex items-center gap-2 pt-2">
-              <div className="flex items-center gap-1 bg-gray-100 rounded-full p-1">
-                <button
-                  onClick={() => handleLanguageChange("en")}
-                  className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    locale === "en"
-                      ? "bg-primary text-white"
-                      : "text-gray-600"
-                  }`}
-                >
-                  EN
-                </button>
-                <button
-                  onClick={() => handleLanguageChange("ru")}
-                  className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    locale === "ru"
-                      ? "bg-primary text-white"
-                      : "text-gray-600"
-                  }`}
-                >
-                  RU
-                </button>
-              </div>
-              <Button size="sm" className="flex-1" asChild>
+            <div className="pt-2">
+              <Button size="sm" className="w-full" asChild>
                 <a
                   href="https://goodnewsbible.churchcenter.com/giving"
                   target="_blank"

@@ -4,8 +4,8 @@ import type { Content, ContentLanguage } from "@/lib/firestore/types";
 const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://www.goodnewsbible.org";
 
-const LOCALES: ContentLanguage[] = ["en", "ru"];
-const DEFAULT_LOCALE: ContentLanguage = "en";
+const LOCALES: ContentLanguage[] = ["ru"];
+const DEFAULT_LOCALE: ContentLanguage = "ru";
 
 function getLocalePrefix(locale: ContentLanguage): string {
   return locale === DEFAULT_LOCALE ? "" : `/${locale}`;

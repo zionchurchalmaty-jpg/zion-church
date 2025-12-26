@@ -1,12 +1,12 @@
 # **Privacy Policy**
 
-Good News Bible Church
+Церкось Сион
 
-*Effective Date: December 15, 2025*
+_Effective Date: December 15, 2025_
 
 # **1\. Introduction**
 
-Good News Bible Church ("GNBC," "we," "us," or "our"), located at 20430 Ashburn Village Blvd, Ashburn, VA 20147, is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website [www.goodnewsbible.org](https://www.goodnewsbible.org), our church management platform at [goodnewsbible.churchcenter.com](https://goodnewsbible.churchcenter.com), or use our mobile application (collectively, the "Services").
+Церкось Сион ("GNBC," "we," "us," or "our"), located at 20430 Ashburn Village Blvd, Ashburn, VA 20147, is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website [www.goodnewsbible.org](https://www.goodnewsbible.org), our church management platform at [goodnewsbible.churchcenter.com](https://goodnewsbible.churchcenter.com), or use our mobile application (collectively, the "Services").
 
 By using our Services, you agree to the collection and use of information in accordance with this policy. If you do not agree with this policy, please do not access or use our Services.
 
@@ -16,13 +16,13 @@ By using our Services, you agree to the collection and use of information in acc
 
 We may collect personal information that you voluntarily provide when you:
 
-* Register as a church member or visitor  
-* Sign up for our newsletter or email communications  
-* Make a donation or financial contribution  
-* Register for events, programs, or ministries  
-* Submit prayer requests or counseling inquiries  
-* Contact us through forms or email  
-* Participate in surveys or church programs
+- Register as a church member or visitor
+- Sign up for our newsletter or email communications
+- Make a donation or financial contribution
+- Register for events, programs, or ministries
+- Submit prayer requests or counseling inquiries
+- Contact us through forms or email
+- Participate in surveys or church programs
 
 This information may include your name, email address, phone number, mailing address, family information, date of birth, profile photos, and any other information you choose to provide.
 
@@ -34,10 +34,10 @@ When you make donations or payments, your financial information (such as credit 
 
 When you access our Services, we may automatically collect certain information, including:
 
-* Device information (browser type, operating system, device identifiers)  
-* Usage data (pages visited, time spent, clicks, referring URLs)  
-* IP address and approximate geographic location  
-* Cookies and similar tracking technologies
+- Device information (browser type, operating system, device identifiers)
+- Usage data (pages visited, time spent, clicks, referring URLs)
+- IP address and approximate geographic location
+- Cookies and similar tracking technologies
 
 ## **2.4 Information from Children**
 
@@ -47,14 +47,14 @@ Our Services are not intended for children under 13\. We do not knowingly collec
 
 We use the information we collect for the following purposes:
 
-* To facilitate church membership, ministry participation, and spiritual care  
-* To process donations and provide tax receipts  
-* To send newsletters, announcements, and ministry communications  
-* To coordinate events, home groups, and programs  
-* To respond to prayer requests and pastoral care needs  
-* To maintain our church directory (with your consent)  
-* To improve our website, services, and user experience  
-* To comply with legal obligations
+- To facilitate church membership, ministry participation, and spiritual care
+- To process donations and provide tax receipts
+- To send newsletters, announcements, and ministry communications
+- To coordinate events, home groups, and programs
+- To respond to prayer requests and pastoral care needs
+- To maintain our church directory (with your consent)
+- To improve our website, services, and user experience
+- To comply with legal obligations
 
 # **4\. Information Sharing and Disclosure**
 
@@ -88,11 +88,11 @@ Our website uses cookies and similar technologies to enhance your experience, an
 
 You have the right to:
 
-* Access, update, or correct your personal information  
-* Request deletion of your personal information  
-* Opt out of marketing communications at any time  
-* Request removal from the church directory  
-* Withdraw consent for data processing where applicable
+- Access, update, or correct your personal information
+- Request deletion of your personal information
+- Opt out of marketing communications at any time
+- Request removal from the church directory
+- Withdraw consent for data processing where applicable
 
 To exercise these rights, please contact us using the information provided below.
 
@@ -112,7 +112,7 @@ We may update this Privacy Policy from time to time. Changes will be posted on t
 
 If you have questions about this Privacy Policy or our privacy practices, please contact us:
 
-**Good News Bible Church**
+**Церкось Сион**
 
 20430 Ashburn Village Blvd  
 Ashburn, VA 20147  
