@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ChevronRight, Clock, MapPin, Play } from "lucide-react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 export function HeroSection() {
   const t = useTranslations("hero");
@@ -11,18 +12,13 @@ export function HeroSection() {
     <section className="relative min-h-screen flex items-center justify-center pt-16">
       {/* Background with overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-[rgb(var(--secondary-navy))] via-[rgb(var(--secondary-navy-light))] to-[rgb(var(--secondary-navy))]">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
-        >
-          <source
-            src="/hero-video-2.mp4?height=1080&width=1920&query=happy+people+coming+to+church"
-            type="video/mp4"
-          />
-        </video>
+        <Image
+          src="/zion-church.jpg"
+          alt="Церковь Сион"
+          fill
+          priority
+          className="object-cover opacity-40"
+        />
         <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-radial from-primary/10 to-transparent blur-3xl" />
       </div>
 
@@ -71,7 +67,7 @@ export function HeroSection() {
             asChild
           >
             <a
-              href="https://www.youtube.com/@GoodNewsBibleChurchYT/streams"
+              href="https://www.instagram.com/zionchurch.kz/"
               target="_blank"
               rel="noopener noreferrer"
             >

@@ -16,10 +16,10 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(!isHomePage);
 
   const navLinks = [
-    { label: t("about"), href: "/#about" },
-    { label: t("visit"), href: "/#what-to-expect" },
-    { label: t("groups"), href: "/#groups" },
-    { label: t("blog"), href: "/blog" },
+    { label: t("church-history"), href: "/#church-history" },
+    { label: t("mission"), href: "/#mission" },
+    { label: t("faith-foundation"), href: "/#faith-foundation" },
+    { label: t("sermons"), href: "/#sermons" },
     { label: t("contact"), href: "/#contact" },
   ];
 
@@ -48,7 +48,7 @@ export function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
             <img
-              src="/GNBC_logo.png"
+              src="/logo.png"
               alt="Церкось Сион"
               className="h-14 md:h-14 w-auto"
             />
