@@ -23,6 +23,8 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+const siteUrl = "https://zion-church.kz";
+
 export async function generateMetadata({
   params,
 }: {
@@ -31,27 +33,75 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "metadata" });
 
+  const title = t("title");
+  const description = t("description");
+
   return {
-    title: t("title"),
-    description: t("description"),
+    title,
+    description,
     keywords: [
-      "church",
-      "Ashburn VA",
-      "Russian church",
-      "bilingual church",
-      "Slavic community",
-      "Bible church",
-      "Northern Virginia",
+      "церковь Сион",
+      "Церковь Сион Алматы",
+      "пресвитерианская церковь",
+      "церковь Алматы",
+      "христианская церковь Казахстан",
+      "богослужение Алматы",
+      "евангельская церковь",
+      "Zion Church Almaty",
+      "Presbyterian church Kazakhstan",
+      "Christian church Almaty",
     ],
+    authors: [{ name: "Церковь Сион" }],
+    creator: "Церковь Сион",
+    publisher: "Церковь Сион",
+    metadataBase: new URL(siteUrl),
     icons: {
-      icon: "/icon_only.png",
-      apple: "/icon_only.png",
+      icon: "/logo.png",
+      apple: "/logo.png",
     },
     alternates: {
-      canonical: "/",
+      canonical: siteUrl,
       languages: {
-        ru: "/",
+        ru: siteUrl,
       },
+    },
+    openGraph: {
+      type: "website",
+      locale: "ru_RU",
+      url: siteUrl,
+      siteName: "Церковь Сион",
+      title,
+      description,
+      images: [
+        {
+          url: "/og-image.png",
+          width: 1200,
+          height: 630,
+          alt: "Церковь Сион - Пресвитерианская церковь в Алматы",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/og-image.png"],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+    verification: {
+      // Add verification codes here when available
+      // google: "google-site-verification-code",
+      // yandex: "yandex-verification-code",
     },
   };
 }
