@@ -148,22 +148,17 @@ export default async function ChurchHistoryPage({
             </div>
 
             {/* Early Church Image Placeholder - positioned after initial events */}
-            <div className="mt-8 ml-12 md:ml-18">
+            {/* <div className="mt-8 ml-12 md:ml-18">
               <div className="relative w-full max-w-md h-[200px] bg-gray-200 rounded-lg overflow-hidden">
                 <Image
-                  src="/images/early-church.jpg"
+                  src="/images/early-church.png"
                   alt={t("earlyChurchImageAlt")}
                   fill
                   className="object-cover"
                   unoptimized
                 />
-                <div className="absolute inset-0 flex items-center justify-center bg-gray-300/50">
-                  <span className="text-gray-600 text-sm">
-                    {t("earlyChurchImageAlt")}
-                  </span>
-                </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
