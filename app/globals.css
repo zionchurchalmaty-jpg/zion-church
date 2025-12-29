@@ -169,6 +169,10 @@
     color: rgb(var(--primary-orange));
   }
 
+  .bg-primary-orange {
+    background-color: rgb(var(--primary-orange));
+  }
+
   .text-navy {
     color: rgb(var(--secondary-navy));
   }

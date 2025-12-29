@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ChevronRight, Clock, MapPin, Play } from "lucide-react";
+import { ChevronRight, Clock, MapPin, Play, Rotate3d } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
@@ -73,6 +73,21 @@ export function HeroSection() {
             >
               <Play className="size-4" />
               {t("watchOnline")}
+            </a>
+          </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            className="border-white/30 text-white hover:bg-white/10 px-8 bg-transparent"
+            asChild
+          >
+            <a
+              href="https://www.google.com/maps/@43.2225172,76.9395337,3a,75y,303.73h,100.78t/data=!3m8!1e1!3m6!1sAF1QipPlodFgyP0vQxXgInqIVMZWbuwQ4dhCF94vDLDc!2e10!3e11!6shttps:%2F%2Flh3.googleusercontent.com%2Fp%2FAF1QipPlodFgyP0vQxXgInqIVMZWbuwQ4dhCF94vDLDc%3Dw900-h600-k-no-pi-10.780000000000001-ya6.140003662109393-ro0-fo100!7i10000!8i5000?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoKLDEwMDc5MjA2N0gBUAM%3D"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Rotate3d className="size-4" />
+              {t("tour3d")}
             </a>
           </Button>
         </div>

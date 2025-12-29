@@ -164,13 +164,13 @@ export function Footer() {
             >
               {t("privacyPolicy")}
             </Link>
-            <span>·</span>
+            {/* <span>·</span>
             <Link
               href="/legal/terms-of-service"
               className="hover:text-primary transition-colors"
             >
               {t("termsOfService")}
-            </Link>
+            </Link> */}
             <span>·</span>
             <button
               onClick={() =>

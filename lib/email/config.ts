@@ -11,7 +11,7 @@
 
 export const emailConfig = {
   apiKey: process.env.RESEND_API_KEY || "",
-  from: process.env.EMAIL_FROM || "noreply@goodnewsbible.org",
+  from: process.env.EMAIL_FROM || "noreply@updates.zion-church.kz",
 
   /**
    * Email recipients configuration
@@ -19,19 +19,19 @@ export const emailConfig = {
    */
   recipients: {
     /** Default recipients for general inquiries (when no specific interest is selected) */
-    default: ["contact@goodnewsbible.org"],
+    default: ["zionchurchalmaty@gmail.com"],
 
     /** Recipients for "I'm planning to visit" interest */
-    visit: ["contact@goodnewsbible.org"],
+    visit: ["zionchurchalmaty@gmail.com"],
 
     /** Recipients for "ESL classes" interest */
-    esl: ["esl@goodnewsbible.org"],
+    esl: ["zionchurchalmaty@gmail.com"],
 
     /** Recipients for "Prayer request" interest */
-    prayer: ["contact@goodnewsbible.org"],
+    prayer: ["zionchurchalmaty@gmail.com"],
 
     /** Recipients for newsletter subscription notifications */
-    newsletter: ["contact@goodnewsbible.org"],
+    newsletter: ["zionchurchalmaty@gmail.com"],
   },
 
   isConfigured(): boolean {
