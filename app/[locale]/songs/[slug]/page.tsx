@@ -3,8 +3,7 @@ import {
   getPublishedContent,
   getPublishedContentBySlug,
 } from "@/lib/firestore/content";
-import DOMPurify from "dompurify";
-import { JSDOM } from "jsdom";
+import DOMPurify from "isomorphic-dompurify";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -69,9 +68,7 @@ export async function generateMetadata({
 
 // Server-side HTML sanitization
 function sanitizeHtml(html: string): string {
-  const window = new JSDOM("").window;
-  const purify = DOMPurify(window);
-  return purify.sanitize(html, {
+  return DOMPurify.sanitize(html, {
     ADD_TAGS: ["iframe"],
     ADD_ATTR: ["allow", "allowfullscreen", "frameborder", "scrolling"],
   });
