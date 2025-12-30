@@ -19,7 +19,7 @@ export function Navbar() {
     { label: t("church-history"), href: "/church-history" },
     { label: t("mission"), href: "/mission" },
     { label: t("faith-foundation"), href: "/faith-foundation" },
-    { label: t("sermons"), href: "/#sermons" },
+    { label: t("sermons"), href: "/blog" },
     { label: t("contact"), href: "/#contact" },
   ];
 

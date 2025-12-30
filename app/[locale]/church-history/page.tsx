@@ -1,7 +1,7 @@
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { Link } from "@/i18n/navigation";
-import { BookOpen, Calendar, Heart, Users } from "lucide-react";
+import { Calendar, Heart, Users } from "lucide-react";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import Image from "next/image";
@@ -56,9 +56,15 @@ export default async function ChurchHistoryPage({
 
   const faithFoundationItems = [
     { key: "westminsterLarger", href: "/faith-foundation/westminster-larger" },
-    { key: "westminsterConfession", href: "/faith-foundation/westminster-confession" },
+    {
+      key: "westminsterConfession",
+      href: "/faith-foundation/westminster-confession",
+    },
     { key: "heidelberg", href: "/faith-foundation/heidelberg" },
-    { key: "westminsterShorter", href: "/faith-foundation/westminster-shorter" },
+    {
+      key: "westminsterShorter",
+      href: "/faith-foundation/westminster-shorter",
+    },
   ];
 
   return (
@@ -266,59 +272,6 @@ export default async function ChurchHistoryPage({
                 </li>
               </ul>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Faith Foundations Section */}
-      <section className="py-16 bg-cream">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <p className="text-sm uppercase tracking-wider text-primary-orange mb-2">
-              {t("faithFoundations.sectionTitle")}
-            </p>
-            <h2 className="font-serif text-3xl font-bold text-navy">
-              {t("faithFoundations.title")}
-            </h2>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {faithFoundationItems.map((item) => (
-              <Link
-                key={item.key}
-                href={item.href}
-                className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-primary-orange/30 transition-all group"
-              >
-                {/* Placeholder Image */}
-                <div className="relative h-48 bg-gray-200">
-                  <Image
-                    src={`/images/faith-${item.key}.jpg`}
-                    alt={t(`faithFoundations.items.${item.key}.title`)}
-                    fill
-                    className="object-cover"
-                    unoptimized
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center bg-navy/10">
-                    <BookOpen className="w-12 h-12 text-navy/30" />
-                  </div>
-                </div>
-
-                <div className="p-4">
-                  <p className="text-xs text-muted-foreground mb-1">
-                    {t(`faithFoundations.items.${item.key}.date`)}
-                  </p>
-                  <h3 className="font-serif font-semibold text-navy mb-2 line-clamp-2 group-hover:text-primary-orange transition-colors">
-                    {t(`faithFoundations.items.${item.key}.title`)}
-                  </h3>
-                  <p className="text-sm text-gray-600 line-clamp-2 mb-3">
-                    {t(`faithFoundations.items.${item.key}.description`)}
-                  </p>
-                  <span className="text-sm text-primary-orange group-hover:underline font-medium">
-                    {t("faithFoundations.readMore")} →
-                  </span>
-                </div>
-              </Link>
-            ))}
           </div>
         </div>
       </section>

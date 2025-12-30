@@ -29,11 +29,11 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-const ALLOWED_DOMAIN = process.env.NEXT_PUBLIC_ADMIN_EMAIL_DOMAIN;
+const ALLOWED_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
 
 function isEmailAuthorized(email: string | null): boolean {
-  if (!email || !ALLOWED_DOMAIN) return false;
-  return email.endsWith(`@${ALLOWED_DOMAIN}`);
+  if (!email || !ALLOWED_EMAIL) return false;
+  return email === ALLOWED_EMAIL;
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -59,9 +59,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (user) {
         logger.debug("User signed in", { email: user.email });
         if (!isEmailAuthorized(user.email)) {
-          setError(
-            `Access denied. Only @${ALLOWED_DOMAIN} emails are allowed.`
-          );
+          setError(`Access denied. Only @${ALLOWED_EMAIL} emails are allowed.`);
         } else {
           setError(null);
         }
@@ -83,9 +81,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const provider = new GoogleAuthProvider();
       // Optionally restrict to specific domain
-      if (ALLOWED_DOMAIN) {
+      if (ALLOWED_EMAIL) {
         provider.setCustomParameters({
-          hd: ALLOWED_DOMAIN,
+          hd: ALLOWED_EMAIL,
         });
       }
       const result = await signInWithPopup(auth, provider);
@@ -93,7 +91,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!isEmailAuthorized(result.user.email)) {
         // Sign out if not authorized
         await signOut(auth);
-        setError(`Access denied. Only @${ALLOWED_DOMAIN} emails are allowed.`);
+        setError(`Access denied. Only @${ALLOWED_EMAIL} emails are allowed.`);
         logger.warn("Unauthorized login attempt", {
           email: result.user.email,
         });
