@@ -72,7 +72,7 @@ export function Navbar() {
 
             <Button size="sm" asChild>
               <a
-                href="https://goodnewsbible.churchcenter.com/giving"
+                href="https://kaspi.kz/pay/AROKChurch?subservice_id=22644&region_id=18&started_from=share"
                 target="_blank"
                 rel="noopener noreferrer"
               >
