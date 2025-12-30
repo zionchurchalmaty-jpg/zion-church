@@ -113,7 +113,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="https://goodnewsbible.churchcenter.com/giving"
+                  href="https://kaspi.kz/pay/AROKChurch?subservice_id=22644&region_id=18&started_from=share"
                   className="hover:text-primary transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -123,7 +123,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="https://www.youtube.com/@GoodNewsBibleChurchYT"
+                  href="https://www.instagram.com/zionchurch.kz/"
                   className="hover:text-primary transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -131,7 +131,7 @@ export function Footer() {
                   {t("watchOnline")}
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a
                   href="https://goodnewsbible.churchcenter.com/home"
                   className="hover:text-primary transition-colors"
@@ -140,7 +140,7 @@ export function Footer() {
                 >
                   {t("churchApp")}
                 </a>
-              </li>
+              </li> */}
             </ul>
           </div>
 
