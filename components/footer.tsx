@@ -1,7 +1,7 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
-import { Facebook, Instagram, Youtube } from "lucide-react";
+import { Instagram } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 export function Footer() {
@@ -26,14 +26,14 @@ export function Footer() {
             <p className="font-serif text-white/80 italic">{t("motto")}</p>
             <div className="flex items-center gap-4">
               <a
-                href="https://www.instagram.com/goodnewsbibleorg/"
+                href="https://www.instagram.com/zionchurch.kz/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-primary transition-colors"
               >
                 <Instagram className="size-5" />
               </a>
-              <a
+              {/* <a
                 href="https://www.facebook.com/goodnewsbibleorg"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -48,7 +48,7 @@ export function Footer() {
                 className="hover:text-primary transition-colors"
               >
                 <Youtube className="size-5" />
-              </a>
+              </a> */}
             </div>
           </div>
 

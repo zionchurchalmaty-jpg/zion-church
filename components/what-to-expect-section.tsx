@@ -123,7 +123,7 @@ function MinistrySubSection({ title, icon, items }: MinistrySectionProps) {
 
 export function WhatToExpectSection() {
   return (
-    <section id="ministries" className="py-20 bg-cream">
+    <section id="what-to-expect" className="py-20 bg-cream">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
