@@ -55,10 +55,10 @@ export default async function ChurchHistoryPage({
   ];
 
   const faithFoundationItems = [
-    "westminsterLarger",
-    "westminsterConfession",
-    "heidelberg",
-    "westminsterShorter",
+    { key: "westminsterLarger", href: "/faith-foundation/westminster-larger" },
+    { key: "westminsterConfession", href: "/faith-foundation/westminster-confession" },
+    { key: "heidelberg", href: "/faith-foundation/heidelberg" },
+    { key: "westminsterShorter", href: "/faith-foundation/westminster-shorter" },
   ];
 
   return (
@@ -284,15 +284,16 @@ export default async function ChurchHistoryPage({
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {faithFoundationItems.map((item) => (
-              <div
-                key={item}
-                className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+              <Link
+                key={item.key}
+                href={item.href}
+                className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-primary-orange/30 transition-all group"
               >
                 {/* Placeholder Image */}
                 <div className="relative h-48 bg-gray-200">
                   <Image
-                    src={`/images/faith-${item}.jpg`}
-                    alt={t(`faithFoundations.items.${item}.title`)}
+                    src={`/images/faith-${item.key}.jpg`}
+                    alt={t(`faithFoundations.items.${item.key}.title`)}
                     fill
                     className="object-cover"
                     unoptimized
@@ -304,19 +305,19 @@ export default async function ChurchHistoryPage({
 
                 <div className="p-4">
                   <p className="text-xs text-muted-foreground mb-1">
-                    {t(`faithFoundations.items.${item}.date`)}
+                    {t(`faithFoundations.items.${item.key}.date`)}
                   </p>
-                  <h3 className="font-serif font-semibold text-navy mb-2 line-clamp-2">
-                    {t(`faithFoundations.items.${item}.title`)}
+                  <h3 className="font-serif font-semibold text-navy mb-2 line-clamp-2 group-hover:text-primary-orange transition-colors">
+                    {t(`faithFoundations.items.${item.key}.title`)}
                   </h3>
                   <p className="text-sm text-gray-600 line-clamp-2 mb-3">
-                    {t(`faithFoundations.items.${item}.description`)}
+                    {t(`faithFoundations.items.${item.key}.description`)}
                   </p>
-                  <button className="text-sm text-primary-orange hover:underline font-medium">
+                  <span className="text-sm text-primary-orange group-hover:underline font-medium">
                     {t("faithFoundations.readMore")} →
-                  </button>
+                  </span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
