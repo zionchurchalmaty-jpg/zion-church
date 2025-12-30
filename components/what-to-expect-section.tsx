@@ -121,7 +121,7 @@ function MinistrySubSection({ title, icon, items }: MinistrySectionProps) {
   );
 }
 
-export function MinistriesSection() {
+export function WhatToExpectSection() {
   return (
     <section id="ministries" className="py-20 bg-cream">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

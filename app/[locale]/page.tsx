@@ -4,9 +4,10 @@ import { FAQSection } from "@/components/faq-section";
 import { Footer } from "@/components/footer";
 import { HeroSection } from "@/components/hero-section";
 import { LocationSection } from "@/components/location-section";
+import { MinistriesSection } from "@/components/ministries-section";
 import { Navbar } from "@/components/navbar";
 import { StayConnectedSection } from "@/components/stay-connected-section";
-import { MinistriesSection } from "@/components/what-to-expect-section";
+import { WhatToExpectSection } from "@/components/what-to-expect-section";
 import { setRequestLocale } from "next-intl/server";
 
 export default async function ChurchLandingPage({
@@ -21,9 +22,9 @@ export default async function ChurchLandingPage({
       <Navbar />
       <HeroSection />
       <AboutSection />
-      <MinistriesSection />
+      <WhatToExpectSection />
       {/* <GallerySection /> */}
-      {/* <MinistriesSection /> */}
+      <MinistriesSection />
       {/* <CalendarSection /> */}
       <LocationSection />
       <FAQSection />
