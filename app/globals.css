@@ -96,8 +96,10 @@
 
 @theme inline {
   /* Updated font families for church branding */
-  --font-sans: var(--font-sans), "Inter", "Geist", "Geist Fallback", system-ui, -apple-system, sans-serif;
-  --font-serif: var(--font-serif), "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  --font-sans: var(--font-sans), "Inter", "Geist", "Geist Fallback", system-ui,
+    -apple-system, sans-serif;
+  --font-serif: var(--font-serif), "Cormorant Garamond", "Playfair Display",
+    Georgia, serif;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -149,6 +151,88 @@
   html {
     scroll-behavior: smooth;
   }
+}
+
+/* Emoji styling within prose content - force inline display */
+.prose img[alt*="emoji"],
+.prose img[src*="emoji"],
+.prose img[src*="twemoji"],
+.prose img[src*="emojione"],
+.prose img[src*="noto-emoji"],
+.prose img[src*="cdnjs.cloudflare.com/ajax/libs/twemoji"],
+.prose img[src*="cdn.jsdelivr.net/npm/emoji"],
+.prose img[data-emoji],
+.prose img.emoji,
+.prose span[data-type="emoji"] img,
+.prose [data-lexical-decorator="true"] img {
+  display: inline !important;
+  width: 1.2em !important;
+  height: 1.2em !important;
+  margin: 0 0.1em !important;
+  vertical-align: -0.2em !important;
+}
+
+/* Override prose img styles for small decorative images */
+.prose img[width="72"],
+.prose img[height="72"],
+.prose img[width="36"],
+.prose img[height="36"] {
+  display: inline !important;
+  width: auto !important;
+  height: 1.5em !important;
+  margin: 0 0.2em !important;
+  vertical-align: middle !important;
+}
+
+/* Inline emoji class for manual tagging */
+.prose .inline-emoji,
+.prose img.inline-emoji {
+  display: inline !important;
+  width: 1.2em !important;
+  height: 1.2em !important;
+  margin: 0 0.15em !important;
+  vertical-align: -0.15em !important;
+}
+
+/* Paragraphs containing only an emoji image should be inline */
+.prose p:has(> img:only-child[src*="emoji"]),
+.prose p:has(> img:only-child[src*="twemoji"]),
+.prose p:has(> img:only-child.emoji),
+.prose p:has(> img:only-child.inline-emoji) {
+  display: inline;
+}
+
+/* Typography plugin overrides - images use natural size, don't stretch */
+.prose img {
+  max-width: 100%;
+  height: auto;
+  /* Override Tailwind typography default width: 100% */
+  width: auto !important;
+  /* Default to inline for emoji-like behavior */
+  display: inline !important;
+  vertical-align: middle;
+  max-height: 1.5em;
+  margin: 0 0.15em;
+}
+
+/* Content images inserted via dialog - block display */
+.prose img.content-image,
+.prose img.full-width,
+.prose img.cover-image,
+.prose img.block-image {
+  display: block !important;
+  margin: 1.5em auto !important;
+  max-width: min(100%, 600px) !important;
+  max-height: none !important;
+  height: auto !important;
+  border-radius: 0.5rem;
+}
+
+/* Full-width images */
+.prose img.full-width,
+.prose img.cover-image {
+  width: 100% !important;
+  max-width: 100%;
 }
 
 /* Custom utility classes for church design */

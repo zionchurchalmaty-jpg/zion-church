@@ -6,6 +6,23 @@ import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
 import Typography from "@tiptap/extension-typography";
+
+// Extend Image to support custom class attribute
+const CustomImage = Image.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      class: {
+        default: null,
+        parseHTML: (element) => element.getAttribute("class"),
+        renderHTML: (attributes) => {
+          if (!attributes.class) return {};
+          return { class: attributes.class };
+        },
+      },
+    };
+  },
+});
 import { useCallback, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -73,10 +90,9 @@ export function ContentEditor({
           class: "text-primary-orange underline",
         },
       }),
-      Image.configure({
-        HTMLAttributes: {
-          class: "rounded-lg max-w-full",
-        },
+      CustomImage.configure({
+        inline: true,
+        allowBase64: true,
       }),
       Placeholder.configure({
         placeholder,
@@ -113,7 +129,11 @@ export function ContentEditor({
 
   const insertImage = useCallback((url: string) => {
     if (!editor || !url) return;
-    editor.chain().focus().setImage({ src: url }).run();
+    // Add content-image class to distinguish from pasted emojis
+    editor.chain().focus().setImage({
+      src: url,
+      class: "content-image",
+    } as { src: string; class: string }).run();
     setImageDialogOpen(false);
     setImageUrl("");
     setUploadError(null);
