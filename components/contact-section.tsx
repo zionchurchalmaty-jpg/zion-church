@@ -35,7 +35,7 @@ export function ContactSection() {
       message: "",
       interests: {
         planningToVisit: false,
-        eslClasses: false,
+        // eslClasses: false,
         prayerRequest: false,
         newsletterSubscription: false,
       },
@@ -65,7 +65,7 @@ export function ContactSection() {
         toast.success(result.message);
         event("contact_form_submit", {
           interests_visit: data.interests.planningToVisit,
-          interests_esl: data.interests.eslClasses,
+          // interests_esl: data.interests.eslClasses,
           interests_prayer: data.interests.prayerRequest,
           interests_newsletter: data.interests.newsletterSubscription,
         });
@@ -203,14 +203,14 @@ export function ContactSection() {
                     {t("form.planningToVisit")}
                   </span>
                 </label>
-                <label className="flex items-center gap-3 cursor-pointer">
+                {/* <label className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="checkbox"
                     {...register("interests.eslClasses")}
                     className="size-4 text-primary rounded border-gray-300 focus:ring-primary"
                   />
                   <span className="text-gray-700">{t("form.eslClasses")}</span>
-                </label>
+                </label> */}
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="checkbox"
