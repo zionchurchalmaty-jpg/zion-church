@@ -20,7 +20,8 @@
       "WebFetch(domain:zion-church.kz)",
       "Bash(head:*)",
       "Bash(mkdir:*)",
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "Bash(node -e:*)"
     ]
   }
 }
