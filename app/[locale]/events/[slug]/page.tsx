@@ -1,37 +1,38 @@
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { Link } from "@/i18n/navigation";
-import { ArrowLeft, Gift, Flame, BookOpen, Calendar } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Repeat } from "lucide-react";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { getPublishedContentBySlug, getPublishedEvents } from "@/lib/firestore/content";
+import type { CalendarEvent } from "@/lib/firestore/types";
+import { formatDateRu, formatTimeRu, formatDateRangeRu, WEEKDAY_NAMES_RU } from "@/lib/date-format";
+import DOMPurify from "isomorphic-dompurify";
+import { Timestamp } from "firebase/firestore";
 
-// Event configuration with icons and images
-const EVENT_CONFIG = {
-  "good-samaritan": {
-    icon: Gift,
-    image: "/events/good-samaritan.jpg",
-    color: "bg-rose-500",
-  },
-  advent: {
-    icon: Flame,
-    image: "/events/advent.jpg",
-    color: "bg-purple-600",
-  },
-  "alpha-course": {
-    icon: BookOpen,
-    image: "/events/alpha-course.jpg",
-    color: "bg-amber-500",
-  },
-};
+/**
+ * Helper to convert Firestore date field to JavaScript Date
+ * Handles both proper Timestamps and plain objects with seconds/nanoseconds
+ */
+function firestoreToDate(value: unknown): Date | undefined {
+  if (!value) return undefined;
 
-// Mapping from slug to translation key
-const SLUG_TO_KEY: Record<string, string> = {
-  "good-samaritan": "good-samaritan",
-  advent: "advent",
-  "alpha-course": "alpha-course",
-};
+  if (value instanceof Timestamp) {
+    return value.toDate();
+  }
+
+  const obj = value as { seconds?: number; nanoseconds?: number; toDate?: () => Date };
+  if (typeof obj.toDate === "function") {
+    return obj.toDate();
+  }
+  if (typeof obj.seconds === "number") {
+    return new Date(obj.seconds * 1000);
+  }
+
+  return undefined;
+}
 
 interface EventPageProps {
   params: Promise<{
@@ -41,31 +42,33 @@ interface EventPageProps {
 }
 
 export async function generateStaticParams() {
-  return Object.keys(EVENT_CONFIG).map((slug) => ({ slug }));
+  const events = await getPublishedEvents(false); // Get all published events
+  return events.map((event) => ({ slug: event.slug }));
 }
 
 export async function generateMetadata({
   params,
 }: EventPageProps): Promise<Metadata> {
   const { slug, locale } = await params;
-  const translationKey = SLUG_TO_KEY[slug];
+  const event = (await getPublishedContentBySlug("event", slug)) as CalendarEvent | null;
 
-  if (!translationKey) {
+  if (!event) {
     return { title: "Event Not Found" };
   }
 
-  const t = await getTranslations({ locale, namespace: "events" });
-
-  const name = t(`${translationKey}.name`);
-  const description = t(`${translationKey}.description`);
+  const description =
+    event.excerpt ||
+    event.seo?.metaDescription ||
+    event.content.replace(/<[^>]*>/g, "").slice(0, 160);
 
   return {
-    title: `${name} - Церковь Сион`,
+    title: event.seo?.metaTitle || `${event.title} - Церковь Сион`,
     description,
     openGraph: {
-      title: name,
+      title: event.seo?.metaTitle || event.title,
       description,
       type: "website",
+      images: event.seo?.ogImage || event.coverImage ? [event.seo?.ogImage || event.coverImage!] : undefined,
     },
   };
 }
@@ -74,24 +77,19 @@ export default async function EventPage({ params }: EventPageProps) {
   const { slug, locale } = await params;
   setRequestLocale(locale);
 
-  const translationKey = SLUG_TO_KEY[slug];
-  const config = EVENT_CONFIG[slug as keyof typeof EVENT_CONFIG];
+  const event = (await getPublishedContentBySlug("event", slug)) as CalendarEvent | null;
 
-  if (!translationKey || !config) {
+  if (!event) {
     notFound();
   }
 
-  const t = await getTranslations("events");
-  const tCalendar = await getTranslations("calendar");
+  const t = await getTranslations("eventsPage");
 
-  const Icon = config.icon;
-  const name = t(`${translationKey}.name`);
-  const description = t(`${translationKey}.description`);
-  const fullDescription = t(`${translationKey}.fullDescription`);
+  const eventDate = firestoreToDate(event.eventDate);
+  const endDate = firestoreToDate(event.endDate);
 
-  // Check for special content sections
-  const hasCandles = translationKey === "advent";
-  const hasVerse = translationKey === "alpha-course";
+  // Sanitize HTML content
+  const sanitizedContent = DOMPurify.sanitize(event.content);
 
   return (
     <div className="min-h-screen bg-cream">
@@ -100,24 +98,24 @@ export default async function EventPage({ params }: EventPageProps) {
       {/* Hero Section */}
       <section className="relative h-[300px] md:h-[400px] flex items-center justify-center pt-16">
         <div className="absolute inset-0 bg-[rgb(var(--secondary-navy))]">
-          <Image
-            src={config.image}
-            alt={name}
-            fill
-            priority
-            className="object-cover opacity-40"
-            unoptimized
-          />
+          {event.coverImage && (
+            <Image
+              src={event.coverImage}
+              alt={event.title}
+              fill
+              priority
+              className="object-cover opacity-40"
+              unoptimized
+            />
+          )}
         </div>
 
         <div className="relative z-10 text-center text-white px-4">
-          <div
-            className={`w-16 h-16 ${config.color} rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg`}
-          >
-            <Icon className="w-8 h-8 text-white" />
+          <div className="w-16 h-16 bg-primary-orange rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+            <Calendar className="w-8 h-8 text-white" />
           </div>
           <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold">
-            {name}
+            {event.title}
           </h1>
         </div>
       </section>
@@ -125,68 +123,88 @@ export default async function EventPage({ params }: EventPageProps) {
       {/* Back Link */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         <Link
-          href="/#calendar"
+          href="/events"
           className="inline-flex items-center text-sm text-muted-foreground hover:text-primary"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          {tCalendar("backToHome")}
+          {t("backToEvents")}
         </Link>
       </div>
 
       {/* Main Content */}
       <section className="py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Short Description */}
-          <div className="bg-primary-orange/10 border-l-4 border-primary-orange rounded-r-lg p-6 mb-8">
-            <p className="text-lg text-gray-700 leading-relaxed">{description}</p>
-          </div>
+          {/* Date/Time Info Card */}
+          {eventDate && (
+            <div className="bg-primary-orange/10 border-l-4 border-primary-orange rounded-r-lg p-6 mb-8">
+              <div className="flex flex-wrap items-center gap-4 text-navy">
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-5 w-5 text-primary-orange" />
+                  <span className="font-medium">
+                    {endDate && endDate.getTime() !== eventDate.getTime()
+                      ? formatDateRangeRu(eventDate, endDate)
+                      : formatDateRu(eventDate)}
+                  </span>
+                </div>
 
-          {/* Full Description */}
-          <div className="prose prose-lg max-w-none mb-8">
-            {fullDescription.split("\n\n").map((paragraph, index) => (
-              <p key={index} className="text-gray-700 leading-relaxed mb-4">
-                {paragraph}
-              </p>
-            ))}
-          </div>
-
-          {/* Candles Section (Advent) */}
-          {hasCandles && (
-            <div className="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-gray-100 mb-8">
-              <h2 className="font-serif text-xl font-semibold text-navy mb-6">
-                {t(`${translationKey}.candles.title`)}
-              </h2>
-              <div className="space-y-6">
-                {["first", "second", "third", "fourth"].map((candle, index) => (
-                  <div key={candle} className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-                      <Flame
-                        className={`w-5 h-5 ${
-                          index === 2 ? "text-pink-500" : "text-purple-600"
-                        }`}
-                      />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-navy mb-1">
-                        {t(`${translationKey}.candles.${candle}.title`)}
-                      </h3>
-                      <p className="text-gray-600 text-sm leading-relaxed">
-                        {t(`${translationKey}.candles.${candle}.description`)}
-                      </p>
-                    </div>
+                {!event.isAllDay && (
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-5 w-5 text-primary-orange" />
+                    <span>
+                      {formatTimeRu(eventDate)}
+                      {endDate && endDate.getTime() !== eventDate.getTime() && (
+                        <> - {formatTimeRu(endDate)}</>
+                      )}
+                    </span>
                   </div>
-                ))}
+                )}
+
+                {event.isAllDay && (
+                  <span className="px-3 py-1 bg-white rounded-full text-sm">
+                    {t("allDay")}
+                  </span>
+                )}
+
+                {event.repeatSettings?.repeatType !== "none" && (
+                  <div className="flex items-center gap-2">
+                    <Repeat className="h-5 w-5 text-primary-orange" />
+                    <span className="text-sm">
+                      {event.repeatSettings?.repeatType === "weekly"
+                        ? `Каждую неделю: ${event.repeatSettings.weeklyDays
+                            ?.map((d) => WEEKDAY_NAMES_RU[d])
+                            .join(", ")}`
+                        : "Повторяется"}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           )}
 
-          {/* Bible Verse (Alpha Course) */}
-          {hasVerse && (
-            <div className="bg-navy rounded-xl p-8 text-center">
-              <Calendar className="w-10 h-10 text-primary-orange mx-auto mb-4" />
-              <blockquote className="font-serif text-lg md:text-xl text-white italic leading-relaxed">
-                {t(`${translationKey}.verse`)}
-              </blockquote>
+          {/* Excerpt */}
+          {event.excerpt && (
+            <div className="bg-white border rounded-lg p-6 mb-8">
+              <p className="text-lg text-gray-700 leading-relaxed">{event.excerpt}</p>
+            </div>
+          )}
+
+          {/* Full Content */}
+          <div
+            className="prose prose-lg max-w-none mb-8 prose-headings:text-navy prose-headings:font-serif prose-a:text-primary-orange prose-img:rounded-lg"
+            dangerouslySetInnerHTML={{ __html: sanitizedContent }}
+          />
+
+          {/* Tags */}
+          {event.tags && event.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 pt-6 border-t">
+              {event.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-3 py-1 bg-muted rounded-full text-sm text-muted-foreground"
+                >
+                  {tag}
+                </span>
+              ))}
             </div>
           )}
         </div>

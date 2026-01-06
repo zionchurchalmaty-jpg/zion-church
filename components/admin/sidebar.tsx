@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   FileText,
   Music,
+  Calendar,
   LogOut,
   ChevronLeft,
 } from "lucide-react";
@@ -23,6 +24,11 @@ const navItems = [
     label: "Blog Posts",
     href: "/admin/blog",
     icon: FileText,
+  },
+  {
+    label: "Events",
+    href: "/admin/events",
+    icon: Calendar,
   },
   {
     label: "Songs",

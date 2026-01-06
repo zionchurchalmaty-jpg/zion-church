@@ -23,7 +23,7 @@ export function Footer() {
                 {t("churchName")}
               </div>
             </div>
-            <p className="font-serif text-white/80 italic">{t("motto")}</p>
+            {/* <p className="font-serif text-white/80 italic">{t("motto")}</p> */}
             <div className="flex items-center gap-4">
               <a
                 href="https://www.instagram.com/zionchurch.kz/"

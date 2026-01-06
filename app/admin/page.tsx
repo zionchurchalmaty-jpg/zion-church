@@ -6,11 +6,12 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { getContentCounts, getAllContent } from "@/lib/firestore/content";
 import type { Content } from "@/lib/firestore/types";
-import { FileText, Music, Plus, Loader2, ArrowRight } from "lucide-react";
+import { FileText, Music, Calendar, Plus, Loader2, ArrowRight } from "lucide-react";
 
 interface ContentCounts {
   blog: { total: number; published: number; draft: number };
   song: { total: number; published: number; draft: number };
+  event: { total: number; published: number; draft: number };
 }
 
 export default function AdminDashboard() {
@@ -65,6 +66,14 @@ export default function AdminDashboard() {
           href="/admin/blog"
         />
         <StatsCard
+          title="Events"
+          icon={Calendar}
+          total={counts?.event.total || 0}
+          published={counts?.event.published || 0}
+          draft={counts?.event.draft || 0}
+          href="/admin/events"
+        />
+        <StatsCard
           title="Songs"
           icon={Music}
           total={counts?.song.total || 0}
@@ -87,6 +96,12 @@ export default function AdminDashboard() {
             </Link>
           </Button>
           <Button asChild variant="outline">
+            <Link href="/admin/events/new">
+              <Plus className="mr-2 h-4 w-4" />
+              New Event
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
             <Link href="/admin/songs/new">
               <Plus className="mr-2 h-4 w-4" />
               New Song
@@ -106,29 +121,32 @@ export default function AdminDashboard() {
               No content yet. Create your first post or song!
             </div>
           ) : (
-            recentItems.map((item) => (
-              <Link
-                key={item.id}
-                href={`/admin/${item.contentType === "blog" ? "blog" : "songs"}/${item.id}/edit`}
-                className="flex items-center justify-between p-4 transition-colors hover:bg-accent/50"
-              >
-                <div className="flex items-center gap-3">
-                  {item.contentType === "blog" ? (
-                    <FileText className="h-5 w-5 text-muted-foreground" />
-                  ) : (
-                    <Music className="h-5 w-5 text-muted-foreground" />
-                  )}
-                  <div>
-                    <p className="font-medium">{item.title}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {item.contentType === "blog" ? "Blog Post" : "Song"} •{" "}
-                      {item.status}
-                    </p>
+            recentItems.map((item) => {
+              const pathMap = { blog: "blog", song: "songs", event: "events" };
+              const labelMap = { blog: "Blog Post", song: "Song", event: "Event" };
+              const iconMap = { blog: FileText, song: Music, event: Calendar };
+              const Icon = iconMap[item.contentType as keyof typeof iconMap] || FileText;
+
+              return (
+                <Link
+                  key={item.id}
+                  href={`/admin/${pathMap[item.contentType as keyof typeof pathMap] || "blog"}/${item.id}/edit`}
+                  className="flex items-center justify-between p-4 transition-colors hover:bg-accent/50"
+                >
+                  <div className="flex items-center gap-3">
+                    <Icon className="h-5 w-5 text-muted-foreground" />
+                    <div>
+                      <p className="font-medium">{item.title}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {labelMap[item.contentType as keyof typeof labelMap] || item.contentType} •{" "}
+                        {item.status}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <ArrowRight className="h-4 w-4 text-muted-foreground" />
-              </Link>
-            ))
+                  <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                </Link>
+              );
+            })
           )}
         </Card>
       </div>

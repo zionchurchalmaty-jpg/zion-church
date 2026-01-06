@@ -1,6 +1,6 @@
 import type { Timestamp } from "firebase/firestore";
 
-export type ContentType = "blog" | "song";
+export type ContentType = "blog" | "song" | "event";
 
 export type ContentStatus = "draft" | "published";
 
@@ -69,4 +69,29 @@ export interface ContentFilters {
   tag?: string;
   search?: string;
   limit?: number;
+}
+
+// Calendar Event types
+export type RepeatType = "none" | "weekly" | "custom";
+
+export interface RepeatSettings {
+  repeatType: RepeatType;
+  weeklyDays?: number[]; // 0-6 (Sunday-Saturday) for weekly repeats
+  customDates?: string[]; // ISO date strings for custom repeats
+}
+
+export interface CalendarEvent extends Content {
+  contentType: "event";
+  eventDate: Timestamp; // Primary event date/time
+  endDate?: Timestamp; // Optional end date/time
+  isAllDay: boolean;
+  repeatSettings: RepeatSettings;
+}
+
+export interface CalendarEventInput extends ContentInput {
+  contentType: "event";
+  eventDate: Date; // JS Date for form handling
+  endDate?: Date;
+  isAllDay: boolean;
+  repeatSettings: RepeatSettings;
 }

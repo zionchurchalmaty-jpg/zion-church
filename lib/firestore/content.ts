@@ -20,6 +20,8 @@ import type {
   ContentInput,
   ContentFilters,
   ContentType,
+  CalendarEvent,
+  CalendarEventInput,
 } from "./types";
 
 const CONTENT_COLLECTION = "content";
@@ -89,6 +91,32 @@ function removeUndefined(obj: Record<string, unknown>): Record<string, unknown> 
 }
 
 /**
+ * Serialize Firestore document data for passing to Client Components
+ * Converts Timestamps to plain objects with seconds/nanoseconds
+ */
+function serializeForClient<T>(data: Record<string, unknown>): T {
+  const result: Record<string, unknown> = {};
+  for (const key of Object.keys(data)) {
+    const value = data[key];
+    if (value instanceof Timestamp) {
+      // Convert Timestamp to plain object
+      result[key] = { seconds: value.seconds, nanoseconds: value.nanoseconds };
+    } else if (value && typeof value === "object" && !Array.isArray(value)) {
+      result[key] = serializeForClient(value as Record<string, unknown>);
+    } else if (Array.isArray(value)) {
+      result[key] = value.map((item) =>
+        item && typeof item === "object"
+          ? serializeForClient(item as Record<string, unknown>)
+          : item
+      );
+    } else {
+      result[key] = value;
+    }
+  }
+  return result as T;
+}
+
+/**
  * Get all published content of a specific type (for public pages)
  */
 export async function getPublishedContent(
@@ -105,8 +133,8 @@ export async function getPublishedContent(
     );
 
     const snapshot = await getDocs(q);
-    return snapshot.docs.map(
-      (doc) => ({ id: doc.id, ...doc.data() }) as Content
+    return snapshot.docs.map((doc) =>
+      serializeForClient<Content>({ id: doc.id, ...doc.data() })
     );
   } catch (error) {
     console.error("Error fetching published content:", error);
@@ -135,7 +163,7 @@ export async function getPublishedContentBySlug(
     if (snapshot.empty) return null;
 
     const docSnap = snapshot.docs[0];
-    return { id: docSnap.id, ...docSnap.data() } as Content;
+    return serializeForClient<Content>({ id: docSnap.id, ...docSnap.data() });
   } catch (error) {
     console.error("Error fetching content by slug:", error);
     return null;
@@ -178,8 +206,8 @@ export async function getAllContent(
     q = query(collection(db, CONTENT_COLLECTION), ...constraints);
 
     const snapshot = await getDocs(q);
-    let results = snapshot.docs.map(
-      (doc) => ({ id: doc.id, ...doc.data() }) as Content
+    let results = snapshot.docs.map((doc) =>
+      serializeForClient<Content>({ id: doc.id, ...doc.data() })
     );
 
     // Client-side search filtering (Firestore doesn't support full-text search)
@@ -208,7 +236,7 @@ export async function getContentById(id: string): Promise<Content | null> {
 
   if (!snapshot.exists()) return null;
 
-  return { id: snapshot.id, ...snapshot.data() } as Content;
+  return serializeForClient<Content>({ id: snapshot.id, ...snapshot.data() });
 }
 
 /**
@@ -223,18 +251,23 @@ export async function createContent(
 
   const slug = generateSlug(input.title);
   const searchableText = generateSearchableText(input.title, input.content);
-  const now = serverTimestamp();
 
-  const docData = removeUndefined({
+  // Process content fields first, then add timestamp sentinels separately
+  // (serverTimestamp() sentinels break if passed through removeUndefined)
+  const contentFields = removeUndefined({
     ...input,
     slug,
     author: authorName,
     authorId,
     searchableText,
-    createdAt: now,
-    updatedAt: now,
-    publishedAt: input.status === "published" ? now : null,
   });
+
+  const docData = {
+    ...contentFields,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+    publishedAt: input.status === "published" ? serverTimestamp() : null,
+  };
 
   const docRef = await addDoc(collection(db, CONTENT_COLLECTION), docData);
   return docRef.id;
@@ -260,16 +293,21 @@ export async function updateContent(
   const slug = generateSlug(input.title);
   const searchableText = generateSearchableText(input.title, input.content);
 
-  const updateData = removeUndefined({
+  // Process content fields first, then add timestamp sentinels separately
+  const contentFields = removeUndefined({
     ...input,
     slug,
     searchableText,
+  });
+
+  const updateData = {
+    ...contentFields,
     updatedAt: serverTimestamp(),
     // Set publishedAt if publishing for first time
     publishedAt: input.status === "published" && !existingData.publishedAt
       ? serverTimestamp()
       : existingData.publishedAt,
-  });
+  };
 
   await updateDoc(docRef, updateData);
 }
@@ -290,10 +328,12 @@ export async function deleteContent(id: string): Promise<void> {
 export async function getContentCounts(): Promise<{
   blog: { total: number; published: number; draft: number };
   song: { total: number; published: number; draft: number };
+  event: { total: number; published: number; draft: number };
 }> {
   const defaultCounts = {
     blog: { total: 0, published: 0, draft: 0 },
     song: { total: 0, published: 0, draft: 0 },
+    event: { total: 0, published: 0, draft: 0 },
   };
 
   if (!ensureFirebase() || !db) return defaultCounts;
@@ -303,11 +343,12 @@ export async function getContentCounts(): Promise<{
   const counts = {
     blog: { total: 0, published: 0, draft: 0 },
     song: { total: 0, published: 0, draft: 0 },
+    event: { total: 0, published: 0, draft: 0 },
   };
 
   snapshot.docs.forEach((doc) => {
     const data = doc.data();
-    const type = data.contentType as "blog" | "song";
+    const type = data.contentType as "blog" | "song" | "event";
     const status = data.status as "published" | "draft";
 
     if (counts[type]) {
@@ -317,4 +358,153 @@ export async function getContentCounts(): Promise<{
   });
 
   return counts;
+}
+
+// ============================================
+// Calendar Event Functions
+// ============================================
+
+/**
+ * Get published events, optionally filtered to upcoming only
+ * Sorted by eventDate ascending (soonest first)
+ */
+export async function getPublishedEvents(
+  upcomingOnly: boolean = true
+): Promise<CalendarEvent[]> {
+  if (!ensureFirebase() || !db) return [];
+
+  try {
+    let q;
+    if (upcomingOnly) {
+      q = query(
+        collection(db, CONTENT_COLLECTION),
+        where("contentType", "==", "event"),
+        where("status", "==", "published"),
+        where("eventDate", ">=", Timestamp.now()),
+        orderBy("eventDate", "asc")
+      );
+    } else {
+      q = query(
+        collection(db, CONTENT_COLLECTION),
+        where("contentType", "==", "event"),
+        where("status", "==", "published"),
+        orderBy("eventDate", "asc")
+      );
+    }
+
+    const snapshot = await getDocs(q);
+
+    return snapshot.docs.map((doc) =>
+      serializeForClient<CalendarEvent>({ id: doc.id, ...doc.data() })
+    );
+  } catch (error) {
+    console.error("Error fetching published events:", error);
+    return [];
+  }
+}
+
+/**
+ * Get upcoming events for the homepage calendar section
+ * Returns next N events from today onwards
+ */
+export async function getUpcomingEvents(
+  limitCount: number = 6
+): Promise<CalendarEvent[]> {
+  if (!ensureFirebase() || !db) return [];
+
+  try {
+    const q = query(
+      collection(db, CONTENT_COLLECTION),
+      where("contentType", "==", "event"),
+      where("status", "==", "published"),
+      where("eventDate", ">=", Timestamp.now()),
+      orderBy("eventDate", "asc"),
+      firestoreLimit(limitCount)
+    );
+
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((doc) =>
+      serializeForClient<CalendarEvent>({ id: doc.id, ...doc.data() })
+    );
+  } catch (error) {
+    console.error("Error fetching upcoming events:", error);
+    return [];
+  }
+}
+
+/**
+ * Create a new calendar event
+ */
+export async function createEvent(
+  input: CalendarEventInput,
+  authorId: string,
+  authorName: string
+): Promise<string> {
+  if (!ensureFirebase() || !db) throw new Error("Firebase not configured");
+
+  const slug = generateSlug(input.title);
+  const searchableText = generateSearchableText(input.title, input.content);
+
+  // Process content fields first, then add timestamps separately
+  // (serverTimestamp() and Timestamp sentinels can break if passed through removeUndefined)
+  const contentFields = removeUndefined({
+    ...input,
+    slug,
+    author: authorName,
+    authorId,
+    searchableText,
+  });
+
+  const docData = {
+    ...contentFields,
+    eventDate: Timestamp.fromDate(input.eventDate),
+    endDate: input.endDate ? Timestamp.fromDate(input.endDate) : null,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+    publishedAt: input.status === "published" ? serverTimestamp() : null,
+  };
+
+  const docRef = await addDoc(collection(db, CONTENT_COLLECTION), docData);
+  return docRef.id;
+}
+
+/**
+ * Update an existing calendar event
+ */
+export async function updateEvent(
+  id: string,
+  input: CalendarEventInput
+): Promise<void> {
+  if (!ensureFirebase() || !db) throw new Error("Firebase not configured");
+
+  const docRef = doc(db, CONTENT_COLLECTION, id);
+  const existingDoc = await getDoc(docRef);
+
+  if (!existingDoc.exists()) {
+    throw new Error("Event not found");
+  }
+
+  const existingData = existingDoc.data();
+  const slug = generateSlug(input.title);
+  const searchableText = generateSearchableText(input.title, input.content);
+
+  // Process content fields first, then add timestamps separately
+  const contentFields = removeUndefined({
+    ...input,
+    slug,
+    searchableText,
+  });
+
+  const updateData = {
+    ...contentFields,
+    eventDate: Timestamp.fromDate(input.eventDate),
+    endDate: input.endDate ? Timestamp.fromDate(input.endDate) : null,
+    updatedAt: serverTimestamp(),
+    publishedAt:
+      input.status === "published" && !existingData.publishedAt
+        ? serverTimestamp()
+        : existingData.publishedAt,
+  };
+
+  await updateDoc(docRef, updateData);
 }
