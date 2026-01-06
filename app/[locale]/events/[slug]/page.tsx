@@ -9,7 +9,7 @@ import { notFound } from "next/navigation";
 import { getPublishedContentBySlug, getPublishedEvents } from "@/lib/firestore/content";
 import type { CalendarEvent } from "@/lib/firestore/types";
 import { formatDateRu, formatTimeRu, formatDateRangeRu, WEEKDAY_NAMES_RU } from "@/lib/date-format";
-import DOMPurify from "isomorphic-dompurify";
+import sanitizeHtml from "sanitize-html";
 import { Timestamp } from "firebase/firestore";
 
 /**
@@ -89,7 +89,15 @@ export default async function EventPage({ params }: EventPageProps) {
   const endDate = firestoreToDate(event.endDate);
 
   // Sanitize HTML content
-  const sanitizedContent = DOMPurify.sanitize(event.content);
+  const sanitizedContent = sanitizeHtml(event.content, {
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'iframe']),
+    allowedAttributes: {
+      ...sanitizeHtml.defaults.allowedAttributes,
+      img: ['src', 'alt', 'title', 'width', 'height', 'class'],
+      iframe: ['src', 'width', 'height', 'frameborder', 'allowfullscreen'],
+      '*': ['class', 'style'],
+    },
+  });
 
   return (
     <div className="min-h-screen bg-cream">

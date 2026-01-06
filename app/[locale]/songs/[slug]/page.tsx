@@ -3,7 +3,7 @@ import {
   getPublishedContent,
   getPublishedContentBySlug,
 } from "@/lib/firestore/content";
-import DOMPurify from "isomorphic-dompurify";
+import sanitize from "sanitize-html";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -68,9 +68,14 @@ export async function generateMetadata({
 
 // Server-side HTML sanitization
 function sanitizeHtml(html: string): string {
-  return DOMPurify.sanitize(html, {
-    ADD_TAGS: ["iframe"],
-    ADD_ATTR: ["allow", "allowfullscreen", "frameborder", "scrolling"],
+  return sanitize(html, {
+    allowedTags: sanitize.defaults.allowedTags.concat(['img', 'iframe']),
+    allowedAttributes: {
+      ...sanitize.defaults.allowedAttributes,
+      img: ['src', 'alt', 'title', 'width', 'height', 'class'],
+      iframe: ['src', 'width', 'height', 'frameborder', 'allowfullscreen', 'allow', 'scrolling'],
+      '*': ['class', 'style'],
+    },
   });
 }
 

@@ -29,8 +29,6 @@ export async function CalendarSection() {
   // Fetch next 6 upcoming events from database
   const allEvents = await getUpcomingEvents(6);
 
-  console.log("allEvents", allEvents);
-
   // Display up to 3 events on homepage
   const displayEvents = allEvents.slice(0, 3);
 
