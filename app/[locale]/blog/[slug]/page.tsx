@@ -1,7 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import {
   getContentById,
-  getPublishedContent,
   getPublishedContentBySlug,
 } from "@/lib/firestore/content";
 import sanitize from "sanitize-html";
@@ -51,14 +50,6 @@ function formatDate(timestamp: unknown, locale: string): string {
 function getISOString(timestamp: unknown): string | undefined {
   const date = toDate(timestamp);
   return date?.toISOString();
-}
-
-export async function generateStaticParams() {
-  const posts = await getPublishedContent("blog");
-  return posts.map((post) => ({
-    // Use slug if available, otherwise use ID for legacy posts
-    slug: post.slug || post.id,
-  }));
 }
 
 export async function generateMetadata({

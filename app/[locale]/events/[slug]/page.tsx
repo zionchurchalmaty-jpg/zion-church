@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getPublishedContentBySlug, getPublishedEvents } from "@/lib/firestore/content";
+import { getPublishedContentBySlug } from "@/lib/firestore/content";
 import type { CalendarEvent } from "@/lib/firestore/types";
 import { formatDateRu, formatTimeRu, formatDateRangeRu, WEEKDAY_NAMES_RU } from "@/lib/date-format";
 import sanitizeHtml from "sanitize-html";
@@ -39,11 +39,6 @@ interface EventPageProps {
     slug: string;
     locale: string;
   }>;
-}
-
-export async function generateStaticParams() {
-  const events = await getPublishedEvents(false); // Get all published events
-  return events.map((event) => ({ slug: event.slug }));
 }
 
 export async function generateMetadata({

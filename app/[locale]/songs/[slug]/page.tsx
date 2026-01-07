@@ -1,8 +1,5 @@
 import { Link } from "@/i18n/navigation";
-import {
-  getPublishedContent,
-  getPublishedContentBySlug,
-} from "@/lib/firestore/content";
+import { getPublishedContentBySlug } from "@/lib/firestore/content";
 import sanitize from "sanitize-html";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -17,13 +14,6 @@ interface SongPageProps {
 
 // Revalidate every 5 minutes
 export const revalidate = 300;
-
-export async function generateStaticParams() {
-  const songs = await getPublishedContent("song");
-  return songs.map((song) => ({
-    slug: song.slug,
-  }));
-}
 
 export async function generateMetadata({
   params,
