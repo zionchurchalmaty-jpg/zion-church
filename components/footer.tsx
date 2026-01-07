@@ -111,7 +111,7 @@ export function Footer() {
                   {t("eventsCalendar")}
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <a
                   href="https://kaspi.kz/pay/AROKChurch?subservice_id=22644&region_id=18&started_from=share"
                   className="hover:text-primary transition-colors"
@@ -120,7 +120,7 @@ export function Footer() {
                 >
                   {t("giveOnline")}
                 </a>
-              </li>
+              </li> */}
               <li>
                 <a
                   href="https://www.instagram.com/zionchurch.kz/"
