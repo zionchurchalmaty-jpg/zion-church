@@ -1,16 +1,19 @@
-import { Footer } from "@/components/footer";
-import { Navbar } from "@/components/navbar";
 import { Link } from "@/i18n/navigation";
+import {
+  formatDateRangeRu,
+  formatDateRu,
+  formatTimeRu,
+  WEEKDAY_NAMES_RU,
+} from "@/lib/date-format";
+import { getPublishedContentBySlug } from "@/lib/firestore/content";
+import type { CalendarEvent } from "@/lib/firestore/types";
+import { Timestamp } from "firebase/firestore";
 import { ArrowLeft, Calendar, Clock, Repeat } from "lucide-react";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getPublishedContentBySlug } from "@/lib/firestore/content";
-import type { CalendarEvent } from "@/lib/firestore/types";
-import { formatDateRu, formatTimeRu, formatDateRangeRu, WEEKDAY_NAMES_RU } from "@/lib/date-format";
 import sanitizeHtml from "sanitize-html";
-import { Timestamp } from "firebase/firestore";
 
 /**
  * Helper to convert Firestore date field to JavaScript Date
@@ -23,7 +26,11 @@ function firestoreToDate(value: unknown): Date | undefined {
     return value.toDate();
   }
 
-  const obj = value as { seconds?: number; nanoseconds?: number; toDate?: () => Date };
+  const obj = value as {
+    seconds?: number;
+    nanoseconds?: number;
+    toDate?: () => Date;
+  };
   if (typeof obj.toDate === "function") {
     return obj.toDate();
   }
@@ -45,7 +52,10 @@ export async function generateMetadata({
   params,
 }: EventPageProps): Promise<Metadata> {
   const { slug, locale } = await params;
-  const event = (await getPublishedContentBySlug("event", slug)) as CalendarEvent | null;
+  const event = (await getPublishedContentBySlug(
+    "event",
+    slug
+  )) as CalendarEvent | null;
 
   if (!event) {
     return { title: "Event Not Found" };
@@ -63,7 +73,10 @@ export async function generateMetadata({
       title: event.seo?.metaTitle || event.title,
       description,
       type: "website",
-      images: event.seo?.ogImage || event.coverImage ? [event.seo?.ogImage || event.coverImage!] : undefined,
+      images:
+        event.seo?.ogImage || event.coverImage
+          ? [event.seo?.ogImage || event.coverImage!]
+          : undefined,
     },
   };
 }
@@ -72,7 +85,10 @@ export default async function EventPage({ params }: EventPageProps) {
   const { slug, locale } = await params;
   setRequestLocale(locale);
 
-  const event = (await getPublishedContentBySlug("event", slug)) as CalendarEvent | null;
+  const event = (await getPublishedContentBySlug(
+    "event",
+    slug
+  )) as CalendarEvent | null;
 
   if (!event) {
     notFound();
@@ -85,19 +101,17 @@ export default async function EventPage({ params }: EventPageProps) {
 
   // Sanitize HTML content
   const sanitizedContent = sanitizeHtml(event.content, {
-    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'iframe']),
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img", "iframe"]),
     allowedAttributes: {
       ...sanitizeHtml.defaults.allowedAttributes,
-      img: ['src', 'alt', 'title', 'width', 'height', 'class'],
-      iframe: ['src', 'width', 'height', 'frameborder', 'allowfullscreen'],
-      '*': ['class', 'style'],
+      img: ["src", "alt", "title", "width", "height", "class"],
+      iframe: ["src", "width", "height", "frameborder", "allowfullscreen"],
+      "*": ["class", "style"],
     },
   });
 
   return (
     <div className="min-h-screen bg-cream">
-      <Navbar />
-
       {/* Hero Section */}
       <section className="relative h-[300px] md:h-[400px] flex items-center justify-center pt-16">
         <div className="absolute inset-0 bg-[rgb(var(--secondary-navy))]">
@@ -187,7 +201,9 @@ export default async function EventPage({ params }: EventPageProps) {
           {/* Excerpt */}
           {event.excerpt && (
             <div className="bg-white border rounded-lg p-6 mb-8">
-              <p className="text-lg text-gray-700 leading-relaxed">{event.excerpt}</p>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                {event.excerpt}
+              </p>
             </div>
           )}
 
@@ -212,8 +228,6 @@ export default async function EventPage({ params }: EventPageProps) {
           )}
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 }
