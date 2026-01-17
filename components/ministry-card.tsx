@@ -3,9 +3,9 @@ import { cn } from "@/lib/utils";
 
 interface MinistryCardProps {
   title: string;
-  icon: LucideIcon;
+  icon?: LucideIcon;
   children: React.ReactNode;
-  variant?: "feature" | "compact"; 
+  variant?: "feature" | "compact";
   className?: string;
 }
 
@@ -16,8 +16,7 @@ export function MinistryCard({
   variant = "feature",
   className,
 }: MinistryCardProps) {
-  
- const cardStyle = {
+  const cardStyle = {
     iconBg: "bg-navy/5",
     iconColor: "text-primary-orange",
     borderColor: "border-navy"
@@ -32,16 +31,18 @@ export function MinistryCard({
           className
         )}
       >
-        <div className="flex items-center gap-3 mb-6">
-          <div
-            className={cn(
-              "w-12 h-12 rounded-full flex items-center justify-center",
-              cardStyle.iconBg
-            )}
-          >
-            <Icon className={cn("w-6 h-6", cardStyle.iconColor)} />
-          </div>
-          <h2 className="font-serif text-2xl md:text-3xl font-bold text-navy">
+        <div className="flex items-center justify-center gap-3 mb-6">
+          {Icon && (
+            <div
+              className={cn(
+                "w-12 h-12 rounded-full flex items-center justify-center",
+                cardStyle.iconBg
+              )}
+            >
+              <Icon className={cn("w-6 h-6", cardStyle.iconColor)} />
+            </div>
+          )}
+          <h2 className="font-serif text-2xl md:text-3xl font-bold text-navy leading-none mt-[2px]">
             {title}
           </h2>
         </div>
@@ -60,7 +61,7 @@ export function MinistryCard({
       )}
     >
       <div className="mb-4">
-        <Icon className={cn("w-8 h-8 mb-3", cardStyle.iconColor)} />
+        {Icon && <Icon className={cn("w-8 h-8 mb-3", cardStyle.iconColor)} />}
         <h4 className="font-bold text-xl text-navy">{title}</h4>
       </div>
       <div>{children}</div>
