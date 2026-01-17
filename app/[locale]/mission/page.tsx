@@ -1,7 +1,8 @@
 import { Footer } from "@/components/footer";
+import { MinistryCard } from "@/components/ministry-card";
 import { Navbar } from "@/components/navbar";
 import { Link } from "@/i18n/navigation";
-import { BookOpen, Heart, Target, Users } from "lucide-react";
+import { BookOpen, Flame, Heart, Target, Users } from "lucide-react";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
@@ -75,105 +76,119 @@ export default async function MissionPage({
         </Link>
       </div>
 
-      {/* Vision Section */}
-      <section className="py-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-gray-100">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-full bg-primary-orange/10 flex items-center justify-center">
-                <Heart className="w-6 h-6 text-primary-orange" />
-              </div>
-              <h2 className="font-serif text-2xl md:text-3xl font-bold text-navy">
-                {t("vision.title")}
-              </h2>
-            </div>
+      <div className="max-w-4xl mx-auto px-4 pb-12 sm:pb-26 sm:px-6 lg:px-8 space-y-12 py-12">
+        
+        {/* Vision Section */}
+        <MinistryCard 
+          title={t("vision.title")} 
+          icon={Heart} 
+          variant="feature"
+        >
+          <p className="text-lg text-gray-800 font-medium mb-2">
+            {t("vision.mainText")}
+          </p>
+          <p className="text-primary-orange font-bold mb-6">
+            {t("vision.verse")}
+          </p>
 
-            <p className="text-xl font-semibold text-primary-orange mb-4">
-              {t("vision.subtitle")}
+          <div className="bg-gray-50 p-5 rounded-lg border-l-4 border-primary-orange">
+            <p className="text-gray-700 font-medium mb-3">
+              {t("vision.subIntro")}
             </p>
-
-            <p className="text-gray-700 text-lg mb-4">
-              {t("vision.description")}{" "}
-              <span className="text-primary-orange font-medium">
-                {t("vision.verse")}
-              </span>
-            </p>
-
-            <p className="text-gray-600 italic mb-4">{t("vision.peterIntro")}</p>
-
-            <p className="text-gray-700 mb-4">{t("vision.responsibility")}</p>
-
-            <ul className="space-y-3 ml-4">
+            <p className="text-gray-600 mb-4">{t("vision.responsibilityTitle")}</p>
+            
+            <ul className="space-y-3">
               <li className="flex items-start gap-3">
-                <span className="text-primary-orange font-bold text-xl">•</span>
+                <span className="text-primary-orange font-bold text-lg">•</span>
                 <span className="text-gray-700">
-                  <strong>Богослужение</strong> — {t("vision.worship").replace("Богослужение — ", "")}
+                  <strong className="text-navy">{t("vision.point1_title")}</strong> — {t("vision.point1_text")}
                 </span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-primary-orange font-bold text-xl">•</span>
+                <span className="text-primary-orange font-bold text-lg">•</span>
                 <span className="text-gray-700">
-                  <strong>Свидетельство</strong> — {t("vision.testimony").replace("Свидетельство — ", "")}
+                  <strong className="text-navy">{t("vision.point2_title")}</strong> — {t("vision.point2_text")}
                 </span>
               </li>
             </ul>
           </div>
-        </div>
-      </section>
+        </MinistryCard>
 
-      {/* Mission Section */}
-      <section className="py-12 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-cream rounded-xl p-6 md:p-8">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-full bg-primary-orange/10 flex items-center justify-center">
-                <Target className="w-6 h-6 text-primary-orange" />
-              </div>
-              <h2 className="font-serif text-2xl md:text-3xl font-bold text-navy">
-                {t("mission.title")}
-              </h2>
-            </div>
+        {/* Mission Section */}
+        <MinistryCard 
+          title={t("mission.title")} 
+          icon={Target} 
+          variant="feature"
+        >
+          <p className="text-gray-700 text-lg mb-6 font-medium">
+            {t("mission.intro")}
+          </p>
 
-            <p className="text-gray-700 text-lg mb-2">
-              {t("mission.description")}
+          <blockquote className="italic text-gray-700 border-l-4 border-blue-500 pl-4 py-2 mb-6 bg-blue-50/50">
+            <p className="whitespace-pre-line mb-2 leading-relaxed">
+              {t("mission.bibleText")}
             </p>
+            <cite className="block text-sm font-bold not-italic text-blue-600 mt-2">
+              {t("mission.bibleRef")}
+            </cite>
+          </blockquote>
 
-            <p className="text-primary-orange font-medium mb-6">
-              {t("mission.verse")}
-            </p>
+          <p className="text-navy font-semibold text-lg whitespace-pre-line">
+            {t("mission.foundation")}
+          </p>
+        </MinistryCard>
 
-            <p className="text-gray-700 mb-4">{t("mission.belief")}</p>
+        {/* Slogans Section */}
+        <section>
+          <h3 className="text-center font-serif text-2xl font-bold text-navy mb-8 uppercase tracking-wide">
+            {t("slogans.mainTitle")}
+          </h3>
 
-            <p className="text-gray-600 italic">
-              {t("mission.references")}
-            </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Learn Section */}
+            <MinistryCard 
+              title={t("slogans.learn_title")} 
+              icon={BookOpen} 
+              variant="compact"
+            >
+              <p className="text-gray-700 mb-4 text-sm leading-relaxed">
+                {t("slogans.learn_text")}
+              </p>
+              <p className="text-xs text-gray-400 font-mono">
+                {t("slogans.learn_ref")}
+              </p>
+            </MinistryCard>
+
+            {/* Live Section */}
+            <MinistryCard 
+              title={t("slogans.live_title")} 
+              icon={Flame} 
+              variant="compact"
+            >
+              <p className="text-gray-700 mb-4 text-sm leading-relaxed">
+                {t("slogans.live_text")}
+              </p>
+              <p className="text-xs text-gray-400 font-mono">
+                {t("slogans.live_ref")}
+              </p>
+            </MinistryCard>
+
+            {/* Love Section */}
+            <MinistryCard 
+              title={t("slogans.love_title")} 
+              icon={Users} 
+              variant="compact"
+            >
+              <p className="text-gray-700 mb-4 text-sm leading-relaxed">
+                {t("slogans.love_text")}
+              </p>
+              <p className="text-xs text-gray-400 font-mono">
+                {t("slogans.love_ref")}
+              </p>
+            </MinistryCard>
           </div>
-        </div>
-      </section>
-
-      {/* Love Section */}
-      <section className="py-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-gray-100">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-full bg-primary-orange/10 flex items-center justify-center">
-                <Users className="w-6 h-6 text-primary-orange" />
-              </div>
-              <h2 className="font-serif text-2xl md:text-3xl font-bold text-navy">
-                {t("love.title")}
-              </h2>
-            </div>
-
-            <p className="text-gray-700 text-lg mb-4">
-              {t("love.description")}
-            </p>
-
-            <p className="text-primary-orange font-medium">
-              {t("love.verses")}
-            </p>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       <Footer />
     </div>
