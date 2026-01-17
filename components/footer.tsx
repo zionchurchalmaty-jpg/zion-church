@@ -183,6 +183,19 @@ export function Footer() {
           </div>
           <p>{t("serviceInfo")}</p>
         </div>
+        <div className="mt-8 flex justify-center text-sm text-white/40">
+          <span>
+            Developed by{" "}
+            <a
+              href="https://www.telostechnologies.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-colors underline underline-offset-4"
+            >
+              Telos Technologies
+            </a>
+          </span>
+        </div>
       </div>
     </footer>
   );
