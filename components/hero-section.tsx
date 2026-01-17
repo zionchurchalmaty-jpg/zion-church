@@ -25,12 +25,12 @@ export function HeroSection() {
       {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
         {/* Motto */}
-        <p className="font-serif text-4xl sm:text-5xl text-white/90 mb-4 animate-fade-in-up animation-delay-100 text-balance">
+        <p className="font-serif text-5xl sm:text-5xl text-white/90 mb-4 animate-fade-in-up animation-delay-100 text-balance">
           {t("welcomeTo")} <span className="font-bold">{t("churchName")}</span>
         </p>
 
         {/* Subtitle */}
-        <p className="text-lg sm:text-xl text-white/80 mb-8 max-w-3xl mx-auto animate-fade-in-up animation-delay-200 leading-relaxed italic">
+        <p className="text-lg sm:text-2xl text-white/80 mb-8 max-w-3xl mx-auto animate-fade-in-up animation-delay-200 leading-relaxed italic">
           {t("subtitle")}
         </p>
 
