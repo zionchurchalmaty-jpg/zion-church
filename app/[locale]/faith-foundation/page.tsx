@@ -1,7 +1,8 @@
 import { Footer } from "@/components/footer";
+import { MinistryCard } from "@/components/ministry-card";
 import { Navbar } from "@/components/navbar";
 import { Link } from "@/i18n/navigation";
-import { BookOpen, ChevronRight, ScrollText } from "lucide-react";
+import { BookOpen, ChevronRight, ScrollText, Target } from "lucide-react";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
@@ -100,14 +101,26 @@ export default async function FaithFoundationPage({
         </Link>
       </div>
 
-      {/* Introduction */}
+      {/* Creed Section & Introduction */}
       <section className="py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-gray-100">
-            <p className="text-gray-700 text-lg leading-relaxed">
-              {t("introduction")}
+          <MinistryCard title={t("creed.title")} variant="feature">
+            <p className="text-navy text-sm md:text-base mb-8 leading-relaxed">
+              {t("creed.intro")}
             </p>
-          </div>
+
+            <div className="bg-blue-50/60 rounded-xl p-6 md:p-8 border-l-4 border-blue-500 mb-8">
+              <blockquote className="italic font-bold text-navy/80 text-lg leading-loose font-serif whitespace-pre-line">
+                {t("creed.text")}
+              </blockquote>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
+              <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+                {t("introduction")}
+              </p>
+            </div>
+          </MinistryCard>
         </div>
       </section>
 

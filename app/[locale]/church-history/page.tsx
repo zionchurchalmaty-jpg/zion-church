@@ -1,7 +1,7 @@
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { Link } from "@/i18n/navigation";
-import { Calendar, Heart, Users } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import Image from "next/image";
@@ -54,19 +54,6 @@ export default async function ChurchHistoryPage({
     "2020_01_26",
   ];
 
-  const faithFoundationItems = [
-    { key: "westminsterLarger", href: "/faith-foundation/westminster-larger" },
-    {
-      key: "westminsterConfession",
-      href: "/faith-foundation/westminster-confession",
-    },
-    { key: "heidelberg", href: "/faith-foundation/heidelberg" },
-    {
-      key: "westminsterShorter",
-      href: "/faith-foundation/westminster-shorter",
-    },
-  ];
-
   return (
     <div className="min-h-screen bg-cream">
       <Navbar />
@@ -77,7 +64,7 @@ export default async function ChurchHistoryPage({
         <div className="absolute inset-0 bg-[rgb(var(--secondary-navy))]">
           <Image
             src="/images/church-history-hero.jpg"
-            alt={t("heroImageAlt")}
+            alt={t("images.heroImageAlt")}
             fill
             priority
             className="object-cover opacity-40"
@@ -122,160 +109,95 @@ export default async function ChurchHistoryPage({
         </Link>
       </div>
 
-      {/* Timeline Section */}
-      <section className="py-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative">
-            {/* Timeline line */}
-            <div className="absolute left-4 md:left-6 top-0 bottom-0 w-0.5 bg-primary-orange/30" />
-
-            <div className="space-y-6">
-              {timelineEvents.map((eventKey, index) => (
-                <div key={eventKey} className="relative flex gap-4 md:gap-6">
-                  {/* Timeline dot */}
-                  <div className="relative z-10 flex-shrink-0 w-8 md:w-12 h-8 md:h-12 rounded-full bg-primary-orange flex items-center justify-center shadow-md">
-                    <Calendar className="w-4 h-4 md:w-5 md:h-5 text-white" />
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1 bg-white rounded-lg p-4 md:p-5 shadow-sm border border-gray-100 -mt-1">
-                    <span className="inline-block px-2 py-0.5 rounded bg-primary-orange/10 text-primary-orange text-sm font-semibold mb-2">
-                      {t(`timeline.${eventKey}.date`)}
-                    </span>
-                    <p className="text-gray-700 leading-relaxed">
-                      {t(`timeline.${eventKey}.description`)}
-                    </p>
-                  </div>
-
-                  {/* Show early church image after first few events */}
-                  {index === 1 && <div className="hidden" />}
-                </div>
-              ))}
-            </div>
-
-            {/* Early Church Image Placeholder - positioned after initial events */}
-            {/* <div className="mt-8 ml-12 md:ml-18">
-              <div className="relative w-full max-w-md h-[200px] bg-gray-200 rounded-lg overflow-hidden">
-                <Image
-                  src="/images/early-church.png"
-                  alt={t("earlyChurchImageAlt")}
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
-              </div>
-            </div> */}
-          </div>
+      {/* Main Content */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="relative w-full aspect-[16/9] mb-10 rounded-sm overflow-hidden shadow-sm">
+          <Image
+            src="/images/church-history-hero.jpg"
+            alt={t("images.mainPhotoAlt")}
+            fill
+            className="object-cover"
+          />
         </div>
-      </section>
 
-      {/* Vision & Mission Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-serif text-3xl font-bold text-navy text-center mb-12">
-            {t("visionMission.sectionTitle")}
+        {/* Chroniclt text */}
+        <div className="prose prose-lg max-w-none text-gray-700">
+          <h2 className="text-2xl font-bold text-navy uppercase mb-6 border-b-2 border-primary-orange inline-block pb-1">
+            {t("chronicle.sectionTitle")}
           </h2>
 
-          <div className="space-y-12">
-            {/* Vision */}
-            <div className="bg-cream rounded-xl p-6 md:p-8">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-full bg-primary-orange/10 flex items-center justify-center">
-                  <Heart className="w-6 h-6 text-primary-orange" />
+          <div className="space-y-5">
+            {timelineEvents.map((eventKey, index) => (
+              <div key={eventKey}>
+                {index === 5 && (
+                  <div className="relative my-10 w-full mx-auto h-64 md:h-[500px] bg-gray-100 rounded-sm overflow-hidden shadow-sm">
+                    <Image
+                      src="/images/early-church.png"
+                      alt={t("images.meetingAlt")}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+                    />
+                  </div>
+                )}
+                {/* Text Item */}
+                <div className="flex flex-col sm:flex-row sm:items-baseline gap-2">
+                  <span className="font-bold text-navy shrink-0 min-w-[130px]">
+                    {t(`timeline.${eventKey}.date`)}
+                  </span>
+                  <span className="hidden sm:inline text-primary-orange font-bold">
+                    –
+                  </span>
+                  <span className="text-gray-800 leading-relaxed">
+                    {t(`timeline.${eventKey}.description`)}
+                  </span>
                 </div>
-                <h3 className="font-serif text-2xl font-semibold text-navy">
-                  {t("visionMission.vision.title")}
-                </h3>
               </div>
-
-              <p className="text-xl font-medium text-primary-orange mb-4">
-                {t("visionMission.vision.subtitle")}
-              </p>
-
-              <p className="text-gray-700 mb-4">
-                {t("visionMission.vision.description")}
-              </p>
-
-              <p className="text-gray-700 mb-3">
-                {t("visionMission.vision.details")}
-              </p>
-
-              <ul className="space-y-2 ml-4">
-                <li className="flex items-start gap-2">
-                  <span className="text-primary-orange font-bold">•</span>
-                  <span className="text-gray-700">
-                    <strong>Поклонение</strong> —{" "}
-                    {t("visionMission.vision.worship").replace(
-                      "Поклонение — ",
-                      ""
-                    )}
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary-orange font-bold">•</span>
-                  <span className="text-gray-700">
-                    <strong>Свидетельство</strong> —{" "}
-                    {t("visionMission.vision.testimony").replace(
-                      "Свидетельство — ",
-                      ""
-                    )}
-                  </span>
-                </li>
-              </ul>
-            </div>
-
-            {/* Mission */}
-            <div className="bg-cream rounded-xl p-6 md:p-8">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-full bg-primary-orange/10 flex items-center justify-center">
-                  <Users className="w-6 h-6 text-primary-orange" />
-                </div>
-                <h3 className="font-serif text-2xl font-semibold text-navy">
-                  {t("visionMission.mission.title")}
-                </h3>
-              </div>
-
-              <p className="text-gray-700 mb-4">
-                {t("visionMission.mission.description")}
-              </p>
-
-              <p className="text-gray-700 font-medium mb-2">
-                {t("visionMission.mission.belief")}
-              </p>
-
-              <p className="text-gray-700 italic mb-4">
-                {t("visionMission.mission.meaning")}
-              </p>
-
-              <p className="text-xl font-semibold text-primary-orange mb-4">
-                {t("visionMission.mission.motto")}
-              </p>
-
-              <ul className="space-y-3">
-                <li className="flex items-start gap-2">
-                  <span className="text-primary-orange font-bold">•</span>
-                  <span className="text-gray-700">
-                    {t("visionMission.mission.learnTeach")}
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary-orange font-bold">•</span>
-                  <span className="text-gray-700">
-                    {t("visionMission.mission.live")}
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary-orange font-bold">•</span>
-                  <span className="text-gray-700">
-                    {t("visionMission.mission.love")}
-                  </span>
-                </li>
-              </ul>
-            </div>
+            ))}
           </div>
         </div>
-      </section>
+        {/* Video archive section */}
+        <div className="mt-16 space-y-10">
+          <h2 className="text-2xl font-bold text-navy border-b pb-4 mb-8">
+            {t("videos.sectionTitle")}
+          </h2>
 
+          {/* Video 1 */}
+          <div className="space-y-3">
+            <div className="relative w-full aspect-video bg-black rounded-sm overflow-hidden shadow-lg">
+              <iframe
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/aUkVYcnfs0E?si=U4sNg4_HAkEsJal1"
+                title={t("videos.video1Title")}
+                className="absolute inset-0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+            <h4 className="font-bold text-lg text-navy">
+              {t("videos.video1Title")}
+            </h4>
+          </div>
+
+          {/* Video 2 */}
+          <div className="space-y-3">
+            <div className="relative w-full aspect-video bg-black rounded-sm overflow-hidden shadow-lg">
+              <iframe
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/novswNp1HtM?si=nM00AU7xFi_uaf_4"
+                title={t("videos.video2Title")}
+                className="absolute inset-0"
+                allowFullScreen
+              ></iframe>
+            </div>
+            <h4 className="font-bold text-lg text-navy">
+              {t("videos.video2Title")}
+            </h4>
+          </div>
+        </div>
+      </div>
       <Footer />
     </div>
   );
