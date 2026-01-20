@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import type { CalendarEvent } from "@/lib/firestore/types";
+import type { CalendarEvent, CalendarEventWithNextOccurrence } from "@/lib/firestore/types";
 import { useEventFilters } from "@/lib/hooks/use-event-filters";
 import { EventFiltersComponent } from "./event-filters";
 import { EventCard } from "./event-card";
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 
 interface EventListClientProps {
-  events: CalendarEvent[];
+  events: (CalendarEvent | CalendarEventWithNextOccurrence)[];
   availableTags: string[];
 }
 

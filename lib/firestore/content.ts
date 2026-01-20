@@ -1,27 +1,29 @@
+import { getNextOccurrence } from "@/lib/event-recurrence";
+import { db, isFirebaseConfigured } from "@/lib/firebase/client";
 import {
-  collection,
-  doc,
-  getDocs,
-  getDoc,
   addDoc,
-  updateDoc,
+  collection,
   deleteDoc,
-  query,
-  where,
-  orderBy,
+  doc,
   limit as firestoreLimit,
-  Timestamp,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
   serverTimestamp,
+  Timestamp,
+  updateDoc,
+  where,
 } from "firebase/firestore";
 import slugify from "slugify";
-import { db, isFirebaseConfigured } from "@/lib/firebase/client";
 import type {
-  Content,
-  ContentInput,
-  ContentFilters,
-  ContentType,
   CalendarEvent,
   CalendarEventInput,
+  CalendarEventWithNextOccurrence,
+  Content,
+  ContentFilters,
+  ContentInput,
+  ContentType,
 } from "./types";
 
 const CONTENT_COLLECTION = "content";
@@ -367,36 +369,116 @@ export async function getContentCounts(): Promise<{
 /**
  * Get published events, optionally filtered to upcoming only
  * Sorted by eventDate ascending (soonest first)
+ * For recurring events, calculates next occurrence and sorts by that
  */
 export async function getPublishedEvents(
   upcomingOnly: boolean = true
-): Promise<CalendarEvent[]> {
+): Promise<CalendarEventWithNextOccurrence[]> {
   if (!ensureFirebase() || !db) return [];
 
   try {
-    let q;
-    if (upcomingOnly) {
-      q = query(
-        collection(db, CONTENT_COLLECTION),
-        where("contentType", "==", "event"),
-        where("status", "==", "published"),
-        where("eventDate", ">=", Timestamp.now()),
-        orderBy("eventDate", "asc")
-      );
-    } else {
-      q = query(
+    const now = new Date();
+    const nowTimestamp = Timestamp.now();
+
+    if (!upcomingOnly) {
+      // Fetch all published events without date filter
+      const q = query(
         collection(db, CONTENT_COLLECTION),
         where("contentType", "==", "event"),
         where("status", "==", "published"),
         orderBy("eventDate", "asc")
       );
+
+      const snapshot = await getDocs(q);
+      return snapshot.docs.map((doc) => {
+        const event = serializeForClient<CalendarEvent>({ id: doc.id, ...doc.data() });
+        const nextOcc = getNextOccurrence(
+          event.eventDate as { seconds: number; nanoseconds: number },
+          event.repeatSettings,
+          now
+        );
+        return {
+          ...event,
+          nextOccurrence: nextOcc,
+          isRecurringOccurrence: event.repeatSettings.repeatType !== "none",
+        };
+      });
     }
 
-    const snapshot = await getDocs(q);
-
-    return snapshot.docs.map((doc) =>
-      serializeForClient<CalendarEvent>({ id: doc.id, ...doc.data() })
+    // For upcomingOnly: fetch non-recurring with future dates + all recurring events
+    // Query 1: Non-recurring events with future dates
+    const nonRecurringQuery = query(
+      collection(db, CONTENT_COLLECTION),
+      where("contentType", "==", "event"),
+      where("status", "==", "published"),
+      where("repeatSettings.repeatType", "==", "none"),
+      where("eventDate", ">=", nowTimestamp),
+      orderBy("eventDate", "asc")
     );
+
+    // Query 2: All weekly recurring events
+    const weeklyQuery = query(
+      collection(db, CONTENT_COLLECTION),
+      where("contentType", "==", "event"),
+      where("status", "==", "published"),
+      where("repeatSettings.repeatType", "==", "weekly")
+    );
+
+    // Query 3: All custom recurring events
+    const customQuery = query(
+      collection(db, CONTENT_COLLECTION),
+      where("contentType", "==", "event"),
+      where("status", "==", "published"),
+      where("repeatSettings.repeatType", "==", "custom")
+    );
+
+    const [nonRecurringSnap, weeklySnap, customSnap] = await Promise.all([
+      getDocs(nonRecurringQuery),
+      getDocs(weeklyQuery),
+      getDocs(customQuery),
+    ]);
+
+    const allEvents: CalendarEventWithNextOccurrence[] = [];
+
+    // Process non-recurring events
+    nonRecurringSnap.docs.forEach((doc) => {
+      const event = serializeForClient<CalendarEvent>({ id: doc.id, ...doc.data() });
+      allEvents.push({
+        ...event,
+        nextOccurrence: event.eventDate as { seconds: number; nanoseconds: number },
+        isRecurringOccurrence: false,
+      });
+    });
+
+    // Process recurring events - calculate next occurrence
+    [...weeklySnap.docs, ...customSnap.docs].forEach((doc) => {
+      const event = serializeForClient<CalendarEvent>({ id: doc.id, ...doc.data() });
+      const nextOcc = getNextOccurrence(
+        event.eventDate as { seconds: number; nanoseconds: number },
+        event.repeatSettings,
+        now
+      );
+
+      // Only include if there's a future occurrence
+      if (nextOcc) {
+        allEvents.push({
+          ...event,
+          nextOccurrence: nextOcc,
+          isRecurringOccurrence: true,
+        });
+      }
+    });
+
+    // Sort by next occurrence ascending
+    allEvents.sort((a, b) => {
+      const aTime = a.nextOccurrence?.seconds ?? 0;
+      const bTime = b.nextOccurrence?.seconds ?? 0;
+      return aTime - bTime;
+    });
+
+    console.log("All events:", allEvents);
+
+    return allEvents;
   } catch (error) {
     console.error("Error fetching published events:", error);
     return [];
@@ -405,27 +487,17 @@ export async function getPublishedEvents(
 
 /**
  * Get upcoming events for the homepage calendar section
- * Returns next N events from today onwards
+ * Returns next N events from today onwards, including recurring events
  */
 export async function getUpcomingEvents(
   limitCount: number = 6
-): Promise<CalendarEvent[]> {
+): Promise<CalendarEventWithNextOccurrence[]> {
   if (!ensureFirebase() || !db) return [];
 
   try {
-    const q = query(
-      collection(db, CONTENT_COLLECTION),
-      where("contentType", "==", "event"),
-      where("status", "==", "published"),
-      where("eventDate", ">=", Timestamp.now()),
-      orderBy("eventDate", "asc"),
-      firestoreLimit(limitCount)
-    );
-
-    const snapshot = await getDocs(q);
-    return snapshot.docs.map((doc) =>
-      serializeForClient<CalendarEvent>({ id: doc.id, ...doc.data() })
-    );
+    // Use getPublishedEvents with upcomingOnly=true and then apply limit
+    const allUpcoming = await getPublishedEvents(true);
+    return allUpcoming.slice(0, limitCount);
   } catch (error) {
     console.error("Error fetching upcoming events:", error);
     return [];

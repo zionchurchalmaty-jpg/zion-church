@@ -1,4 +1,4 @@
-import type { CalendarEvent } from "@/lib/firestore/types";
+import type { CalendarEvent, CalendarEventWithNextOccurrence } from "@/lib/firestore/types";
 import { Link } from "@/i18n/navigation";
 import { formatDateRu, formatTimeRu } from "@/lib/date-format";
 import { Calendar, Clock } from "lucide-react";
@@ -13,6 +13,11 @@ function firestoreToDate(value: unknown): Date | undefined {
   return undefined;
 }
 
+// Type guard to check if event has nextOccurrence
+function hasNextOccurrence(event: CalendarEvent | CalendarEventWithNextOccurrence): event is CalendarEventWithNextOccurrence {
+  return "nextOccurrence" in event;
+}
+
 function stripHtmlAndTruncate(html: string, maxLength: number = 150): string {
   const text = html.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim();
   if (text.length <= maxLength) return text;
@@ -20,10 +25,16 @@ function stripHtmlAndTruncate(html: string, maxLength: number = 150): string {
 }
 
 interface EventCardProps {
-  event: CalendarEvent;
+  event: CalendarEvent | CalendarEventWithNextOccurrence;
 }
 
 export function EventCard({ event }: EventCardProps) {
+  // Use nextOccurrence if available (for recurring events), otherwise fall back to eventDate
+  const displayDate = hasNextOccurrence(event) && event.nextOccurrence
+    ? firestoreToDate(event.nextOccurrence)
+    : firestoreToDate(event.eventDate);
+
+  // For time display, use the original eventDate since it contains the time info
   const eventDate = firestoreToDate(event.eventDate);
 
   return (
@@ -37,10 +48,10 @@ export function EventCard({ event }: EventCardProps) {
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
             {/* Date badge overlay */}
-            {eventDate && (
+            {displayDate && (
               <div className="absolute bottom-3 left-3 bg-primary-orange text-white px-3 py-1.5 rounded-md shadow-lg">
                 <span className="text-sm font-medium">
-                  {formatDateRu(eventDate).split(" ").slice(0, 2).join(" ")}
+                  {formatDateRu(displayDate).split(" ").slice(0, 2).join(" ")}
                 </span>
               </div>
             )}
@@ -48,13 +59,13 @@ export function EventCard({ event }: EventCardProps) {
         )}
         <div className="flex flex-col flex-1 p-5">
           {/* Date and time info */}
-          {eventDate && (
+          {displayDate && (
             <div className="flex items-center gap-3 text-sm text-primary-orange mb-2">
               <div className="flex items-center gap-1">
                 <Calendar className="h-4 w-4" />
-                <span>{formatDateRu(eventDate)}</span>
+                <span>{formatDateRu(displayDate)}</span>
               </div>
-              {!event.isAllDay && (
+              {!event.isAllDay && eventDate && (
                 <div className="flex items-center gap-1">
                   <Clock className="h-4 w-4" />
                   <span>{formatTimeRu(eventDate)}</span>

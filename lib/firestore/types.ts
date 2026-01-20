@@ -78,6 +78,7 @@ export interface RepeatSettings {
   repeatType: RepeatType;
   weeklyDays?: number[]; // 0-6 (Sunday-Saturday) for weekly repeats
   customDates?: string[]; // ISO date strings for custom repeats
+  recurrenceEndDate?: string; // ISO date string, recurrence stops after this date
 }
 
 export interface CalendarEvent extends Content {
@@ -94,4 +95,10 @@ export interface CalendarEventInput extends ContentInput {
   endDate?: Date;
   isAllDay: boolean;
   repeatSettings: RepeatSettings;
+}
+
+// Extended CalendarEvent with computed next occurrence for recurring events
+export interface CalendarEventWithNextOccurrence extends CalendarEvent {
+  nextOccurrence: { seconds: number; nanoseconds: number } | null;
+  isRecurringOccurrence: boolean;
 }

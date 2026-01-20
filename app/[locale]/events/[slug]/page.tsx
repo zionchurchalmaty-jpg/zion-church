@@ -94,6 +94,8 @@ export default async function EventPage({ params }: EventPageProps) {
     notFound();
   }
 
+  
+
   const t = await getTranslations("eventsPage");
 
   const eventDate = firestoreToDate(event.eventDate);

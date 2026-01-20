@@ -136,6 +136,11 @@ export function EventForm({ initialData, isEditing = false }: EventFormProps) {
   const [customDates, setCustomDates] = useState<Date[]>(
     initialData?.repeatSettings?.customDates?.map((d) => new Date(d)) || []
   );
+  const [recurrenceEndDate, setRecurrenceEndDate] = useState<Date | undefined>(
+    initialData?.repeatSettings?.recurrenceEndDate
+      ? new Date(initialData.repeatSettings.recurrenceEndDate)
+      : undefined
+  );
 
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -205,6 +210,10 @@ export function EventForm({ initialData, isEditing = false }: EventFormProps) {
         customDates:
           repeatType === "custom"
             ? customDates.map((d) => d.toISOString())
+            : undefined,
+        recurrenceEndDate:
+          repeatType !== "none" && recurrenceEndDate
+            ? recurrenceEndDate.toISOString()
             : undefined,
       };
 
@@ -487,6 +496,20 @@ export function EventForm({ initialData, isEditing = false }: EventFormProps) {
                     Dates selected: {customDates.length}
                   </p>
                 )}
+              </div>
+            )}
+
+            {(repeatType === "weekly" || repeatType === "custom") && (
+              <div className="space-y-2">
+                <Label>End recurrence on (optional)</Label>
+                <DatePicker
+                  date={recurrenceEndDate}
+                  onDateChange={setRecurrenceEndDate}
+                  placeholder="No end date"
+                />
+                <p className="text-xs text-muted-foreground">
+                  Leave empty for indefinite recurrence
+                </p>
               </div>
             )}
           </div>

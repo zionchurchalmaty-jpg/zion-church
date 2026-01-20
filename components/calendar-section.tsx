@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "@/i18n/navigation";
 import { formatDateShortRu } from "@/lib/date-format";
 import { getUpcomingEvents } from "@/lib/firestore/content";
+import type { CalendarEventWithNextOccurrence } from "@/lib/firestore/types";
 import { Timestamp } from "firebase/firestore";
 import { Calendar as CalendarIcon, ChevronRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
@@ -14,6 +15,13 @@ function firestoreToDate(value: unknown): Date | undefined {
   if (typeof obj.toDate === "function") return obj.toDate();
   if (typeof obj.seconds === "number") return new Date(obj.seconds * 1000);
   return undefined;
+}
+
+function getDisplayDate(event: CalendarEventWithNextOccurrence): Date | undefined {
+  // Use nextOccurrence if available, otherwise fall back to eventDate
+  return event.nextOccurrence
+    ? firestoreToDate(event.nextOccurrence)
+    : firestoreToDate(event.eventDate);
 }
 
 function stripHtml(html: string): string {
@@ -87,7 +95,7 @@ export async function CalendarSection() {
         {/* Events Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
           {displayEvents.map((event) => {
-            const eventDate = firestoreToDate(event.eventDate);
+            const eventDate = getDisplayDate(event);
             const description =
               event.excerpt || stripHtml(event.content).slice(0, 150) + "...";
 
