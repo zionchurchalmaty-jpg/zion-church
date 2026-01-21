@@ -120,8 +120,8 @@ export default async function ChurchHistoryPage({
           />
         </div>
 
-        {/* Chroniclt text */}
-        <div className="prose prose-lg max-w-none text-gray-700">
+        {/* Chronicle text */}
+        <div className="max-w-none text-gray-700">
           <h2 className="text-2xl font-bold text-navy uppercase mb-6 border-b-2 border-primary-orange inline-block pb-1">
             {t("chronicle.sectionTitle")}
           </h2>
@@ -129,13 +129,14 @@ export default async function ChurchHistoryPage({
           <div className="space-y-5">
             {timelineEvents.map((eventKey, index) => (
               <div key={eventKey}>
-                {index === 5 && (
-                  <div className="relative my-10 w-full mx-auto h-64 md:h-[500px] bg-gray-100 rounded-sm overflow-hidden shadow-sm">
+                {index === 2 && (
+                  <div className="w-full my-10">
                     <Image
                       src="/images/early-church.png"
                       alt={t("images.meetingAlt")}
-                      fill
-                      className="object-cover"
+                      width={632}
+                      height={237}
+                      className="w-full h-auto rounded-lg shadow-md block"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
                     />
                   </div>
