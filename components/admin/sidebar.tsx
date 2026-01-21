@@ -10,6 +10,7 @@ import {
   Calendar,
   LogOut,
   ChevronLeft,
+  BookOpen,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "./auth-provider";
@@ -24,6 +25,11 @@ const navItems = [
     label: "Blog Posts",
     href: "/admin/blog",
     icon: FileText,
+  },
+  {
+    label: "Sermons",
+    href: "/admin/sermons",
+    icon: BookOpen,
   },
   {
     label: "Events",

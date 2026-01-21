@@ -131,7 +131,7 @@ export async function getPublishedContent(
       collection(db, CONTENT_COLLECTION),
       where("contentType", "==", contentType),
       where("status", "==", "published"),
-      orderBy("publishedAt", "desc")
+      orderBy("updatedAt", "desc")
     );
 
     const snapshot = await getDocs(q);

@@ -95,6 +95,12 @@ export default function AdminDashboard() {
               New Blog Post
             </Link>
           </Button>
+          <Button asChild variant="orange">
+            <Link href="/admin/sermons/new">
+              <Plus className="mr-2 h-4 w-4" />
+              New Sermon
+            </Link>
+          </Button>
           <Button asChild variant="outline">
             <Link href="/admin/events/new">
               <Plus className="mr-2 h-4 w-4" />
@@ -122,8 +128,8 @@ export default function AdminDashboard() {
             </div>
           ) : (
             recentItems.map((item) => {
-              const pathMap = { blog: "blog", song: "songs", event: "events" };
-              const labelMap = { blog: "Blog Post", song: "Song", event: "Event" };
+              const pathMap = { blog: "blog", song: "songs", event: "events", sermon: "sermons" };
+              const labelMap = { blog: "Blog Post", song: "Song", event: "Event", sermon: "Sermon" };
               const iconMap = { blog: FileText, song: Music, event: Calendar };
               const Icon = iconMap[item.contentType as keyof typeof iconMap] || FileText;
 

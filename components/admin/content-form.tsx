@@ -85,8 +85,17 @@ export function ContentForm({
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const contentTypeLabel = contentType === "blog" ? "Blog Post" : "Song";
-  const backPath = contentType === "blog" ? "/admin/blog" : "/admin/songs";
+  const typeConfig: Record<string, { label: string; backPath: string }> = {
+    blog: { label: "Blog Post", backPath: "/admin/blog" },
+    sermon: { label: "Sermon", backPath: "/admin/sermons" },
+    song: { label: "Song", backPath: "/admin/songs" },
+    event: { label: "Event", backPath: "/admin/events" },
+  };
+
+  const config = typeConfig[contentType] || typeConfig.blog;
+  
+  const contentTypeLabel = config.label;
+  const backPath = config.backPath;
 
   const handleTagsChange = (value: string) => {
     setTagsInput(value);
