@@ -8,6 +8,7 @@
     "mission": "Миссия",
     "faith-foundation": "Основание веры",
     "sermons": "Проповеди",
+    "blog": "Блог",
     "contact": "Контакты",
     "give": "Пожертвовать"
   },
@@ -335,6 +336,7 @@
     "visit": "Посетить",
     "groups": "Группы",
     "blog": "Блог",
+    "sermons": "Проповеди",
     "contact": "Контакты",
     "resources": "Ресурсы",
     "eventsCalendar": "Календарь событий",
@@ -379,6 +381,15 @@
       "savePreferences": "Сохранить настройки",
       "acceptAll": "Принять все"
     }
+  },
+  "sermons": {
+    "title": "Проповеди",
+    "description": "Слушайте слово Божье",
+    "backToHome": "На главную",
+    "backToSermons": "Назад к списку проповедей",
+    "backToAllPosts": "Все проповеди",
+    "metaTitle": "Проповеди - Церковь Сион",
+    "metaDescription": "Архив проповедей церкви Сион"
   },
   "blog": {
     "title": "Блог",

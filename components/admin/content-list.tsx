@@ -44,9 +44,39 @@ export function ContentList({ items, contentType }: ContentListProps) {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
 
-  const contentTypeLabel = contentType === "blog" ? "Blog Post" : "Song";
-  const basePath = contentType === "blog" ? "/admin/blog" : "/admin/songs";
-  const publicPath = contentType === "blog" ? "/blog" : "/songs";
+  const typeConfig: Record<string, { 
+    label: string; 
+    plural: string; 
+    basePath: string; 
+    publicPath: string 
+  }> = {
+    blog: {
+      label: "Blog Post",
+      plural: "Blog Posts",
+      basePath: "/admin/blog",
+      publicPath: "/blog",
+    },
+    sermon: {
+      label: "Sermon",
+      plural: "Sermons",
+      basePath: "/admin/sermons",
+      publicPath: "/sermons",
+    },
+    song: {
+      label: "Song",
+      plural: "Songs",
+      basePath: "/admin/songs",
+      publicPath: "/songs",
+    },
+    event: {
+      label: "Event",
+      plural: "Events",
+      basePath: "/admin/events",
+      publicPath: "/events",
+    },
+  };
+
+  const config = typeConfig[contentType] || typeConfig.blog;
 
   const filteredItems = items.filter((item) => {
     // Search filter
@@ -54,7 +84,7 @@ export function ContentList({ items, contentType }: ContentListProps) {
       const searchLower = search.toLowerCase();
       const matchesSearch =
         item.title.toLowerCase().includes(searchLower) ||
-        item.searchableText.includes(searchLower);
+        item.searchableText?.includes(searchLower);
       if (!matchesSearch) return false;
     }
 
@@ -70,12 +100,12 @@ export function ContentList({ items, contentType }: ContentListProps) {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="font-serif text-2xl font-bold text-navy">
-          {contentType === "blog" ? "Blog Posts" : "Songs"}
+          {config.plural}
         </h1>
         <Button asChild variant="orange">
-          <Link href={`${basePath}/new`}>
+          <Link href={`${config.basePath}/new`}>
             <Plus className="mr-2 h-4 w-4" />
-            New {contentTypeLabel}
+            New {config.label}
           </Link>
         </Button>
       </div>
@@ -123,7 +153,7 @@ export function ContentList({ items, contentType }: ContentListProps) {
                   <p className="text-muted-foreground">
                     {search || statusFilter !== "all"
                       ? "No matching content found"
-                      : `No ${contentType === "blog" ? "blog posts" : "songs"} yet. Create your first one!`}
+                      : `No ${config.plural.toLowerCase()} yet. Create your first one!`}
                   </p>
                 </TableCell>
               </TableRow>
@@ -133,12 +163,12 @@ export function ContentList({ items, contentType }: ContentListProps) {
                   <TableCell>
                     <div>
                       <Link
-                        href={`${basePath}/${item.id}/edit`}
+                        href={`${config.basePath}/${item.id}/edit`}
                         className="font-medium hover:text-primary-orange"
                       >
                         {item.title}
                       </Link>
-                      {item.tags.length > 0 && (
+                      {item.tags && item.tags.length > 0 && (
                         <div className="mt-1 flex flex-wrap gap-1">
                           {item.tags.slice(0, 3).map((tag) => (
                             <span
@@ -187,14 +217,14 @@ export function ContentList({ items, contentType }: ContentListProps) {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <Link href={`${basePath}/${item.id}/edit`}>
+                      <Link href={`${config.basePath}/${item.id}/edit`}>
                         <Button variant="ghost" size="icon">
                           <Pencil className="h-4 w-4" />
                         </Button>
                       </Link>
                       {item.status === "published" && (
                         <Link
-                          href={`${publicPath}/${item.slug}`}
+                          href={`${config.publicPath}/${item.slug}`}
                           target="_blank"
                         >
                           <Button variant="ghost" size="icon">

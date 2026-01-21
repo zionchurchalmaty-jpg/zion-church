@@ -1,3 +1,5 @@
+"use client";
+
 import type { Content } from "@/lib/firestore/types";
 import { Link } from "@/i18n/navigation";
 
@@ -12,9 +14,10 @@ interface BlogPostCardProps {
 }
 
 export function BlogPostCard({ post }: BlogPostCardProps) {
+  const basePath = post.contentType === 'sermon' ? '/sermons' : '/blog';
   return (
     <article className="group border rounded-lg overflow-hidden hover:border-primary/50 hover:shadow-lg transition-all bg-white flex flex-col">
-      <Link href={`/blog/${post.slug}`} className="flex flex-col h-full">
+      <Link href={`${basePath}/${post.slug}`} className="flex flex-col h-full">
         {post.coverImage && (
           <div className="aspect-video overflow-hidden">
             <img
