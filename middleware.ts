@@ -8,11 +8,19 @@ const intlMiddleware = createMiddleware(routing);
 const validRoutes = [
   /^\/$/, // Homepage
   /^\/blog(\/.*)?$/, // Blog pages
+  /^\/sermons(\/.*)?$/, // Sermons pages
+  /^\/church-history(\/.*)?$/, // Churh History pages
+  /^\/mission(\/.*)?$/, // Mission pages
+  /^\/faith-foundation(\/.*)?$/, // Mission pages
   /^\/songs(\/.*)?$/, // Songs pages
   /^\/legal(\/.*)?$/, // Legal pages
   /^\/about(\/.*)?$/, // About pages
   /^\/ru$/, // Russian homepage
   /^\/ru\/blog(\/.*)?$/, // Russian blog
+  /^\/ru\/sermons(\/.*)?$/, // Sermons pages
+  /^\/ru\/church-history(\/.*)?$/, // Churh History pages
+  /^\/ru\/mission(\/.*)?$/, // Mission pages
+  /^\/ru\/faith-foundation(\/.*)?$/, // Mission pages
   /^\/ru\/songs(\/.*)?$/, // Russian songs
   /^\/ru\/legal(\/.*)?$/, // Russian legal
   /^\/ru\/about(\/.*)?$/, // Russian about
