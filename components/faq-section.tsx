@@ -11,7 +11,14 @@ import { useTranslations } from "next-intl";
 export function FAQSection() {
   const t = useTranslations("faq");
 
-  const faqKeys = ["language", "children", "denomination", "connect"] as const;
+  const faqKeys = [
+    "sect",
+    "korean",
+    "zion",
+    "denomination",
+    "registration",
+    "society",
+  ] as const;
 
   return (
     <section className="py-20 bg-cream">
@@ -49,12 +56,12 @@ export function FAQSection() {
                 <AccordionItem
                   key={key}
                   value={`item-${index + 1}`}
-                  className="border rounded-lg px-6 bg-white"
+                  className="border rounded-lg px-6 bg-white shadow-sm"
                 >
-                  <AccordionTrigger className="text-left text-base font-semibold text-navy hover:no-underline">
+                  <AccordionTrigger className="text-left text-base font-semibold text-navy hover:no-underline py-4">
                     {t(`questions.${key}.question`)}
                   </AccordionTrigger>
-                  <AccordionContent className="text-gray-700 leading-relaxed pb-4">
+                  <AccordionContent className="text-gray-700 leading-relaxed pb-4 whitespace-pre-line">
                     {t(`questions.${key}.answer`)}
                   </AccordionContent>
                 </AccordionItem>
@@ -62,7 +69,7 @@ export function FAQSection() {
               {/* Contact Us - links to contact section */}
               <Link
                 href="/#contact"
-                className="border rounded-lg px-6 bg-white flex items-center justify-between py-4 hover:bg-gray-50 transition-colors"
+                className="border rounded-lg px-6 bg-white flex items-center justify-between py-4 hover:bg-gray-50 transition-colors mt-6 shadow-sm"
               >
                 <span className="text-base font-semibold text-navy">
                   {t("stillHaveQuestions")}{" "}
