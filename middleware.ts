@@ -15,6 +15,9 @@ const validRoutes = [
   /^\/songs(\/.*)?$/, // Songs pages
   /^\/legal(\/.*)?$/, // Legal pages
   /^\/about(\/.*)?$/, // About pages
+  /^\/events(\/.*)?$/, // About pages
+  /^\/ru\/events(\/.*)?$/, // Events pages
+  /^\/courses(\/.*)?$/, // Courses pages
   /^\/ru$/, // Russian homepage
   /^\/ru\/blog(\/.*)?$/, // Russian blog
   /^\/ru\/sermons(\/.*)?$/, // Sermons pages
@@ -24,6 +27,7 @@ const validRoutes = [
   /^\/ru\/songs(\/.*)?$/, // Russian songs
   /^\/ru\/legal(\/.*)?$/, // Russian legal
   /^\/ru\/about(\/.*)?$/, // Russian about
+  /^\/ru\/courses(\/.*)?$/, // Russian courses pages
 ];
 
 export default function middleware(request: NextRequest) {

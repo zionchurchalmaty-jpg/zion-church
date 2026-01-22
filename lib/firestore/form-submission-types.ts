@@ -1,6 +1,6 @@
 import type { Timestamp } from "firebase/firestore";
 
-export type FormType = "contact" | "newsletter";
+export type FormType = "contact" | "newsletter" | "course-request";
 
 export interface ContactInterests {
   planningToVisit: boolean;
@@ -30,9 +30,17 @@ export interface NewsletterSubmission extends FormSubmissionBase {
   formType: "newsletter";
 }
 
-export type FormSubmission = ContactSubmission | NewsletterSubmission;
+export interface CourseRequestSubmission extends FormSubmissionBase {
+  formType: "course-request";
+  course: string;
+  consent: boolean;
+}
 
-// Input types for API (without auto-generated fields like id, createdAt)
+export type FormSubmission = 
+  | ContactSubmission 
+  | NewsletterSubmission 
+  | CourseRequestSubmission;
+
 export interface ContactFormInput {
   formType: "contact";
   firstName: string;
@@ -50,9 +58,20 @@ export interface NewsletterFormInput {
   recaptchaToken: string;
 }
 
-export type FormInput = ContactFormInput | NewsletterFormInput;
+export interface CourseRequestFormInput {
+  formType: "course-request";
+  firstName: string;
+  email: string;
+  course: string;
+  consent: boolean;
+  recaptchaToken?: string; 
+}
 
-// Types for creating submissions in Firestore (API route uses these)
+export type FormInput = 
+  | ContactFormInput 
+  | NewsletterFormInput 
+  | CourseRequestFormInput;
+
 export interface CreateContactSubmissionInput {
   formType: "contact";
   firstName: string;
@@ -74,6 +93,16 @@ export interface CreateNewsletterSubmissionInput {
   userAgent?: string;
 }
 
+export interface CreateCourseRequestSubmissionInput {
+  formType: "course-request";
+  firstName: string;
+  email: string;
+  course: string;
+  consent: boolean;
+  recaptchaScore: number;
+}
+
 export type CreateSubmissionInput =
   | CreateContactSubmissionInput
-  | CreateNewsletterSubmissionInput;
+  | CreateNewsletterSubmissionInput
+  | CreateCourseRequestSubmissionInput;

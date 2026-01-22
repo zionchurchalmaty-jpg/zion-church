@@ -95,10 +95,12 @@ export interface CalendarEventInput extends ContentInput {
   endDate?: Date;
   isAllDay: boolean;
   repeatSettings: RepeatSettings;
+  canonicalUrl?: string;
 }
 
 // Extended CalendarEvent with computed next occurrence for recurring events
 export interface CalendarEventWithNextOccurrence extends CalendarEvent {
+  canonicalUrl: string;
   nextOccurrence: { seconds: number; nanoseconds: number } | null;
   isRecurringOccurrence: boolean;
 }
