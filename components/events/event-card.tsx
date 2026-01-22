@@ -1,4 +1,7 @@
-import type { CalendarEvent, CalendarEventWithNextOccurrence } from "@/lib/firestore/types";
+import type {
+  CalendarEvent,
+  CalendarEventWithNextOccurrence,
+} from "@/lib/firestore/types";
 import { Link } from "@/i18n/navigation";
 import { formatDateRu, formatTimeRu } from "@/lib/date-format";
 import { Calendar, Clock } from "lucide-react";
@@ -14,12 +17,17 @@ function firestoreToDate(value: unknown): Date | undefined {
 }
 
 // Type guard to check if event has nextOccurrence
-function hasNextOccurrence(event: CalendarEvent | CalendarEventWithNextOccurrence): event is CalendarEventWithNextOccurrence {
+function hasNextOccurrence(
+  event: CalendarEvent | CalendarEventWithNextOccurrence
+): event is CalendarEventWithNextOccurrence {
   return "nextOccurrence" in event;
 }
 
 function stripHtmlAndTruncate(html: string, maxLength: number = 150): string {
-  const text = html.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim();
+  const text = html
+    .replace(/<[^>]*>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .trim();
   if (text.length <= maxLength) return text;
   return text.slice(0, maxLength).trim() + "...";
 }
@@ -29,17 +37,18 @@ interface EventCardProps {
 }
 
 export function EventCard({ event }: EventCardProps) {
-  // Use nextOccurrence if available (for recurring events), otherwise fall back to eventDate
-  const displayDate = hasNextOccurrence(event) && event.nextOccurrence
-    ? firestoreToDate(event.nextOccurrence)
-    : firestoreToDate(event.eventDate);
+  const displayDate =
+    hasNextOccurrence(event) && event.nextOccurrence
+      ? firestoreToDate(event.nextOccurrence)
+      : firestoreToDate(event.eventDate);
 
-  // For time display, use the original eventDate since it contains the time info
   const eventDate = firestoreToDate(event.eventDate);
+  const customUrl = event.seo?.canonicalUrl || (event as any).canonicalUrl;
+  const eventHref = customUrl ? customUrl : `/events/${event.slug}`;
 
   return (
     <article className="group border rounded-lg overflow-hidden hover:border-primary/50 hover:shadow-lg transition-all bg-white flex flex-col">
-      <Link href={`/events/${event.slug}`} className="flex flex-col h-full">
+      <Link href={eventHref} className="flex flex-col h-full">
         {event.coverImage && (
           <div className="aspect-video overflow-hidden relative">
             <img
@@ -94,9 +103,7 @@ export function EventCard({ event }: EventCardProps) {
               </span>
             )}
             {event.repeatSettings?.repeatType !== "none" && (
-              <span className="text-xs text-muted-foreground">
-                Повторяется
-              </span>
+              <span className="text-xs text-muted-foreground">Повторяется</span>
             )}
           </div>
         </div>

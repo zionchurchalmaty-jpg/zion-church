@@ -99,10 +99,16 @@ export async function CalendarSection() {
             const description =
               event.excerpt || stripHtml(event.content).slice(0, 150) + "...";
 
+              const customUrl = event.seo?.canonicalUrl || event.canonicalUrl;
+
+              const eventHref = customUrl 
+                ? customUrl 
+                : `/events/${event.slug}`;
+            
             return (
               <Link
                 key={event.id}
-                href={`/events/${event.slug}`}
+                href={eventHref}
                 className="block"
               >
                 <Card className="bg-cream hover:shadow-md transition-all duration-300 group overflow-hidden flex flex-col h-full pt-0! gap-0!">
