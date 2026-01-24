@@ -207,18 +207,27 @@ export function CourseRequestForm() {
             )}
           </Button>
 
-          <p className="text-xs text-stone-400 text-center leading-tight px-2 pt-1">
-            {t.rich("privacyPolicy", {
-              link: (chunks) => (
+          <p className="text-xs text-gray-500 text-center">
+                {t("recaptchaNotice")}{" "}
                 <a
-                  href="/privacy"
-                  className="underline hover:text-stone-600 transition-colors"
+                  href="https://policies.google.com/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-gray-700"
                 >
-                  {chunks}
-                </a>
-              ),
-            })}
-          </p>
+                  {t("privacyPolicy")}
+                </a>{" "}
+                {t("and")}{" "}
+                <a
+                  href="https://policies.google.com/terms"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-gray-700"
+                >
+                  {t("termsOfService")}
+                </a>{" "}
+                {t("apply")}
+              </p>
         </form>
       </div>
     </div>

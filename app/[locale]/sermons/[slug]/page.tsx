@@ -7,6 +7,7 @@ import sanitize from "sanitize-html";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { ViewCounter } from "@/components/blog/view-counter";
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -103,12 +104,20 @@ export async function generateMetadata({
 // Server-side HTML sanitization
 function sanitizeHtml(html: string): string {
   return sanitize(html, {
-    allowedTags: sanitize.defaults.allowedTags.concat(['img', 'iframe']),
+    allowedTags: sanitize.defaults.allowedTags.concat(["img", "iframe"]),
     allowedAttributes: {
       ...sanitize.defaults.allowedAttributes,
-      img: ['src', 'alt', 'title', 'width', 'height', 'class'],
-      iframe: ['src', 'width', 'height', 'frameborder', 'allowfullscreen', 'allow', 'scrolling'],
-      '*': ['class', 'style'],
+      img: ["src", "alt", "title", "width", "height", "class"],
+      iframe: [
+        "src",
+        "width",
+        "height",
+        "frameborder",
+        "allowfullscreen",
+        "allow",
+        "scrolling",
+      ],
+      "*": ["class", "style"],
     },
   });
 }
@@ -173,6 +182,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <time dateTime={getISOString(post.publishedAt)}>
                 {formatDate(post.publishedAt, locale)}
               </time>
+              <ViewCounter id={post.id} initialViews={post.views} />
             </div>
 
             <h1 className="font-serif text-4xl font-bold tracking-tight mb-4 text-navy">

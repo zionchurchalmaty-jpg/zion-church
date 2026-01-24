@@ -85,15 +85,22 @@ export function LocationSection() {
           </div>
 
           {/* Right - Map */}
-          <div className="rounded-2xl overflow-hidden shadow-lg h-[500px]">
+          <div className="w-full h-[400px] rounded-xl overflow-hidden border border-stone-200 shadow-sm relative z-0">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2906.8614849842196!2d76.95138!3d43.23656!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38836eb9c2e5a5b7%3A0x3c6c9d7f9e8e8e8e!2sZhamakayev%20St%2018%2C%20Almaty%2C%20Kazakhstan!5e0!3m2!1sen!2skz!4v1703936400000"
+              title="2GIS Map"
+              src="https://widgets.2gis.com/widget?type=firmsonmap&options=%7B%22pos%22%3A%7B%22lat%22%3A43.222616%2C%22lon%22%3A76.939503%2C%22zoom%22%3A16%7D%2C%22opt%22%3A%7B%22city%22%3A%22almaty%22%7D%2C%22org%22%3A%229429940000800380%22%7D"
               width="100%"
               height="100%"
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
+            />
+            <a
+              href="https://2gis.kz/almaty/firm/9429940000800380?m=76.939503%2C43.222616%2F16"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute inset-0 z-10 md:hidden"
+              aria-label="Открыть в приложении 2GIS"
             />
           </div>
         </div>

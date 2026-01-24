@@ -26,6 +26,7 @@ export interface Content {
 
   // SEO
   seo: SEOData;
+  views?: number;
 
   // Media
   coverImage?: string;
