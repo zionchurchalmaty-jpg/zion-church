@@ -54,7 +54,7 @@ function getInterestLabels(
 ): string[] {
   const labels: string[] = [];
   if (interests.planningToVisit) labels.push("Planning to Visit");
-  if (interests.eslClasses) labels.push("ESL Classes Interest");
+  if (interests.eslClasses) labels.push("Language Classes Interest");
   if (interests.prayerRequest) labels.push("Prayer Request");
   return labels;
 }
@@ -120,7 +120,7 @@ export function contactNotificationTemplate(data: ContactNotificationData): {
     </div>
   </div>
   <div class="footer">
-    <p>Церкось Сион - Contact Form Notification</p>
+    <p>Церковь Сион - Contact Form Notification</p>
   </div>
 </body>
 </html>`;
@@ -156,7 +156,7 @@ export function newsletterNotificationTemplate(
     </div>
   </div>
   <div class="footer">
-    <p>Церкось Сион - Newsletter Subscription Notification</p>
+    <p>Церковь Сион - Newsletter Subscription Notification</p>
   </div>
 </body>
 </html>`;
@@ -168,22 +168,22 @@ export function contactConfirmationTemplate(data: ContactConfirmationData): {
   subject: string;
   html: string;
 } {
-  const subject = "Thank you for contacting Церкось Сион";
+  const subject = "Спасибо за обращение в церковь Сион";
 
   const visitMessage = data.interests.planningToVisit
     ? `<p style="background: #fff8f0; padding: 15px; border-radius: 4px; border-left: 4px solid #ea5808;">
-        <strong>We're excited to meet you!</strong><br>
-        Join us this Sunday at <strong>1:30 PM</strong> for our worship service.<br>
-        <a href="https://goodnewsbible.org/#location" style="color: #ea5808;">Get directions</a>
+        <strong>Мы рады познакомиться с вами!</strong><br>
+        Присоединяйтесь к нам в это воскресенье в <strong>11:00</strong> на богослужение.<br>
+        <a href="https://zion-church.kz/#location" style="color: #ea5808;">Как нас найти</a>
        </p>`
     : "";
 
   const prayerMessage = data.interests.prayerRequest
-    ? `<p><em>Your prayer request has been received. Our prayer team will be lifting you up in prayer.</em></p>`
+    ? `<p><em>Ваша молитвенная нужда получена. Наша молитвенная группа будет молиться за вас.</em></p>`
     : "";
 
   const eslMessage = data.interests.eslClasses
-    ? `<p><em>We've noted your interest in our ESL classes. Someone will reach out with more information soon.</em></p>`
+    ? `<p><em>Мы отметили ваш интерес к языковым курсам. Мы свяжемся с вами, когда появится информация о наборе групп.</em></p>`
     : "";
 
   const html = `
@@ -195,25 +195,25 @@ export function contactConfirmationTemplate(data: ContactConfirmationData): {
 </head>
 <body>
   <div class="header">
-    <h1>Thank You for Reaching Out</h1>
+    <h1>Спасибо за обращение</h1>
   </div>
   <div class="content">
-    <p>Dear ${data.firstName},</p>
+    <p>Дорогой(ая) ${data.firstName},</p>
 
-    <p>Thank you for contacting Церкось Сион! We have received your message and will get back to you as soon as possible.</p>
+    <p>Спасибо за обращение в церковь «Сион»! Мы получили ваше сообщение и свяжемся с вами как можно скорее.</p>
 
     ${visitMessage}
     ${prayerMessage}
     ${eslMessage}
 
-    <p>If you have any urgent questions, feel free to reach out to us directly.</p>
+    <p>Если у вас возникнут срочные вопросы, пожалуйста, свяжитесь с нами напрямую.</p>
 
-    <p>Blessings,<br>
-    <strong>Церкось Сион</strong></p>
+    <p>Благословений вам,<br>
+    <strong>Церковь Сион</strong></p>
   </div>
   <div class="footer">
-    <p>Церкось Сион | Ashburn, VA</p>
-    <p><a href="https://goodnewsbible.org" style="color: #ea5808;">goodnewsbible.org</a></p>
+    <p>Церковь Сион | Алматы, Казахстан</p>
+    <p><a href="https://zion-church.kz" style="color: #ea5808;">zion-church.kz</a></p>
   </div>
 </body>
 </html>`;
@@ -227,7 +227,7 @@ export function newsletterConfirmationTemplate(
   subject: string;
   html: string;
 } {
-  const subject = "Welcome to Церкось Сион Newsletter";
+  const subject = "Добро пожаловать в рассылку церкви Сион";
 
   const html = `
 <!DOCTYPE html>
@@ -238,29 +238,29 @@ export function newsletterConfirmationTemplate(
 </head>
 <body>
   <div class="header">
-    <h1>Welcome to Our Newsletter!</h1>
+    <h1>Добро пожаловать!</h1>
   </div>
   <div class="content">
-    <p>Dear ${data.firstName},</p>
+    <p>Дорогой(ая) ${data.firstName},</p>
 
-    <p>Thank you for subscribing to the Церкось Сион newsletter!</p>
+    <p>Спасибо за подписку на новости церкви «Сион»!</p>
 
-    <p>You'll receive updates about:</p>
+    <p>Вы будете получать обновления о:</p>
     <ul>
-      <li>Upcoming church events and activities</li>
-      <li>Sermon highlights and devotionals</li>
-      <li>Community news and announcements</li>
+      <li>Предстоящих церковных мероприятиях</li>
+      <li>Проповедях и духовных размышлениях</li>
+      <li>Новостях общины и объявлениях</li>
     </ul>
 
-    <p>We're glad to have you as part of our community!</p>
+    <p>Мы рады, что вы с нами!</p>
 
-    <p>Blessings,<br>
-    <strong>Церкось Сион</strong></p>
+    <p>Благословений вам,<br>
+    <strong>Церковь Сион</strong></p>
   </div>
   <div class="footer">
-    <p>Церкось Сион | Ashburn, VA</p>
-    <p><a href="https://goodnewsbible.org" style="color: #ea5808;">goodnewsbible.org</a></p>
-    <p style="font-size: 11px; color: #999;">You're receiving this because you subscribed to our newsletter. You can unsubscribe anytime.</p>
+    <p>Церковь Сион | Алматы, Казахстан</p>
+    <p><a href="https://www.zionchurch.kz/" style="color: #ea5808;">zionchurch.kz</a></p>
+    <p style="font-size: 11px; color: #999;">Вы получили это письмо, так как подписались на нашу рассылку.</p>
   </div>
 </body>
 </html>`;
