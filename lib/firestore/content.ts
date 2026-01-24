@@ -401,6 +401,7 @@ export async function getPublishedEvents(
           ...event,
           nextOccurrence: nextOcc,
           isRecurringOccurrence: event.repeatSettings.repeatType !== "none",
+          canonicalUrl: event.seo?.canonicalUrl || "",
         };
       });
     }
@@ -447,6 +448,7 @@ export async function getPublishedEvents(
         ...event,
         nextOccurrence: event.eventDate as { seconds: number; nanoseconds: number },
         isRecurringOccurrence: false,
+        canonicalUrl: event.seo?.canonicalUrl || "",
       });
     });
 
@@ -465,6 +467,7 @@ export async function getPublishedEvents(
           ...event,
           nextOccurrence: nextOcc,
           isRecurringOccurrence: true,
+          canonicalUrl: event.seo?.canonicalUrl || "",
         });
       }
     });
