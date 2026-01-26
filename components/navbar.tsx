@@ -25,7 +25,6 @@ export function Navbar() {
   ];
 
   useEffect(() => {
-    // On non-home pages, always show scrolled styles
     if (!isHomePage) {
       setScrolled(true);
       return;
