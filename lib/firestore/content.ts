@@ -77,7 +77,9 @@ function generateSlug(title: string): string {
 /**
  * Remove undefined values from an object (Firestore doesn't accept undefined)
  */
-function removeUndefined(obj: Record<string, unknown>): Record<string, unknown> {
+function removeUndefined(
+  obj: Record<string, unknown>,
+): Record<string, unknown> {
   const result: Record<string, unknown> = {};
   for (const key of Object.keys(obj)) {
     const value = obj[key];
@@ -109,7 +111,7 @@ function serializeForClient<T>(data: Record<string, unknown>): T {
       result[key] = value.map((item) =>
         item && typeof item === "object"
           ? serializeForClient(item as Record<string, unknown>)
-          : item
+          : item,
       );
     } else {
       result[key] = value;
@@ -122,7 +124,7 @@ function serializeForClient<T>(data: Record<string, unknown>): T {
  * Get all published content of a specific type (for public pages)
  */
 export async function getPublishedContent(
-  contentType: ContentType
+  contentType: ContentType,
 ): Promise<Content[]> {
   if (!ensureFirebase() || !db) return [];
 
@@ -131,12 +133,12 @@ export async function getPublishedContent(
       collection(db, CONTENT_COLLECTION),
       where("contentType", "==", contentType),
       where("status", "==", "published"),
-      orderBy("updatedAt", "desc")
+      orderBy("publishedAt", "desc"),
     );
 
     const snapshot = await getDocs(q);
     return snapshot.docs.map((doc) =>
-      serializeForClient<Content>({ id: doc.id, ...doc.data() })
+      serializeForClient<Content>({ id: doc.id, ...doc.data() }),
     );
   } catch (error) {
     console.error("Error fetching published content:", error);
@@ -149,7 +151,7 @@ export async function getPublishedContent(
  */
 export async function getPublishedContentBySlug(
   contentType: ContentType,
-  slug: string
+  slug: string,
 ): Promise<Content | null> {
   if (!ensureFirebase() || !db) return null;
 
@@ -158,7 +160,7 @@ export async function getPublishedContentBySlug(
       collection(db, CONTENT_COLLECTION),
       where("contentType", "==", contentType),
       where("slug", "==", slug),
-      where("status", "==", "published")
+      where("status", "==", "published"),
     );
 
     const snapshot = await getDocs(q);
@@ -176,7 +178,7 @@ export async function getPublishedContentBySlug(
  * Get all content with optional filters (for admin pages)
  */
 export async function getAllContent(
-  filters: ContentFilters = {}
+  filters: ContentFilters = {},
 ): Promise<Content[]> {
   if (!ensureFirebase() || !db) return [];
 
@@ -209,14 +211,14 @@ export async function getAllContent(
 
     const snapshot = await getDocs(q);
     let results = snapshot.docs.map((doc) =>
-      serializeForClient<Content>({ id: doc.id, ...doc.data() })
+      serializeForClient<Content>({ id: doc.id, ...doc.data() }),
     );
 
     // Client-side search filtering (Firestore doesn't support full-text search)
     if (filters.search) {
       const searchLower = filters.search.toLowerCase();
       results = results.filter((item) =>
-        item.searchableText.includes(searchLower)
+        item.searchableText.includes(searchLower),
       );
     }
 
@@ -247,7 +249,7 @@ export async function getContentById(id: string): Promise<Content | null> {
 export async function createContent(
   input: ContentInput,
   authorId: string,
-  authorName: string
+  authorName: string,
 ): Promise<string> {
   if (!ensureFirebase() || !db) throw new Error("Firebase not configured");
 
@@ -280,7 +282,7 @@ export async function createContent(
  */
 export async function updateContent(
   id: string,
-  input: ContentInput
+  input: ContentInput,
 ): Promise<void> {
   if (!ensureFirebase() || !db) throw new Error("Firebase not configured");
 
@@ -306,9 +308,10 @@ export async function updateContent(
     ...contentFields,
     updatedAt: serverTimestamp(),
     // Set publishedAt if publishing for first time
-    publishedAt: input.status === "published" && !existingData.publishedAt
-      ? serverTimestamp()
-      : existingData.publishedAt,
+    publishedAt:
+      input.status === "published" && !existingData.publishedAt
+        ? serverTimestamp()
+        : existingData.publishedAt,
   };
 
   await updateDoc(docRef, updateData);
@@ -372,7 +375,7 @@ export async function getContentCounts(): Promise<{
  * For recurring events, calculates next occurrence and sorts by that
  */
 export async function getPublishedEvents(
-  upcomingOnly: boolean = true
+  upcomingOnly: boolean = true,
 ): Promise<CalendarEventWithNextOccurrence[]> {
   if (!ensureFirebase() || !db) return [];
 
@@ -386,16 +389,19 @@ export async function getPublishedEvents(
         collection(db, CONTENT_COLLECTION),
         where("contentType", "==", "event"),
         where("status", "==", "published"),
-        orderBy("eventDate", "asc")
+        orderBy("eventDate", "asc"),
       );
 
       const snapshot = await getDocs(q);
       return snapshot.docs.map((doc) => {
-        const event = serializeForClient<CalendarEvent>({ id: doc.id, ...doc.data() });
+        const event = serializeForClient<CalendarEvent>({
+          id: doc.id,
+          ...doc.data(),
+        });
         const nextOcc = getNextOccurrence(
           event.eventDate as { seconds: number; nanoseconds: number },
           event.repeatSettings,
-          now
+          now,
         );
         return {
           ...event,
@@ -406,15 +412,15 @@ export async function getPublishedEvents(
       });
     }
 
-    // For upcomingOnly: fetch non-recurring with future dates + all recurring events
-    // Query 1: Non-recurring events with future dates
+    // For upcomingOnly: fetch all non-recurring events + all recurring events
+    // We'll filter client-side to include ongoing multi-day events
+    // Query 1: All non-recurring events (filter upcoming/ongoing client-side)
     const nonRecurringQuery = query(
       collection(db, CONTENT_COLLECTION),
       where("contentType", "==", "event"),
       where("status", "==", "published"),
       where("repeatSettings.repeatType", "==", "none"),
-      where("eventDate", ">=", nowTimestamp),
-      orderBy("eventDate", "asc")
+      orderBy("eventDate", "asc"),
     );
 
     // Query 2: All weekly recurring events
@@ -422,7 +428,7 @@ export async function getPublishedEvents(
       collection(db, CONTENT_COLLECTION),
       where("contentType", "==", "event"),
       where("status", "==", "published"),
-      where("repeatSettings.repeatType", "==", "weekly")
+      where("repeatSettings.repeatType", "==", "weekly"),
     );
 
     // Query 3: All custom recurring events
@@ -430,7 +436,7 @@ export async function getPublishedEvents(
       collection(db, CONTENT_COLLECTION),
       where("contentType", "==", "event"),
       where("status", "==", "published"),
-      where("repeatSettings.repeatType", "==", "custom")
+      where("repeatSettings.repeatType", "==", "custom"),
     );
 
     const [nonRecurringSnap, weeklySnap, customSnap] = await Promise.all([
@@ -441,24 +447,52 @@ export async function getPublishedEvents(
 
     const allEvents: CalendarEventWithNextOccurrence[] = [];
 
-    // Process non-recurring events
+    // Process non-recurring events - filter to include upcoming or ongoing events
     nonRecurringSnap.docs.forEach((doc) => {
-      const event = serializeForClient<CalendarEvent>({ id: doc.id, ...doc.data() });
-      allEvents.push({
-        ...event,
-        nextOccurrence: event.eventDate as { seconds: number; nanoseconds: number },
-        isRecurringOccurrence: false,
-        canonicalUrl: event.seo?.canonicalUrl || "",
+      const event = serializeForClient<CalendarEvent>({
+        id: doc.id,
+        ...doc.data(),
       });
+
+      const eventDate = event.eventDate as {
+        seconds: number;
+        nanoseconds: number;
+      };
+      const endDate = event.endDate as
+        | { seconds: number; nanoseconds: number }
+        | null
+        | undefined;
+
+      // Include event if:
+      // 1. It starts in the future (eventDate >= now), OR
+      // 2. It's ongoing (started in past but ends in future or has no end date)
+      const eventStartTime = eventDate.seconds * 1000;
+      const eventEndTime = endDate ? endDate.seconds * 1000 : eventStartTime;
+      const nowTime = now.getTime();
+
+      const isFutureEvent = eventStartTime >= nowTime;
+      const isOngoingEvent =
+        eventStartTime < nowTime && eventEndTime >= nowTime;
+
+      if (isFutureEvent || isOngoingEvent) {
+        allEvents.push({
+          ...event,
+          nextOccurrence: eventDate,
+          isRecurringOccurrence: false,
+        });
+      }
     });
 
     // Process recurring events - calculate next occurrence
     [...weeklySnap.docs, ...customSnap.docs].forEach((doc) => {
-      const event = serializeForClient<CalendarEvent>({ id: doc.id, ...doc.data() });
+      const event = serializeForClient<CalendarEvent>({
+        id: doc.id,
+        ...doc.data(),
+      });
       const nextOcc = getNextOccurrence(
         event.eventDate as { seconds: number; nanoseconds: number },
         event.repeatSettings,
-        now
+        now,
       );
 
       // Only include if there's a future occurrence
@@ -479,8 +513,6 @@ export async function getPublishedEvents(
       return aTime - bTime;
     });
 
-    console.log("All events:", allEvents);
-
     return allEvents;
   } catch (error) {
     console.error("Error fetching published events:", error);
@@ -493,7 +525,7 @@ export async function getPublishedEvents(
  * Returns next N events from today onwards, including recurring events
  */
 export async function getUpcomingEvents(
-  limitCount: number = 6
+  limitCount: number = 6,
 ): Promise<CalendarEventWithNextOccurrence[]> {
   if (!ensureFirebase() || !db) return [];
 
@@ -513,7 +545,7 @@ export async function getUpcomingEvents(
 export async function createEvent(
   input: CalendarEventInput,
   authorId: string,
-  authorName: string
+  authorName: string,
 ): Promise<string> {
   if (!ensureFirebase() || !db) throw new Error("Firebase not configured");
 
@@ -548,7 +580,7 @@ export async function createEvent(
  */
 export async function updateEvent(
   id: string,
-  input: CalendarEventInput
+  input: CalendarEventInput,
 ): Promise<void> {
   if (!ensureFirebase() || !db) throw new Error("Firebase not configured");
 

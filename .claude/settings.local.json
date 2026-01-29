@@ -21,7 +21,8 @@
       "Bash(head:*)",
       "Bash(mkdir:*)",
       "Bash(npm uninstall:*)",
-      "Bash(node -e:*)"
+      "Bash(node -e:*)",
+      "Bash(curl:*)"
     ]
   }
 }
