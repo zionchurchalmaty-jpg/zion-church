@@ -30,12 +30,30 @@ interface ContentListProps {
   contentType: ContentType;
 }
 
-function formatDate(timestamp: Timestamp | undefined): string {
+function formatDate(timestamp: any): string {
   if (!timestamp) return "—";
+
+  let date: Date;
+
   try {
-    const date = timestamp.toDate();
-    return formatDistanceToNow(date, { addSuffix: true });
-  } catch {
+    if (typeof timestamp.toDate === "function") {
+      date = timestamp.toDate();
+    } 
+    else if (typeof timestamp.seconds === "number") {
+      date = new Date(timestamp.seconds * 1000);
+    } 
+    else if (timestamp instanceof Date) {
+      date = timestamp;
+    } 
+    else if (typeof timestamp === "string") {
+      date = new Date(timestamp);
+    }
+    else {
+      return "—";
+    }
+    return formatDistanceToNow(date, { addSuffix: true, locale: undefined });
+  } catch (e) {
+    console.error("Error formatting date:", e);
     return "—";
   }
 }
