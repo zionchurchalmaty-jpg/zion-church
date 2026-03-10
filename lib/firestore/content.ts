@@ -57,9 +57,10 @@ function stripHtml(html: string): string {
 /**
  * Generate searchable text from title and content
  */
-function generateSearchableText(title: string, htmlContent: string): string {
-  const plainText = stripHtml(htmlContent);
-  return `${title} ${plainText}`.toLowerCase();
+function generateSearchableText(title: string, htmlContent: string, previewHtml?: string): string {
+  const mainText = stripHtml(htmlContent);
+  const previewText = previewHtml ? stripHtml(previewHtml) : "";
+  return `${title} ${previewText} ${mainText}`.toLowerCase();
 }
 
 /**
@@ -244,7 +245,7 @@ export async function getContentById(id: string): Promise<Content | null> {
 }
 
 /**
- * Create new content
+ * Create new content with paid features support
  */
 export async function createContent(
   input: ContentInput,
@@ -254,16 +255,22 @@ export async function createContent(
   if (!ensureFirebase() || !db) throw new Error("Firebase not configured");
 
   const slug = generateSlug(input.title);
-  const searchableText = generateSearchableText(input.title, input.content);
+  
+  const searchableText = generateSearchableText(
+    input.title, 
+    input.content, 
+    input.previewContent
+  );
 
-  // Process content fields first, then add timestamp sentinels separately
-  // (serverTimestamp() sentinels break if passed through removeUndefined)
   const contentFields = removeUndefined({
     ...input,
     slug,
     author: authorName,
     authorId,
     searchableText,
+    isLocked: input.isLocked ?? false,
+    password: input.password ?? "",
+    previewContent: input.previewContent ?? "",
   });
 
   const docData = {
@@ -278,7 +285,7 @@ export async function createContent(
 }
 
 /**
- * Update existing content
+ * Update existing content with paid features support
  */
 export async function updateContent(
   id: string,
@@ -295,19 +302,25 @@ export async function updateContent(
 
   const existingData = existingDoc.data();
   const slug = generateSlug(input.title);
-  const searchableText = generateSearchableText(input.title, input.content);
+  
+  const searchableText = generateSearchableText(
+    input.title, 
+    input.content, 
+    input.previewContent
+  );
 
-  // Process content fields first, then add timestamp sentinels separately
   const contentFields = removeUndefined({
     ...input,
     slug,
     searchableText,
+    isLocked: input.isLocked ?? false,
+    password: input.password ?? "",
+    previewContent: input.previewContent ?? "",
   });
 
   const updateData = {
     ...contentFields,
     updatedAt: serverTimestamp(),
-    // Set publishedAt if publishing for first time
     publishedAt:
       input.status === "published" && !existingData.publishedAt
         ? serverTimestamp()
