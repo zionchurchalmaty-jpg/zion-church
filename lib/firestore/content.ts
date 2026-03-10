@@ -392,9 +392,10 @@ export async function getPublishedEvents(
 ): Promise<CalendarEventWithNextOccurrence[]> {
   if (!ensureFirebase() || !db) return [];
 
-  try {
+try {
     const now = new Date();
-    const nowTimestamp = Timestamp.now();
+    now.setHours(0, 0, 0, 0); 
+    const nowTimestamp = Timestamp.fromDate(now);
 
     if (!upcomingOnly) {
       // Fetch all published events without date filter
