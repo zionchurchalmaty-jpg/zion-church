@@ -49,6 +49,10 @@ export interface Content {
 
   // Search indexing
   searchableText: string;
+
+  isLocked?: boolean;
+  password?: string;
+  previewContent?: string;
 }
 
 export interface ContentInput {
@@ -61,6 +65,9 @@ export interface ContentInput {
   tags: string[];
   status: ContentStatus;
   language: ContentLanguage;
+  isLocked?: boolean;
+  password?: string;
+  previewContent?: string;
 }
 
 export interface ContentFilters {
