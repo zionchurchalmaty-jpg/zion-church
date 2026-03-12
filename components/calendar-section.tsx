@@ -8,6 +8,8 @@ import { Timestamp } from "firebase/firestore";
 import { Calendar as CalendarIcon, ChevronRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
+import { unstable_noStore as noStore } from "next/cache";
+
 function firestoreToDate(value: unknown): Date | undefined {
   if (!value) return undefined;
   if (value instanceof Timestamp) return value.toDate();
@@ -18,7 +20,6 @@ function firestoreToDate(value: unknown): Date | undefined {
 }
 
 function getDisplayDate(event: CalendarEventWithNextOccurrence): Date | undefined {
-  // Use nextOccurrence if available, otherwise fall back to eventDate
   return event.nextOccurrence
     ? firestoreToDate(event.nextOccurrence)
     : firestoreToDate(event.eventDate);
@@ -32,15 +33,14 @@ function stripHtml(html: string): string {
 }
 
 export async function CalendarSection() {
+  noStore();
+
   const t = await getTranslations("calendar");
 
-  // Fetch next 6 upcoming events from database
   const allEvents = await getUpcomingEvents(6);
 
-  // Display up to 3 events on homepage
   const displayEvents = allEvents.slice(0, 3);
 
-  // Show empty state if no events
   if (displayEvents.length === 0) {
     return (
       <section id="calendar" className="py-20 bg-white">
