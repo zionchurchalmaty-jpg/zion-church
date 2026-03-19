@@ -3,7 +3,7 @@ import type {
   CalendarEventWithNextOccurrence,
 } from "@/lib/firestore/types";
 import { Link } from "@/i18n/navigation";
-import { formatDateRu, formatTimeRu } from "@/lib/date-format";
+import { formatDateShortRu, formatTimeRu } from "@/lib/date-format";
 import { Calendar, Clock } from "lucide-react";
 import { Timestamp } from "firebase/firestore";
 
@@ -32,22 +32,47 @@ function stripHtmlAndTruncate(html: string, maxLength: number = 150): string {
   return text.slice(0, maxLength).trim() + "...";
 }
 
-interface EventCardProps {
-  event: CalendarEvent | CalendarEventWithNextOccurrence;
+function formatEventDateRange(start?: Date, end?: Date): string {
+  if (!start) return "";
+  if (!end) return formatDateShortRu(start);
+
+  if (start.toDateString() === end.toDateString()) {
+    return formatDateShortRu(start);
+  }
+
+  return `${formatDateShortRu(start)} - ${formatDateShortRu(end)}`;
 }
 
-export function EventCard({ event }: EventCardProps) {
+interface EventCardProps {
+  event: CalendarEvent | CalendarEventWithNextOccurrence;
+  isPastEvent?: boolean;
+}
+
+export function EventCard({ event, isPastEvent = false }: EventCardProps) {
   const displayDate =
     hasNextOccurrence(event) && event.nextOccurrence
       ? firestoreToDate(event.nextOccurrence)
       : firestoreToDate(event.eventDate);
+
+  let endDate = event.endDate ? firestoreToDate(event.endDate) : undefined;
+
+  if (displayDate && endDate && hasNextOccurrence(event) && event.nextOccurrence) {
+    const originalStart = firestoreToDate(event.eventDate)?.getTime() || 0;
+    const originalEnd = endDate.getTime();
+    const duration = originalEnd - originalStart;
+    endDate = new Date(displayDate.getTime() + duration);
+  }
 
   const eventDate = firestoreToDate(event.eventDate);
   const customUrl = event.seo?.canonicalUrl || (event as any).canonicalUrl;
   const eventHref = customUrl ? customUrl : `/events/${event.slug}`;
 
   return (
-    <article className="group border rounded-lg overflow-hidden hover:border-primary/50 hover:shadow-lg transition-all bg-white flex flex-col">
+    <article 
+      className={`group border rounded-lg overflow-hidden hover:border-primary/50 hover:shadow-lg transition-all bg-white flex flex-col ${
+        isPastEvent ? "opacity-75 grayscale-[30%]" : "" 
+      }`}
+    >
       <Link href={eventHref} className="flex flex-col h-full">
         {event.coverImage && (
           <div className="aspect-video overflow-hidden relative">
@@ -56,32 +81,31 @@ export function EventCard({ event }: EventCardProps) {
               alt={event.title}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
-            {/* Date badge overlay */}
-            {displayDate && (
-              <div className="absolute bottom-3 left-3 bg-primary-orange text-white px-3 py-1.5 rounded-md shadow-lg">
-                <span className="text-sm font-medium">
-                  {formatDateRu(displayDate).split(" ").slice(0, 2).join(" ")}
-                </span>
-              </div>
-            )}
           </div>
         )}
+        
         <div className="flex flex-col flex-1 p-5">
-          {/* Date and time info */}
           {displayDate && (
-            <div className="flex items-center gap-3 text-sm text-primary-orange mb-2">
-              <div className="flex items-center gap-1">
+            <div className={`flex items-center gap-3 text-sm mb-3 ${
+              isPastEvent ? "text-gray-500" : "text-primary-orange"
+            }`}>
+              <div className="flex items-center gap-1 font-medium">
                 <Calendar className="h-4 w-4" />
-                <span>{formatDateRu(displayDate)}</span>
+                <span>
+                  {formatEventDateRange(displayDate, endDate)}
+                  {isPastEvent && " (Прошло)"}
+                </span>
               </div>
+              
               {!event.isAllDay && eventDate && (
                 <div className="flex items-center gap-1">
                   <Clock className="h-4 w-4" />
                   <span>{formatTimeRu(eventDate)}</span>
                 </div>
               )}
+              
               {event.isAllDay && (
-                <span className="text-xs bg-muted px-2 py-0.5 rounded-full">
+                <span className="text-xs bg-muted px-2 py-0.5 rounded-full text-muted-foreground font-medium">
                   Весь день
                 </span>
               )}
@@ -96,6 +120,7 @@ export function EventCard({ event }: EventCardProps) {
               event.seo?.metaDescription ||
               stripHtmlAndTruncate(event.content)}
           </p>
+          
           <div className="flex items-center justify-between mt-auto pt-3 border-t">
             {event.tags && event.tags.length > 0 && (
               <span className="px-2 py-0.5 text-xs rounded-full bg-muted text-muted-foreground">

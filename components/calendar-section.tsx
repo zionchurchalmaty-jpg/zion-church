@@ -2,12 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "@/i18n/navigation";
 import { formatDateShortRu } from "@/lib/date-format";
-import { getUpcomingEvents } from "@/lib/firestore/content";
+import { getPublishedEvents } from "@/lib/firestore/content";
 import type { CalendarEventWithNextOccurrence } from "@/lib/firestore/types";
 import { Timestamp } from "firebase/firestore";
 import { Calendar as CalendarIcon, ChevronRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-
 import { unstable_noStore as noStore } from "next/cache";
 
 function firestoreToDate(value: unknown): Date | undefined {
@@ -19,10 +18,23 @@ function firestoreToDate(value: unknown): Date | undefined {
   return undefined;
 }
 
-function getDisplayDate(event: CalendarEventWithNextOccurrence): Date | undefined {
+function getDisplayDate(
+  event: CalendarEventWithNextOccurrence,
+): Date | undefined {
   return event.nextOccurrence
     ? firestoreToDate(event.nextOccurrence)
     : firestoreToDate(event.eventDate);
+}
+
+function formatEventDateRange(start?: Date, end?: Date): string {
+  if (!start) return "";
+  if (!end) return formatDateShortRu(start);
+
+  if (start.toDateString() === end.toDateString()) {
+    return formatDateShortRu(start);
+  }
+
+  return `${formatDateShortRu(start)} - ${formatDateShortRu(end)}`;
 }
 
 function stripHtml(html: string): string {
@@ -37,15 +49,50 @@ export async function CalendarSection() {
 
   const t = await getTranslations("calendar");
 
-  const allEvents = await getUpcomingEvents(6);
+  const allEvents = await getPublishedEvents(false);
 
-  const displayEvents = allEvents.slice(0, 3);
+  const now = new Date().getTime();
+  const upcoming: CalendarEventWithNextOccurrence[] = [];
+  const past: CalendarEventWithNextOccurrence[] = [];
+
+  allEvents.forEach((event) => {
+    const startTime = firestoreToDate(event.eventDate)?.getTime() || 0;
+    const endTime = event.endDate
+      ? firestoreToDate(event.endDate)?.getTime() || startTime
+      : startTime;
+
+    const isOngoing = startTime <= now && endTime >= now;
+    const hasFutureOccurrence = event.nextOccurrence !== null;
+
+    if (hasFutureOccurrence || isOngoing || startTime >= now) {
+      upcoming.push(event);
+    } else {
+      past.push(event);
+    }
+  });
+
+  upcoming.sort((a, b) => {
+    const aTime = a.nextOccurrence
+      ? a.nextOccurrence.seconds * 1000
+      : firestoreToDate(a.eventDate)?.getTime() || 0;
+    const bTime = b.nextOccurrence
+      ? b.nextOccurrence.seconds * 1000
+      : firestoreToDate(b.eventDate)?.getTime() || 0;
+    return aTime - bTime;
+  });
+
+  past.sort((a, b) => {
+    const aTime = firestoreToDate(a.eventDate)?.getTime() || 0;
+    const bTime = firestoreToDate(b.eventDate)?.getTime() || 0;
+    return bTime - aTime;
+  });
+
+  const displayEvents = [...upcoming, ...past].slice(0, 6);
 
   if (displayEvents.length === 0) {
     return (
       <section id="calendar" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
           <div className="text-center mb-12">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="h-px w-12 bg-primary" />
@@ -62,7 +109,6 @@ export async function CalendarSection() {
             </p>
           </div>
 
-          {/* Empty State */}
           <div className="text-center py-12">
             <CalendarIcon className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
             <p className="text-muted-foreground">{t("noUpcomingEvents")}</p>
@@ -75,7 +121,6 @@ export async function CalendarSection() {
   return (
     <section id="calendar" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="h-px w-12 bg-primary" />
@@ -92,24 +137,34 @@ export async function CalendarSection() {
           </p>
         </div>
 
-        {/* Events Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
           {displayEvents.map((event) => {
-            const eventDate = getDisplayDate(event);
+            const startDate = getDisplayDate(event);
+            let endDate = event.endDate
+              ? firestoreToDate(event.endDate)
+              : undefined;
+
+            if (startDate && endDate && event.nextOccurrence) {
+              const originalStart =
+                firestoreToDate(event.eventDate)?.getTime() || 0;
+              const originalEnd = endDate.getTime();
+              const duration = originalEnd - originalStart;
+              endDate = new Date(startDate.getTime() + duration);
+            }
+
             const description =
               event.excerpt || stripHtml(event.content).slice(0, 150) + "...";
+            const customUrl = event.seo?.canonicalUrl || event.canonicalUrl;
+            const eventHref = customUrl ? customUrl : `/events/${event.slug}`;
+            const isPastEvent = past.some((p) => p.id === event.id);
 
-              const customUrl = event.seo?.canonicalUrl || event.canonicalUrl;
-
-              const eventHref = customUrl 
-                ? customUrl 
-                : `/events/${event.slug}`;
-            
             return (
               <Link
                 key={event.id}
                 href={eventHref}
-                className="block"
+                className={`block transition-all duration-300 ${
+                  isPastEvent ? "opacity-75 grayscale-[30%]" : ""
+                }`}
               >
                 <Card className="bg-cream hover:shadow-md transition-all duration-300 group overflow-hidden flex flex-col h-full pt-0! gap-0!">
                   <div className="relative aspect-video overflow-hidden">
@@ -125,11 +180,16 @@ export async function CalendarSection() {
                       </div>
                     )}
                     <div className="absolute inset-0 bg-linear-to-t from-navy/60 to-transparent" />
-                    {/* Date badge */}
-                    {eventDate && (
-                      <div className="absolute bottom-4 left-4 bg-primary-orange rounded-lg px-3 py-2 shadow-lg">
+
+                    {startDate && (
+                      <div
+                        className={`absolute bottom-4 left-4 rounded-lg px-3 py-2 shadow-lg ${
+                          isPastEvent ? "bg-gray-600" : "bg-primary-orange"
+                        }`}
+                      >
                         <span className="text-white text-sm font-medium">
-                          {formatDateShortRu(eventDate)}
+                          {formatEventDateRange(startDate, endDate)}
+                          {isPastEvent && " (Прошло)"}
                         </span>
                       </div>
                     )}
@@ -141,7 +201,11 @@ export async function CalendarSection() {
                     <p className="text-gray-600 leading-relaxed line-clamp-3">
                       {description}
                     </p>
-                    <span className="inline-flex items-center mt-auto pt-4 text-primary text-sm font-medium">
+                    <span
+                      className={`inline-flex items-center mt-auto pt-4 text-sm font-medium ${
+                        isPastEvent ? "text-gray-500" : "text-primary"
+                      }`}
+                    >
                       {t("learnMore")}
                       <ChevronRight className="size-4 ml-1 group-hover:translate-x-1 transition-transform" />
                     </span>
@@ -152,7 +216,6 @@ export async function CalendarSection() {
           })}
         </div>
 
-        {/* View All Events link */}
         <div className="text-center mt-12">
           <Link href="/events">
             <Button

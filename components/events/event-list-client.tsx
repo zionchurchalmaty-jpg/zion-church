@@ -11,9 +11,10 @@ import { useTranslations } from "next-intl";
 interface EventListClientProps {
   events: (CalendarEvent | CalendarEventWithNextOccurrence)[];
   availableTags: string[];
+  pastEventIds?: string[]; 
 }
 
-export function EventListClient({ events, availableTags }: EventListClientProps) {
+export function EventListClient({ events, availableTags, pastEventIds = [] }: EventListClientProps) {
   const t = useTranslations("eventsPage");
 
   const {
@@ -74,9 +75,17 @@ export function EventListClient({ events, availableTags }: EventListClientProps)
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {displayedEvents.map((event) => (
-              <EventCard key={event.id} event={event} />
-            ))}
+            {displayedEvents.map((event) => {
+              const isPastEvent = pastEventIds.includes(event.id);
+              
+              return (
+                <EventCard 
+                  key={event.id} 
+                  event={event} 
+                  isPastEvent={isPastEvent} 
+                />
+              );
+            })}
           </div>
 
           {hasMoreEvents && (
