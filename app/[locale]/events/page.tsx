@@ -1,10 +1,11 @@
 import { Suspense } from "react";
 import { getPublishedEvents } from "@/lib/firestore/content";
-import type { CalendarEvent, ContentLanguage } from "@/lib/firestore/types";
+import type { CalendarEvent, ContentLanguage, CalendarEventWithNextOccurrence } from "@/lib/firestore/types";
 import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 import { EventListClient } from "@/components/events/event-list-client";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Timestamp } from "firebase/firestore";
 
 export async function generateMetadata({
   params,
@@ -20,7 +21,6 @@ export async function generateMetadata({
   };
 }
 
-// Revalidate every 5 minutes
 export const revalidate = 300;
 
 function getUniqueTags(events: CalendarEvent[]): string[] {
@@ -29,6 +29,15 @@ function getUniqueTags(events: CalendarEvent[]): string[] {
     event.tags.forEach((tag) => tagsSet.add(tag));
   });
   return Array.from(tagsSet);
+}
+
+function firestoreToDate(value: unknown): Date | undefined {
+  if (!value) return undefined;
+  if (value instanceof Timestamp) return value.toDate();
+  const obj = value as { seconds?: number; toDate?: () => Date };
+  if (typeof obj.toDate === "function") return obj.toDate();
+  if (typeof obj.seconds === "number") return new Date(obj.seconds * 1000);
+  return undefined;
 }
 
 export default async function EventsPage({
@@ -41,13 +50,50 @@ export default async function EventsPage({
 
   const t = await getTranslations("eventsPage");
 
-  // Get upcoming published events filtered by locale
-  // Events are already sorted by eventDate ascending (soonest first)
-  const allEvents = await getPublishedEvents(true); // upcomingOnly = true
-  const events = allEvents.filter(
+  const allEventsRaw = await getPublishedEvents(false);
+  
+  const localeEvents = allEventsRaw.filter(
     (event) => event.language === (locale as ContentLanguage)
   );
-  const tags = getUniqueTags(events);
+
+  const now = new Date().getTime();
+  const upcoming: CalendarEventWithNextOccurrence[] = [];
+  const past: CalendarEventWithNextOccurrence[] = [];
+
+  localeEvents.forEach((event) => {
+    const startTime = firestoreToDate(event.eventDate)?.getTime() || 0;
+    const endTime = event.endDate
+      ? firestoreToDate(event.endDate)?.getTime() || startTime
+      : startTime;
+
+    const isOngoing = startTime <= now && endTime >= now;
+    const hasFutureOccurrence = event.nextOccurrence !== null;
+
+    if (hasFutureOccurrence || isOngoing || startTime >= now) {
+      upcoming.push(event);
+    } else {
+      past.push(event);
+    }
+  });
+
+  upcoming.sort((a, b) => {
+    const aTime = a.nextOccurrence
+      ? a.nextOccurrence.seconds * 1000
+      : firestoreToDate(a.eventDate)?.getTime() || 0;
+    const bTime = b.nextOccurrence
+      ? b.nextOccurrence.seconds * 1000
+      : firestoreToDate(b.eventDate)?.getTime() || 0;
+    return aTime - bTime;
+  });
+
+  past.sort((a, b) => {
+    const aTime = firestoreToDate(a.eventDate)?.getTime() || 0;
+    const bTime = firestoreToDate(b.eventDate)?.getTime() || 0;
+    return bTime - aTime; 
+  });
+
+  const sortedEvents = [...upcoming, ...past];
+  const tags = getUniqueTags(sortedEvents);
 
   return (
     <div className="bg-cream pt-16">
@@ -83,7 +129,7 @@ export default async function EventsPage({
           </header>
 
           <Suspense fallback={<EventListSkeleton />}>
-            <EventListClient events={events} availableTags={tags} />
+            <EventListClient events={sortedEvents} availableTags={tags} pastEventIds={past.map(p => p.id)} />
           </Suspense>
         </div>
       </div>
@@ -99,7 +145,7 @@ function EventListSkeleton() {
         <div className="h-10 bg-muted rounded w-40 animate-pulse" />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[1, 2, 3].map((i) => (
+        {[1, 2, 3, 4, 5, 6].map((i) => (
           <div key={i} className="border rounded-lg overflow-hidden bg-white">
             <div className="aspect-video bg-muted animate-pulse" />
             <div className="p-5 space-y-3">
