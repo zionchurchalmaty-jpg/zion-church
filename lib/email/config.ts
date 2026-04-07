@@ -11,7 +11,7 @@
 
 export const emailConfig = {
   apiKey: process.env.RESEND_API_KEY || "",
-  from: process.env.EMAIL_FROM || "noreply@updates.zion-church.kz",
+  from: process.env.EMAIL_FROM || "noreply@updates.zionchurch.kz",
 
   /**
    * Email recipients configuration
