@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
 
     // Send emails (don't await - let it run in background, don't fail submission if email fails)
     if (data.formType === "contact") {
-      handleContactSubmissionEmails({
+      await handleContactSubmissionEmails({
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
 
       // Also send newsletter emails if they opted in
       if (data.interests.newsletterSubscription) {
-        handleNewsletterSubmissionEmails({
+        await handleNewsletterSubmissionEmails({
           firstName: data.firstName,
           email: data.email,
         }).catch((err) => console.error("Failed to send newsletter emails:", err));
