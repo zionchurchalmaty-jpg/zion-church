@@ -1,6 +1,6 @@
 import type { Timestamp } from "firebase/firestore";
 
-export type ContentType = "blog" | "sermon" | "song" | "event";
+export type ContentType = "blog" | "sermon" | "song" | "event" | "ministry";
 
 export type ContentStatus = "draft" | "published";
 

@@ -62,7 +62,7 @@ export function ContentList({ items, contentType }: ContentListProps) {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
 
-  const typeConfig: Record<string, { 
+const typeConfig: Record<string, { 
     label: string; 
     plural: string; 
     basePath: string; 
@@ -91,6 +91,12 @@ export function ContentList({ items, contentType }: ContentListProps) {
       plural: "Events",
       basePath: "/admin/events",
       publicPath: "/events",
+    },
+    ministry: {
+      label: "Ministry",
+      plural: "Ministries",
+      basePath: "/admin/ministries",
+      publicPath: "/ministry",
     },
   };
 

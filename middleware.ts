@@ -28,6 +28,8 @@ const validRoutes = [
   /^\/ru\/legal(\/.*)?$/, // Russian legal
   /^\/ru\/about(\/.*)?$/, // Russian about
   /^\/ru\/courses(\/.*)?$/, // Russian courses pages
+  /^\/ministry(\/.*)?$/, // Ministry pages
+  /^\/ru\/ministry(\/.*)?$/, // Russian ministry pages
 ];
 
 export default function middleware(request: NextRequest) {

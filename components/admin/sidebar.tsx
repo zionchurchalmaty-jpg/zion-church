@@ -11,6 +11,7 @@ import {
   LogOut,
   ChevronLeft,
   BookOpen,
+  Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "./auth-provider";
@@ -40,6 +41,11 @@ const navItems = [
     label: "Songs",
     href: "/admin/songs",
     icon: Music,
+  },
+  {
+    label: "Ministries",
+    href: "/admin/ministries",
+    icon: Users,
   },
 ];
 

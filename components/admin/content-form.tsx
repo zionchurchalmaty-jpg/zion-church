@@ -103,6 +103,7 @@ export function ContentForm({
     sermon: { label: "Sermon", backPath: "/admin/sermons" },
     song: { label: "Song", backPath: "/admin/songs" },
     event: { label: "Event", backPath: "/admin/events" },
+    ministry: { label: "Служение", backPath: "/admin/ministries" }, // <-- Добавили
   };
 
   const config = typeConfig[contentType] || typeConfig.blog;
