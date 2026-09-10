@@ -10,6 +10,8 @@ import { Navbar } from "@/components/navbar";
 import { WhatToExpectSection } from "@/components/what-to-expect-section";
 import { setRequestLocale } from "next-intl/server";
 
+export const revalidate = 60; 
+
 export default async function ChurchLandingPage({
   params,
 }: {
